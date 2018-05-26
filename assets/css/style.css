@@ -6,3 +6,7 @@
     padding-bottom: 3.5rem;
     padding-top: 1rem;
 }
+
+label.checkbox:not(:first-child) {
+    margin-left: 15px;
+}

@@ -43,10 +43,10 @@
                 <div class="container">
                     <ul>
                         <li class="is-active" id="create-note-list">
-                            <a>Nuevo ticket</a>
+                            <a class="subtitle">Nuevo ticket</a>
                         </li>
                         <li id="search-notes-list">
-                            <a>Buscar tickets</a>
+                            <a class="subtitle">Buscar tickets</a>
                         </li>
                     </ul>
                 </div>
@@ -68,11 +68,19 @@
     <div class="container" id="create-note-container">
 
         <div class="columns">
+
             <div class="column">
                 <div class="field">
                     <label class="label">Sucursal</label>
-                    <div class="control">
-                        <input class="input" type="text" placeholder="Nombre">
+                    <div class="control is-expanded">
+                        <div class="select is-fullwidth">
+                        <select>
+                            <option disabled selected>Selecciona una sucursal</option>
+                            <option>Avanta</option>
+                            <option>Brisas</option>
+                            <option>Sienna</option>
+                        </select>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -80,111 +88,230 @@
                 <div class="field">
                     <label class="label">Número de nota</label>
                     <div class="control">
-                        <input class="input" type="text" placeholder="Nombre">
+                        <input class="input" type="text" placeholder="Directo del block">
                     </div>
                 </div>
             </div>
             <div class="column">
                 <div class="field">
                     <label class="label">Fecha</label>
-                    <div class="control">
-                        <input class="input" type="text" placeholder="Nombre">
+                    <div class="control"> <!-- Debe de venir directo de JS -->
+                        <input class="input" type="datetime-local" placeholder="Hoy">
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="columns">
-            <div class="column is-4">
-                <div class="field">
-                    <label class="label">Nombre</label>
-                    <div class="control">
-                        <input class="input" type="text" placeholder="Nombre">
-                    </div>
-                </div>
-            </div>
-            <div class="column is-8">
-                <div class="field">
-                    <label class="label">Apellidos</label>
-                    <div class="control">
-                        <input class="input" type="text" placeholder="Apellido">
-                    </div>
-                </div>
-            </div>
+
         </div>
 
-        
-        <div class="field">
-        <label class="label">Email</label>
-        <div class="control has-icons-left has-icons-right">
-            <input class="input is-danger" type="email" placeholder="Email input" value="hello@">
-            <span class="icon is-small is-left">
-            <i class="fas fa-envelope"></i>
-            </span>
-            <span class="icon is-small is-right">
-            <i class="fas fa-exclamation-triangle"></i>
-            </span>
+        <div class="box">
+            <h2 class="subtitle">Datos del cliente</h2>
+
+            <div class="columns">
+    
+                <div class="column is-4">
+                    <div class="field">
+                        <label class="label">Nombre</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="Nombre">
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-8">
+                    <div class="field">
+                        <label class="label">Apellidos</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="Apellidos">
+                        </div>
+                    </div>
+                </div>
+    
+            </div>
+    
+            <div class="columns">
+    
+                <div class="column is-4">
+                    <div class="field">
+                        <label class="label">Número de celular</label>
+                        <div class="control has-icons-left">
+                            <input class="input" type="tel" placeholder="Idealmente, con WhatsApp">
+                            <span class="icon is-small is-left">
+                            <i class="fab fa-whatsapp"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-8">
+                    <div class="field">
+                        <label class="label">Email</label>
+                        <div class="control has-icons-left">
+                            <input class="input" type="email" placeholder="correo@ejemplo.com">
+                            <span class="icon is-small is-left">
+                            <i class="fas fa-envelope"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+    
+            </div>
+    
+            <div class="columns">
+    
+                <div class="column is-4">
+                    <div class="field">
+                        <label class="label">Código Postal</label>
+                        <div class="control">
+                            <input class="input" type="number" placeholder="6xxxx">
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-8">
+                    <div class="field">
+                        <label class="label">Medio de contactos preferidos</label>
+                        <div class="control">
+                            <label class="checkbox">
+                            <input type="checkbox" name="question">
+                            WhatsApp
+                            </label>
+                            <label class="checkbox">
+                            <input type="checkbox" name="question">
+                            Llamada telefónica
+                            </label>
+                            <label class="checkbox">
+                            <input type="checkbox" name="question">
+                            Correo electrónico
+                            </label>
+                        </div>
+                    </div>
+                </div>
+    
+            </div>
+            
         </div>
-        <p class="help is-danger">This email is invalid</p>
+
+        <!-- Separator begin -->
+        <section class="columns">
+            <div class="column"></div>
+        </section>
+        <!-- Separator ends -->
+
+        <div class="container box">
+            <h2 class="subtitle">Datos del equipo</h2>
+
+            <div class="columns">
+
+                <div class="column is-6">
+                    <div class="field">
+                        <label class="label">Tipo de equipo</label>
+                        <div class="control is-expanded">
+                            <div class="select is-fullwidth">
+                            <select>
+                                <option disabled selected>Selecciona una opción</option>
+                                <option>Celular</option>
+                                <option>Laptop</option>
+                                <option>Tablet</option>
+                                <option>Desktop</option>
+                            </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-6">
+                    <div class="field">
+                        <label class="label">Marca</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="Marca del equipo">
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+
+            <div class="columns">
+
+                <div class="column">
+                    <div class="field">
+                        <label class="label">Modelo</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="A veces en la parte inferior, a veces bajo la batería">
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <label class="label">Número de serie</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="No siempre es fácil de ver!">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="columns">
+
+                <div class="column">
+                    <div class="field">
+                        <label class="label">Características</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="Color, calcamonías, golpes, rayones, teclas sueltas, pantallas dañadas, bisagras flojas, etc...">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="columns">
+
+                <div class="column">
+                    <div class="field">
+                        <label class="label">Accesorios</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="Idealmente recibimos el equipo sin accesorios, en caso de incluír algo (cargador, funda, etc..) incluírlo aquí">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="columns">
+
+                <div class="column">
+                    <div class="field">
+                        <label class="label">Razón de la visita</label>
+                        <div class="control">
+                            <textarea class="textarea" placeholder="Recuerda ser lo más claro y explícito posible, preferible de más, no de menos"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
-        
-        <div class="field">
-        <label class="label">Subject</label>
-        <div class="control">
-            <div class="select">
-            <select>
-                <option>Select dropdown</option>
-                <option>With options</option>
-            </select>
+        <div class="field is-grouped is-grouped-right">
+            <div class="control">
+                <button class="button is-link">Guardar nota</button>
             </div>
         </div>
-        </div>
         
-        <div class="field">
-        <label class="label">Message</label>
-        <div class="control">
-            <textarea class="textarea" placeholder="Textarea"></textarea>
-        </div>
-        </div>
-        
-        <div class="field">
-        <div class="control">
-            <label class="checkbox">
-            <input type="checkbox">
-            I agree to the <a href="#">terms and conditions</a>
-            </label>
-        </div>
-        </div>
-        
-        <div class="field">
-        <div class="control">
-            <label class="radio">
-            <input type="radio" name="question">
-            Yes
-            </label>
-            <label class="radio">
-            <input type="radio" name="question">
-            No
-            </label>
-        </div>
-        </div>
-        
-        <div class="field is-grouped">
-        <div class="control">
-            <button class="button is-link">Submit</button>
-        </div>
-        <div class="control">
-            <button class="button is-text">Cancel</button>
-        </div>
-        </div>
     </div>
     <!-- Create new note - end -->
 
+
+
     <!-- Search for notes - begin -->
-    <div class="container" id="search-notes-container">
-        <p>Test buscar notas</p>
+    <div class="container box" id="search-notes-container">
+        
     </div>
     <!-- Search for notes - end -->
 
+    <!-- Separator begin -->
+    <section class="columns">
+        <div class="column"></div>
+    </section>
+    <section class="columns">
+        <div class="column"></div>
+    </section>
+    <!-- Separator end-->
 
     <!-- JS Files -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
