@@ -77,11 +77,11 @@
                     <label class="label">Sucursal</label>
                     <div class="control is-expanded">
                         <div class="select is-fullwidth">
-                        <select>
+                        <select class="sucursal-select">
                             <option disabled selected>Selecciona una sucursal</option>
-                            <option>Avanta</option>
-                            <option>Brisas</option>
-                            <option>Sienna</option>
+                            <option data-sucursal="avanta">Avanta</option>
+                            <option data-sucursal="brisas" >Brisas</option>
+                            <option data-sucursal="sienna">Sienna</option>
                         </select>
                         </div>
                     </div>
@@ -91,15 +91,15 @@
                 <div class="field">
                     <label class="label">Número de folio</label>
                     <div class="control">
-                        <input class="input" type="text" placeholder="Directo del block">
+                        <input class="input" id="numero-folio" type="text" placeholder="Directo del block">
                     </div>
                 </div>
             </div>
             <div class="column">
                 <div class="field">
                     <label class="label">Fecha</label>
-                    <div class="control"> <!-- Debe de venir directo de JS -->
-                        <input class="input" type="datetime-local" placeholder="Hoy">
+                    <div class="control">
+                        <input class="input" id="new-ticket-date-now" type="text" placeholder="Hoy">
                     </div>
                 </div>
             </div>
@@ -321,6 +321,8 @@
     <!-- JS Files -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment-with-locales.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/locale/es-us.js"></script>
     <script src="assets/javascript/script.js"></script>
 </body>
 </html>
