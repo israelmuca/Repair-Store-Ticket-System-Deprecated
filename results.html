@@ -42,14 +42,14 @@
             <nav class="tabs is-boxed is-fullwidth">
                 <div class="container">
                     <ul>
-                        <li class="is-active" id="create-note-list">
-                            <a href="#" class="subtitle">Nuevo folio</a>
+                        <li id="create-note-list">
+                            <a href="index.html" class="subtitle">Nuevo folio</a>
                         </li>
                         <li id="search-notes-list">
                             <a href="search.html" class="subtitle">Buscar folios</a>
                         </li>
-                        <li id="results-notes-list">
-                            <a href="results.html" class="subtitle">Resultados</a>
+                        <li class="is-active" id="results-notes-list">
+                            <a href="#" class="subtitle">Resultados</a>
                         </li>
                     </ul>
                 </div>
@@ -299,11 +299,55 @@
                 </div>
             </div>
 
+            
         </div>
         <div class="field is-grouped is-grouped-right">
             <div class="control">
-                <button class="button is-link">Guardar folio</button>
+                <button class="button is-link">Modificar folio</button>
             </div>
+        </div>
+
+        <div class="container box">
+            <h2 class="subtitle">Notas</h2>
+
+            <div class="columns">
+
+                <div class="column is-two-thirds">
+
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <label class="label">Fecha</label>
+                        <div class="control"> <!-- Debe de venir directo de JS -->
+                            <input class="input" type="datetime-local" placeholder="Hoy">
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+
+            <div class="columns">
+
+                <div class="column">
+                    <div class="field">
+                        <label class="label">Diagnóstico/Comunicación con cliente/Comentarios internos</label>
+                        <div class="control">
+                            <textarea class="textarea" placeholder="Cualquier interacción con el equipo o cliente debe de ser registrada aquí SIN EXCEPCIÓN&#10;Recuerda ser lo más claro y explícito posible, preferible de más, no de menos"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="field is-grouped is-grouped-right">
+                <div class="control">
+                    <button class="button is-link">Agrear nuevo comentario</button>
+                </div>
+                <div class="control">
+                    <button class="button is-link">Guardar comentario</button>
+                </div>
+            </div>
+
         </div>
 
     </div>

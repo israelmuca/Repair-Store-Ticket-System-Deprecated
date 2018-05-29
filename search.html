@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TechCRM</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <!-- Header - begin -->
+    <section class="hero is-dark is-bold is-small">
+        <!-- Hero head: will stick at the top -->
+        <div class="hero-head">
+            <nav class="navbar">
+            <div class="container">
+                <div class="navbar-brand">
+                <a class="navbar-item">
+                    <img src="assets/images/logos/XT-icono-gradiente-tamNormal.png" alt="Logo">
+                </a>
+                </div>
+            </div>
+            </nav>
+        </div>
+        
+        <!-- Hero content: will be in the middle -->
+        <div class="hero-body">
+            <div class="container has-text-centered">
+            <h1 class="title">
+                XpressTech.Mx / Fixcel
+            </h1>
+            <h2 class="subtitle">
+                Sistema de folios
+            </h2>
+            </div>
+        </div>
+        
+        <!-- Hero footer: will stick at the bottom -->
+        <div class="hero-foot">
+            <nav class="tabs is-boxed is-fullwidth">
+                <div class="container">
+                    <ul>
+                        <li id="create-note-list">
+                            <a href="index.html" class="subtitle">Nuevo folio</a>
+                        </li>
+                        <li class="is-active" id="search-notes-list">
+                            <a  href="#" class="subtitle">Buscar folios</a>
+                        </li>
+                        <li id="results-notes-list">
+                            <a href="results.html" class="subtitle">Resultados</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </section>
+    <!-- Header - end -->
+
+    <!-- Separator begin -->
+    <section class="columns">
+        <div class="column"></div>
+    </section>
+    <section class="columns">
+        <div class="column"></div>
+    </section>
+    <!-- Separator end-->
+
+    <!-- Recent Tickets - begin -->
+    <div class="container" id="see-notes-container">
+        <div class="box">
+            <div class="minimize-recent-notes-click">
+                <p><p class="has-text-right">clic aquí para minimizar</p><h2 class="subtitle">Notas Más Recientes</h2></p>
+            </div>
+
+            <div class="minimize-recent-notes">
+                <table class="table is-bordered is-striped is-hoverable is-fullwidth">
+                    <thead>
+                        <tr>
+                            <th>Sucursal</th>
+                            <th>Número de Nota</th>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Marca de Equipo</th>
+                            <th>Modelo de Equipo</th>
+                            <th>Notas?</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+    <!-- Recent Tickets - end -->
+
+    <!-- JS Files -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
+    <script src="assets/javascript/script.js"></script>
+</body>
+</html>
