@@ -308,8 +308,8 @@
         </div>
 
         <div class="container box">
-            <h2 class="subtitle">Notas</h2>
-
+            <h2 class="subtitle" id="created-ticket-notes-container">Notas</h2>
+            <!--TESTING
             <div class="columns">
 
                 <div class="column is-two-thirds">
@@ -318,8 +318,8 @@
                 <div class="column">
                     <div class="field">
                         <label class="label">Fecha</label>
-                        <div class="control"> <!-- Debe de venir directo de JS -->
-                            <input class="input" type="datetime-local" placeholder="Hoy">
+                        <div class="control">
+                            <input id="new-note-date-now" class="input" type="text" placeholder="Hoy">
                         </div>
                     </div>
                 </div>
@@ -332,24 +332,23 @@
                     <div class="field">
                         <label class="label">Diagnóstico/Comunicación con cliente/Comentarios internos</label>
                         <div class="control">
-                            <textarea class="textarea" placeholder="Cualquier interacción con el equipo o cliente debe de ser registrada aquí SIN EXCEPCIÓN&#10;Recuerda ser lo más claro y explícito posible, preferible de más, no de menos"></textarea>
+                            <textarea id="note-text-" class="textarea" placeholder="Cualquier interacción con el equipo o cliente debe de ser registrada aquí SIN EXCEPCIÓN&#10;Recuerda ser lo más claro y explícito posible, preferible de más, no de menos"></textarea>
                         </div>
                     </div>
                 </div>
 
             </div>
 
+        </div> TESTING -->
+
             <div class="field is-grouped is-grouped-right">
                 <div class="control">
-                    <button class="button is-link">Agrear nuevo comentario</button>
+                    <button id="add-new-note" class="button is-link">Agrear nuevo comentario</button>
                 </div>
                 <div class="control">
-                    <button class="button is-link">Guardar comentario</button>
+                    <button id="save-new-note" class="button is-link">Guardar comentario</button>
                 </div>
             </div>
-
-        </div>
-
     </div>
     <!-- Create new note - end -->
 
