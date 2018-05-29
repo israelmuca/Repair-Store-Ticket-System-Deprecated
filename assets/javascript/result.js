@@ -3,15 +3,10 @@ $(document).ready(function (){
     //Global variables
     var minimizeCustData = false;
     var minimizeEquipData = false;
-    var minimizeRecentNotes = false;
     var createdTicketAddNoteID = 1; //should be reset to one every time a new note is opened (maybe its time for a specific JS for each HTML?)
 
     //Global selectors
     var sucursalSelector = $('.sucursal-select');
-
-    //Momentjs date handler
-    //Sets the date for the new tickets to now; SAVE BUTTON SHOULD SAVE WITH HOUR
-    $('#new-ticket-date-now').val(moment().format("dddd, D MMMM 'YY, h:mm a"));
     
     //Click listeners for hiding containers as clicks are done on the respective boxes
     $('.minimize-cust-data-click').on('click', function() {
@@ -31,30 +26,6 @@ $(document).ready(function (){
             $('.minimize-equipment-data').show();
             minimizeEquipData = false;
         }
-    });
-    $('.minimize-recent-notes-click').on('click', function() {
-        if (!minimizeRecentNotes) {
-            $('.minimize-recent-notes').hide();
-            minimizeRecentNotes = true;
-        } else {
-            $('.minimize-recent-notes').show();
-            minimizeRecentNotes = false;
-        }
-    });
-
-    //Change listener to apply the 1st character of the new ticket number
-    sucursalSelector.on('change', function() {
-        var numeroFolio = $('#numero-folio');
-        if (this.value == 'Avanta') {
-            numeroFolio.val('A');
-        } else if (this.value == 'Brisas') {
-            numeroFolio.val('B');
-        } else if (this.value == 'Sienna') {
-            numeroFolio.val('S');
-        }
-        //SHOULD CALL A FUNCTION TO CHECK THE LATEST TICKET, AND CREATE A CONSECUTIVE ONE
-        //IT SHOULD THEN UNHIDE THE 'DATOS DEL CLIENTE' CONTAINER
-        //ONCE THE 'DATOS DEL CLIENTE' CONTAINER IS FILLED, UNHIDE DATOS DEL EQUIPO
     });
 
     //Onload creator of notes inside tickets, should get ticket # and add the note with an special ID linked to the ticket ID
@@ -123,7 +94,9 @@ $(document).ready(function (){
         //Create the textarea with an incremental ID to save them all to the DB
         var textareaNote = $('<textarea>');
         textareaNote.addClass('textarea');
-        textareaNote.attr('placeholder', 'Cualquier interacción con el equipo o cliente debe de ser registrada aquí SIN EXCEPCIÓN.\r\nRecuerda ser lo más claro y explícito posible, preferible de más, no de menos.');
+        textareaNote.attr('placeholder',
+            'Cualquier interacción con el equipo o cliente debe de ser registrada aquí SIN EXCEPCIÓN.\r\n' 
+            + 'Recuerda ser lo más claro y explícito posible, preferible de más, no de menos.\r\n');
         textareaNote.attr('id', 'note-text-' + createdTicketAddNoteID);
         controlNote.append(textareaNote);
 

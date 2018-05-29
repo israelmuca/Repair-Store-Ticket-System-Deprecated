@@ -309,17 +309,38 @@
 
         <div class="container box">
             <h2 class="subtitle" id="created-ticket-notes-container">Notas</h2>
-            <!--TESTING
+
+            <!--TESTING STARTED-->
             <div class="columns">
 
-                <div class="column is-two-thirds">
-
-                </div>
                 <div class="column">
                     <div class="field">
-                        <label class="label">Fecha</label>
+                        <label class="label">Tipo de Nota:</label>
                         <div class="control">
-                            <input id="new-note-date-now" class="input" type="text" placeholder="Hoy">
+                            <label class="radio">
+                            <input type="radio" name="question">
+                            Nota interna
+                            </label>
+                            <label class="radio">
+                            <input type="radio" name="question">
+                            Diagnóstico
+                            </label>
+                            <label class="radio">
+                            <input type="radio" name="question">
+                            Comunicación con cliente
+                            </label>
+                            <label class="radio">
+                            <input type="radio" name="question">
+                            Otro
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-one-quarter">
+                    <div class="field">
+                        <label class="label is-small">Fecha</label>
+                        <div class="control">
+                            <input id="new-note-date-now" class="input is-small" type="text" placeholder="Hoy">
                         </div>
                     </div>
                 </div>
@@ -330,7 +351,6 @@
 
                 <div class="column">
                     <div class="field">
-                        <label class="label">Diagnóstico/Comunicación con cliente/Comentarios internos</label>
                         <div class="control">
                             <textarea id="note-text-" class="textarea" placeholder="Cualquier interacción con el equipo o cliente debe de ser registrada aquí SIN EXCEPCIÓN&#10;Recuerda ser lo más claro y explícito posible, preferible de más, no de menos"></textarea>
                         </div>
@@ -339,7 +359,7 @@
 
             </div>
 
-        </div> TESTING -->
+        </div> <!--TESTING FINISHED-->
 
             <div class="field is-grouped is-grouped-right">
                 <div class="control">
@@ -365,6 +385,6 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.js"></script>
-    <script src="assets/javascript/script.js"></script>
+    <script src="assets/javascript/result.js"></script>
 </body>
 </html>
