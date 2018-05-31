@@ -3,7 +3,7 @@ $(document).ready(function (){
     //Global variables
     var minimizeCustData = false;
     var minimizeEquipData = false;
-    var createdTicketAddNoteID = 1; //should be reset to one every time a new note is opened (maybe its time for a specific JS for each HTML?)
+    var createdTicketAddNoteID = 1;
 
     //Global selectors
     var sucursalSelector = $('.sucursal-select');
@@ -34,18 +34,57 @@ $(document).ready(function (){
         //Uses BULMA CSS styling to create the new notes to be added
 
         var notesContainer = $('#created-ticket-notes-container');
+        var radioOptions = [
+            ' Nota interna',
+            ' Diagnóstico',
+            ' Cotización',
+            ' Comunicación con cliente',
+            ' Entrega programada'
+        ];
 
-        //Create columns and column for the date
-        var columnsDate = $('<div>');
-        columnsDate.addClass('columns');
-        var columnDateEmpty = $('<div>');
-        columnDateEmpty.addClass('column');
-        columnDateEmpty.addClass('is-two-thirds');
-        columnsDate.append(columnDateEmpty);
+        //Create columns container for column NoteType and Date
+        var columnsNoteTypeDate = $('<div>');
+        columnsNoteTypeDate.addClass('columns');
+
+        //Create column for the Note Type radio buttons
+        var columnNoteType = $('<div>');
+        columnNoteType.addClass('column');
+        columnsNoteTypeDate.append(columnNoteType);
+
+        var fieldNoteType = $('<div>');
+        fieldNoteType.addClass('field');
+        columnNoteType.append(fieldNoteType);
+
+        var labelNoteType = $('<label>');
+        labelNoteType.addClass('label');
+        labelNoteType.text('Tipo de Nota:');
+        fieldNoteType.append(labelNoteType);
+
+        var controlNoteType = $('<div>');
+        controlNoteType.addClass('control');
+        fieldNoteType.append(controlNoteType);
+
+        for(var i=0; i < radioOptions.length; i++) {
+            var labelRadio = $('<label>');
+            labelRadio.addClass('radio');
+            
+
+            var inputRadio = $('<input>');
+            inputRadio.attr('type', 'radio');
+            inputRadio.attr('name', 'question-' + createdTicketAddNoteID);
+            labelRadio.append(inputRadio);
+
+            var labelRadioText = radioOptions[i];
+            labelRadio.append(labelRadioText);
+
+            controlNoteType.append(labelRadio);
+        }
+
         //Create the date and place it on the right side
         var columnDate = $('<div>');
         columnDate.addClass('column');
-        columnsDate.append(columnDate);
+        columnDate.addClass('is-one-quarter');
+        columnsNoteTypeDate.append(columnDate);
         var fieldDate = $('<div>');
         fieldDate.addClass('field');
         columnDate.append(fieldDate);
@@ -67,9 +106,7 @@ $(document).ready(function (){
         controlDate.append(inputAreaDate);
 
         //Append this columns to the container
-        notesContainer.append(columnsDate);
-
-
+        notesContainer.append(columnsNoteTypeDate);
 
         //Create columns and column for the actual note
         var columnsNote = $('<div>');
@@ -83,13 +120,10 @@ $(document).ready(function (){
         fieldNote.addClass('field');
         columnNote.append(fieldNote);
 
-        var labelNote = $('<label>');
-        labelNote.addClass('label');
-        labelNote.text('Diagnóstico/Comunicación con cliente/Comentarios internos');
-        fieldNote.append(labelNote);
         var controlNote = $('<div>');
         controlNote.addClass('control');
         fieldNote.append(controlNote);
+        
 
         //Create the textarea with an incremental ID to save them all to the DB
         var textareaNote = $('<textarea>');
