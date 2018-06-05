@@ -52,7 +52,7 @@ $(document).ready(function (){
     var cellNumSelector = $('#cellphone-number');
     var emailSelector = $('#email');
     var zipCodeSelector = $('#zip-code');
-    var prefContactMetSelector = $('#');
+    //var prefContactMetSelector = $('#');       must research more
     var eqTypeSelector = $('#equipment-type');
     var eqBrandSelector = $('#equipment-brand');
     var eqModelSelector = $('#equipment-model');
@@ -60,6 +60,7 @@ $(document).ready(function (){
     var characteristicsSelector = $('#equipment-characteristics');
     var accesoriesSelector = $('#equipment-accesories');
     var reasonToVisitSelector = $('#equipment-reason');
+    var addTicketButtonSelector = $('#add-ticket');
 
     //Momentjs date handler
     //Sets the date for the new tickets to now; SAVE BUTTON SHOULD SAVE WITH HOUR
@@ -87,19 +88,69 @@ $(document).ready(function (){
 
     //Change listener to apply the 1st character of the new ticket number
     locationSelector.on('change', function() {
-        var numeroFolio = $('#numero-folio');
         if (this.value == 'Avanta') {
-            numeroFolio.val('A');
+            ticketNumSelector.val('A');
         } else if (this.value == 'Brisas') {
-            numeroFolio.val('B');
+            ticketNumSelector.val('B');
         } else if (this.value == 'Sienna') {
-            numeroFolio.val('S');
+            ticketNumSelector.val('S');
         }
         //SHOULD CALL A FUNCTION TO CHECK THE LATEST TICKET, AND CREATE A CONSECUTIVE ONE
         //IT SHOULD THEN UNHIDE THE 'DATOS DEL CLIENTE' CONTAINER
         //ONCE THE 'DATOS DEL CLIENTE' CONTAINER IS FILLED, UNHIDE DATOS DEL EQUIPO
     });
 
+    //Click listener to save the form's data to FireBase
+    addTicketButtonSelector.on('click', function(event){
+        //Stop the button from reloading the page
+        event.preventDefault();
 
+        //get all the values
+        location = locationSelector.val().trim();
+        ticketNum = ticketNumSelector.val().trim();
+        date = dateSelector.val().trim();
+
+        custName = custNameSelector.val().trim();
+        custLastName = custLastNameSelector.val().trim();
+        cellNum = cellNumSelector.val().trim();
+        email = emailSelector.val().trim();
+        zipCode = zipCodeSelector.val().trim();
+        //missing code for pref. contact method;
+
+        eqType = eqTypeSelector.val().trim();
+        eqBrand = eqBrandSelector.val().trim();
+        eqModel = eqModelSelector.val().trim();
+        eqSerialNum = eqSerialNumSelector.val().trim();
+        characteristics = characteristicsSelector.val().trim();
+        accesories = accesoriesSelector.val().trim();
+        reasonToVisit = reasonToVisitSelector.val().trim();
+
+        //push the values to the DB
+        database.ref().push({
+            location: location,
+            ticketNum: ticketNum,
+            date: date,
+
+            custName: custName,
+            custLastName: custLastName,
+            cellNum: cellNum,
+            email: email,
+            zipCode: zipCode,
+
+            eqType: eqType,
+            eqBrand: eqBrand,
+            eqModel: eqModel,
+            eqSerialNum: eqSerialNum,
+            characteristics: characteristics,
+            accesories: accesories,
+            reasonToVisit: reasonToVisit,
+            dateAdded: firebase.database.ServerValue.TIMESTAMP
+        });
+
+        //Take the user to the search page
+        var oldURL = window.location.href;
+        var newURL = oldURL.replace("index", "search");
+        window.location.replace(newURL);
+    });
 
 });
