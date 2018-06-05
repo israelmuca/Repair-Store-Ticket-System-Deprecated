@@ -153,8 +153,10 @@ $(document).ready(function (){
         window.location.replace(newURL);
         */
 
-        /*Take the user to the search page (for Git online work)*/
+
+        /*Take the user to the search page (for Git online work) */
         window.location.href = 'search.html';
+        
     });
 
 });
