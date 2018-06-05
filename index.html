@@ -77,11 +77,11 @@
                     <label class="label">Sucursal</label>
                     <div class="control is-expanded">
                         <div class="select is-fullwidth">
-                        <select class="sucursal-select">
+                        <select id="location-select">
                             <option disabled selected>Selecciona una sucursal</option>
-                            <option data-sucursal="avanta">Avanta</option>
-                            <option data-sucursal="brisas" >Brisas</option>
-                            <option data-sucursal="sienna">Sienna</option>
+                            <option data-location="avanta">Avanta</option>
+                            <option data-location="brisas" >Brisas</option>
+                            <option data-location="sienna">Sienna</option>
                         </select>
                         </div>
                     </div>
@@ -91,7 +91,7 @@
                 <div class="field">
                     <label class="label">Número de folio</label>
                     <div class="control">
-                        <input class="input" id="numero-folio" type="text" placeholder="AGREGAR FUNCION">
+                        <input class="input" id="ticket-number" type="text" placeholder="AGREGAR FUNCION">
                     </div>
                 </div>
             </div>
@@ -119,7 +119,7 @@
                         <div class="field">
                             <label class="label">Nombre</label>
                             <div class="control">
-                                <input class="input" type="text" placeholder="Nombre">
+                                <input class="input" type="text" placeholder="Nombre" id="cust-name">
                             </div>
                         </div>
                     </div>
@@ -127,7 +127,7 @@
                         <div class="field">
                             <label class="label">Apellidos</label>
                             <div class="control">
-                                <input class="input" type="text" placeholder="Apellidos">
+                                <input class="input" type="text" placeholder="Apellidos" id="cust-last-name">
                             </div>
                         </div>
                     </div>
@@ -140,7 +140,7 @@
                         <div class="field">
                             <label class="label">Número de celular</label>
                             <div class="control has-icons-left">
-                                <input class="input" type="tel" placeholder="Idealmente, con WhatsApp">
+                                <input class="input" type="tel" placeholder="Idealmente, con WhatsApp" id="cellphone-number">
                                 <span class="icon is-small is-left">
                                 <i class="fab fa-whatsapp"></i>
                                 </span>
@@ -151,7 +151,7 @@
                         <div class="field">
                             <label class="label">Email</label>
                             <div class="control has-icons-left">
-                                <input class="input" type="email" placeholder="correo@ejemplo.com">
+                                <input class="input" type="email" placeholder="correo@ejemplo.com" id="email">
                                 <span class="icon is-small is-left">
                                 <i class="fas fa-envelope"></i>
                                 </span>
@@ -167,7 +167,7 @@
                         <div class="field">
                             <label class="label">Código Postal</label>
                             <div class="control">
-                                <input class="input" type="number" placeholder="6xxxx">
+                                <input class="input" type="number" placeholder="6xxxx" id="zip-code">
                             </div>
                         </div>
                     </div>
@@ -176,15 +176,15 @@
                             <label class="label">Medio de contactos preferidos</label>
                             <div class="control">
                                 <label class="checkbox">
-                                <input type="checkbox" name="question">
+                                <input type="checkbox" name="preferred-contact-method">
                                 WhatsApp
                                 </label>
                                 <label class="checkbox">
-                                <input type="checkbox" name="question">
+                                <input type="checkbox" name="preferred-contact-method">
                                 Llamada telefónica
                                 </label>
                                 <label class="checkbox">
-                                <input type="checkbox" name="question">
+                                <input type="checkbox" name="preferred-contact-method">
                                 Correo electrónico
                                 </label>
                             </div>
@@ -216,12 +216,12 @@
                             <label class="label">Tipo de equipo</label>
                             <div class="control is-expanded">
                                 <div class="select is-fullwidth">
-                                <select>
+                                <select id="equipment-type">
                                     <option disabled selected>Selecciona una opción</option>
-                                    <option>Celular</option>
-                                    <option>Laptop</option>
-                                    <option>Tablet</option>
-                                    <option>Desktop</option>
+                                    <option data-equipment="cellphone">Celular</option>
+                                    <option data-equipment="laptop">Laptop</option>
+                                    <option data-equipment="tablet">Tablet</option>
+                                    <option data-equipment="desktop">Desktop</option>
                                 </select>
                                 </div>
                             </div>
@@ -231,7 +231,7 @@
                         <div class="field">
                             <label class="label">Marca</label>
                             <div class="control">
-                                <input class="input" type="text" placeholder="Marca del equipo">
+                                <input class="input" type="text" placeholder="Marca del equipo" id="equipment-brand">
                             </div>
                         </div>
                     </div>
@@ -244,7 +244,7 @@
                         <div class="field">
                             <label class="label">Modelo</label>
                             <div class="control">
-                                <input class="input" type="text" placeholder="A veces en la parte inferior, a veces bajo la batería">
+                                <input class="input" type="text" id="equipment-model" placeholder="A veces en la parte inferior, a veces bajo la batería">
                             </div>
                         </div>
                     </div>
@@ -252,7 +252,7 @@
                         <div class="field">
                             <label class="label">Número de serie</label>
                             <div class="control">
-                                <input class="input" type="text" placeholder="No siempre es fácil de encontrar!">
+                                <input class="input" type="text" id="equipment-serial-number" placeholder="No siempre es fácil de encontrar!">
                             </div>
                         </div>
                     </div>
@@ -265,7 +265,7 @@
                         <div class="field">
                             <label class="label">Características</label>
                             <div class="control">
-                                <input class="input" type="text" placeholder="Color, calcamonías, golpes, rayones, teclas sueltas, pantallas dañadas, bisagras flojas, etc...; aunque no venga por eso">
+                                <input class="input" type="text" id="equipment-characteristics" placeholder="Color, calcamonías, golpes, rayones, teclas sueltas, pantallas dañadas, bisagras flojas, etc...; aunque no venga por eso">
                             </div>
                         </div>
                     </div>
@@ -278,7 +278,7 @@
                         <div class="field">
                             <label class="label">Accesorios</label>
                             <div class="control">
-                                <input class="input" type="text" placeholder="Idealmente recibimos el equipo sin accesorios, en caso de incluír algo (cargador, funda, etc...) incluírlo aquí">
+                                <input class="input" type="text"  id="equipment-accesories" placeholder="Idealmente recibimos el equipo sin accesorios, en caso de incluír algo (cargador, funda, etc...) incluírlo aquí">
                             </div>
                         </div>
                     </div>
@@ -291,7 +291,7 @@
                         <div class="field">
                             <label class="label">Razón de la visita</label>
                             <div class="control">
-                                <textarea class="textarea" placeholder="Recuerda ser lo más claro y explícito posible, preferible de más, no de menos"></textarea>
+                                <textarea class="textarea" id="equipment-reason" placeholder="Recuerda ser lo más claro y explícito posible, preferible de más, no de menos"></textarea>
                             </div>
                         </div>
                     </div>
@@ -323,6 +323,7 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment-with-locales.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/locale/es-us.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
     <script src="assets/javascript/index.js"></script>
 </body>
 </html>
