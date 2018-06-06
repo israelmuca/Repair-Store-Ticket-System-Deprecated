@@ -49,7 +49,7 @@
                             <a  href="#" class="subtitle">Buscar folios</a>
                         </li>
                         <li id="results-notes-list">
-                            <a href="results.html" class="subtitle">Resultados</a>
+                            <a href="#" class="subtitle">Resultados</a>
                         </li>
                     </ul>
                 </div>
@@ -68,7 +68,7 @@
     <!-- Separator end-->
 
     <!-- Recent Tickets - begin -->
-    <div class="container" id="see-notes-container">
+    <div class="container" id="recent-notes-container">
         <div class="box">
             <div class="minimize-recent-notes-click">
                 <p><p class="has-text-right">clic aquí para minimizar</p><h2 class="subtitle">Notas Más Recientes</h2></p>
@@ -96,6 +96,328 @@
 
     </div>
     <!-- Recent Tickets - end -->
+
+    <!-- Separator begin -->
+    <section class="columns">
+        <div class="column"></div>
+    </section>
+    <section class="columns">
+        <div class="column"></div>
+    </section>
+    <!-- Separator ends -->
+
+    <!-- NoteToView - begin -->
+
+    <div class="container" id="selected-note-container">
+
+            <div class="columns">
+
+                <div class="column">
+                    <div class="field">
+                        <label class="label">Sucursal</label>
+                        <div class="control is-expanded">
+                            <div class="select is-fullwidth">
+                            <select id="location-select">
+                                <option disabled selected>Selecciona una sucursal</option>
+                                <option data-location="avanta">Avanta</option>
+                                <option data-location="brisas" >Brisas</option>
+                                <option data-location="sienna">Sienna</option>
+                            </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <label class="label">Número de folio</label>
+                        <div class="control">
+                            <input class="input" id="ticket-number" type="text" placeholder="AGREGAR FUNCION">
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <label class="label">Fecha</label>
+                        <div class="control">
+                            <input class="input" id="new-ticket-date-now" type="text" placeholder="Hoy">
+                        </div>
+                    </div>
+                </div>
+    
+            </div>
+    
+            <div class="box">
+                <div class="minimize-cust-data-click">
+                    <p><p class="has-text-right">clic aquí para minimizar</p><h2 class="subtitle">Datos del cliente</h2></p>
+                </div>
+                
+    
+                <div class="minimize-cust-data">
+                    <div class="columns">
+            
+                        <div class="column is-4">
+                            <div class="field">
+                                <label class="label">Nombre</label>
+                                <div class="control">
+                                    <input class="input" type="text" placeholder="Nombre" id="cust-name">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column is-8">
+                            <div class="field">
+                                <label class="label">Apellidos</label>
+                                <div class="control">
+                                    <input class="input" type="text" placeholder="Apellidos" id="cust-last-name">
+                                </div>
+                            </div>
+                        </div>
+            
+                    </div>
+            
+                    <div class="columns">
+            
+                        <div class="column is-4">
+                            <div class="field">
+                                <label class="label">Número de celular</label>
+                                <div class="control has-icons-left">
+                                    <input class="input" type="tel" placeholder="Idealmente, con WhatsApp" id="cellphone-number">
+                                    <span class="icon is-small is-left">
+                                    <i class="fab fa-whatsapp"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column is-8">
+                            <div class="field">
+                                <label class="label">Email</label>
+                                <div class="control has-icons-left">
+                                    <input class="input" type="email" placeholder="correo@ejemplo.com" id="email">
+                                    <span class="icon is-small is-left">
+                                    <i class="fas fa-envelope"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+            
+                    </div>
+            
+                    <div class="columns">
+            
+                        <div class="column is-4">
+                            <div class="field">
+                                <label class="label">Código Postal</label>
+                                <div class="control">
+                                    <input class="input" type="number" placeholder="6xxxx" id="zip-code">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column is-8">
+                            <div class="field">
+                                <label class="label">Medio de contactos preferidos</label>
+                                <div class="control">
+                                    <label class="checkbox">
+                                    <input type="checkbox" name="preferred-contact-method" value="whatsapp" >
+                                    WhatsApp
+                                    </label>
+                                    <label class="checkbox">
+                                    <input type="checkbox" name="preferred-contact-method" value="call" >
+                                    Llamada telefónica
+                                    </label>
+                                    <label class="checkbox">
+                                    <input type="checkbox" name="preferred-contact-method" value="email">
+                                    Correo electrónico
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+            
+                    </div>
+    
+                </div>
+    
+            </div>
+    
+            <!-- Separator begin -->
+            <section class="columns">
+                <div class="column"></div>
+            </section>
+            <!-- Separator ends -->
+    
+            <div class="container box">
+                <div class="minimize-equipment-data-click">
+                    <p><p class="has-text-right">clic aquí para minimizar</p><h2 class="subtitle">Datos del equipo</h2></p>
+                </div>
+    
+                <div class="minimize-equipment-data">
+                    <div class="columns">
+    
+                        <div class="column is-6">
+                            <div class="field">
+                                <label class="label">Tipo de equipo</label>
+                                <div class="control is-expanded">
+                                    <div class="select is-fullwidth">
+                                    <select id="equipment-type">
+                                        <option disabled selected>Selecciona una opción</option>
+                                        <option data-equipment="cellphone">Celular</option>
+                                        <option data-equipment="laptop">Laptop</option>
+                                        <option data-equipment="tablet">Tablet</option>
+                                        <option data-equipment="desktop">Desktop</option>
+                                    </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column is-6">
+                            <div class="field">
+                                <label class="label">Marca</label>
+                                <div class="control">
+                                    <input class="input" type="text" placeholder="Marca del equipo" id="equipment-brand">
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+    
+                    <div class="columns">
+    
+                        <div class="column">
+                            <div class="field">
+                                <label class="label">Modelo</label>
+                                <div class="control">
+                                    <input class="input" type="text" id="equipment-model" placeholder="A veces en la parte inferior, a veces bajo la batería">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="field">
+                                <label class="label">Número de serie</label>
+                                <div class="control">
+                                    <input class="input" type="text" id="equipment-serial-number" placeholder="No siempre es fácil de encontrar!">
+                                </div>
+                            </div>
+                        </div>
+    
+                    </div>
+    
+                    <div class="columns">
+    
+                        <div class="column">
+                            <div class="field">
+                                <label class="label">Características</label>
+                                <div class="control">
+                                    <input class="input" type="text" id="equipment-characteristics" placeholder="Color, calcamonías, golpes, rayones, teclas sueltas, pantallas dañadas, bisagras flojas, etc...; aunque no venga por eso">
+                                </div>
+                            </div>
+                        </div>
+    
+                    </div>
+    
+                    <div class="columns">
+    
+                        <div class="column">
+                            <div class="field">
+                                <label class="label">Accesorios</label>
+                                <div class="control">
+                                    <input class="input" type="text"  id="equipment-accesories" placeholder="Idealmente recibimos el equipo sin accesorios, en caso de incluír algo (cargador, funda, etc...) incluírlo aquí">
+                                </div>
+                            </div>
+                        </div>
+    
+                    </div>
+    
+                    <div class="columns">
+    
+                        <div class="column">
+                            <div class="field">
+                                <label class="label">Razón de la visita</label>
+                                <div class="control">
+                                    <textarea class="textarea" id="equipment-reason" placeholder="Recuerda ser lo más claro y explícito posible, preferible de más, no de menos"></textarea>
+                                </div>
+                            </div>
+                        </div>
+    
+                    </div>
+                </div>
+    
+            </div>
+        <div class="field is-grouped is-grouped-right">
+            <div class="control">
+                <button class="button is-link">Modificar folio</button>
+            </div>
+        </div>
+
+        <div class="container box">
+            <h2 class="subtitle">Notas</h2>
+
+            <div id="created-ticket-notes-container">
+                <!--TESTING STARTED
+                <div class="columns">
+
+                    <div class="column">
+                        <div class="field">
+                            <label class="label">Tipo de Nota:</label>
+                            <div class="control">
+                                <label class="radio">
+                                <input type="radio" name="question-">
+                                Nota interna
+                                </label>
+                                <label class="radio">
+                                <input type="radio" name="question-">
+                                Diagnóstico
+                                </label>
+                                <label class="radio">
+                                <input type="radio" name="question-">
+                                Cotización
+                                </label>
+                                <label class="radio">
+                                <input type="radio" name="question-">
+                                Comunicación con cliente
+                                </label>
+                                <label class="radio">
+                                <input type="radio" name="question-">
+                                Entrega programada
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column is-one-quarter">
+                        <div class="field">
+                            <label class="label">Fecha</label>
+                            <div class="control">
+                                <input id="new-note-date-now" class="input" type="text" placeholder="Hoy">
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <div class="columns">
+
+                    <div class="column">
+                        <div class="field">
+                            <div class="control">
+                                <textarea id="note-text-" class="textarea" placeholder="Cualquier interacción con el equipo o cliente debe de ser registrada aquí SIN EXCEPCIÓN.&#10;Recuerda ser lo más claro y explícito posible, preferible de más, no de menos"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                TESTING FINISHED-->
+            </div>
+
+        </div>
+
+            <div class="field is-grouped is-grouped-right">
+                <div class="control">
+                    <button id="add-new-note" class="button is-link">Agrear nueva nota</button>
+                </div>
+                <div class="control">
+                    <button id="save-new-note" class="button is-link">Guardar Nota</button>
+                </div>
+            </div>
+    </div>
+
+    <!-- NoteToView - end -->
 
     <!-- JS Files -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
