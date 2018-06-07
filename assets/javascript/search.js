@@ -14,30 +14,49 @@ $(document).ready(function (){
     //Global variables
     var minimizeCustData = false;
     var minimizeEquipData = false;
-    var minimizeRecentNotes = false;
+    var minimizeRecentTickets = false;
 
-    var hideRecentNotesContainer = false;
-    var hideSelectedNoteContainer = true;
+    var hideRecentTicketsContainer = false;
+    var hideSelectedTicketContainer = true;
 
-    var createdTicketAddNoteID = 1;
+    var createdTicketAddNoteID = 1; //change to internalNotes from the DB
+    var ticketUID;
     var fullDatabase = firebase.database();
 
     //Global selectors
-    var sucursalSelector = $('.sucursal-select');
+    var locationSelector = $('#location-select');
+    var ticketNumSelector = $('#ticket-number');
+    var dateSelector = $('#ticket-date');
+    var custNameSelector = $('#cust-name');
+    var custLastNameSelector = $('#cust-last-name');
+    var cellNumSelector = $('#cellphone-number');
+    var emailSelector = $('#email');
+    var zipCodeSelector = $('#zip-code');
+    //var prefContactMetSelector = $('#');       must research more
+    var eqTypeSelector = $('#equipment-type');
+    var eqBrandSelector = $('#equipment-brand');
+    var eqModelSelector = $('#equipment-model');
+    var eqSerialNumSelector = $('#equipment-serial-number');
+    var characteristicsSelector = $('#equipment-characteristics');
+    var accesoriesSelector = $('#equipment-accesories');
+    var reasonToVisitSelector = $('#equipment-reason');
+    var addTicketButtonSelector = $('#add-ticket');
 
-    //Hide selected-note-container on load, to wait until a note is selected
-    $('#selected-note-container').hide();
+
+
+    //Hide selected-ticket-container on load, to wait until a ticket is selected
+    $('#selected-ticket-container').hide();
 
     //Show ALL tickets from DB
-    fullDatabase.ref().on("child_added", function(snapshot) {
+    fullDatabase.ref('/tickets').on("child_added", function(snapshot) {
 
         var oneDatabaseChild = snapshot.val();
         //console.log(oneDatabaseChild); testing purposes
 
         var tableBody = $("#table-body");
         var newRow = $("<tr>");
-        newRow.attr('data-note-uID', snapshot.ref.path.pieces_["0"]);
-        newRow.addClass('note');
+        newRow.attr('data-ticket-uID', snapshot.ref.path.pieces_["1"]);
+        newRow.addClass('ticket');
         tableBody.append(newRow);
 
         var tdLocation = $("<td>");
@@ -65,12 +84,8 @@ $(document).ready(function (){
         newRow.append(tdEqModel);
 
         var tdNotes = $("<td>");
-        if (oneDatabaseChild.notes) {
-            tdNotes.text("Sí");
-        } else {
-            tdNotes.text("No");
-        }
-        newRow.append(tdNotes);
+        tdNotes.text(oneDatabaseChild.internalNotes);
+        newRow.append(tdTickets);
 
     });
 
@@ -78,13 +93,13 @@ $(document).ready(function (){
     // --------------------- EVENT LISTENERS - START ---------------------
 
     //Click listeners for hiding containers as clicks are done on the respective boxes
-    $('.minimize-recent-notes-click').on('click', function() {
-        if (!minimizeRecentNotes) {
-            $('.minimize-recent-notes').hide();
-            minimizeRecentNotes = true;
+    $('.minimize-recent-tickets-click').on('click', function() {
+        if (!minimizeRecentTickets) {
+            $('.minimize-recent-tickets').hide();
+            minimizeRecentTickets = true;
         } else {
-            $('.minimize-recent-notes').show();
-            minimizeRecentNotes = false;
+            $('.minimize-recent-tickets').show();
+            minimizeRecentTickets = false;
         }
     });
     $('.minimize-cust-data-click').on('click', function() {
@@ -106,21 +121,22 @@ $(document).ready(function (){
         }
     });
 
-    //onHover listener for the recent notes container, to show that they're links to the actual notes
+    //onHover listener for the recent tickets container, to show that they're links to the actual tickets
     $('#table-body').hover(function(){
         $('#table-body').css('cursor', 'pointer');
     });
 
-    //onClick listener for creating the note container, to view and modify the clicked note
-    $('#table-body').on('click', '.note', function() {
-        var noteUID = this.dataset.noteUid;
-        displayNote(noteUID);
+    //onClick listener for creating the ticket container, to view and modify the clicked ticket
+    $('#table-body').on('click', '.ticket', function() {
+        ticketUID = this.dataset.ticketUid;
+        displayTicket(ticketUID);
     });
 
-    //Onload creator of notes inside tickets, should get ticket # and add the note with an special ID linked to the ticket ID
+
     //Button click listener for new notes inside made tickets
     $('#add-new-note').on('click', function() {
-        //Uses BULMA CSS styling to create the new notes to be added
+        //disable the button (only one note at the time)
+        $('#add-new-note').prop('disabled', true);
 
         var notesContainer = $('#created-ticket-notes-container');
         var radioOptions = [
@@ -131,11 +147,11 @@ $(document).ready(function (){
             ' Entrega programada'
         ];
 
-        //Create columns container for column NoteType and Date
+        //Create columns container for column TicketType and Date
         var columnsNoteTypeDate = $('<div>');
         columnsNoteTypeDate.addClass('columns');
 
-        //Create column for the Note Type radio buttons
+        //Create column for the Ticket Type radio buttons
         var columnNoteType = $('<div>');
         columnNoteType.addClass('column');
         columnsNoteTypeDate.append(columnNoteType);
@@ -190,45 +206,51 @@ $(document).ready(function (){
         var inputAreaDate = $('<input>');
         inputAreaDate.addClass('input');
         inputAreaDate.attr('type', 'text');
-        inputAreaDate.attr('id', 'new-note-date-' + createdTicketAddNoteID);
+        inputAreaDate.attr('id', 'new-ticket-date-' + createdTicketAddNoteID);
         inputAreaDate.val(moment().format("dddd, D MMMM 'YY, h:mm a"));
+        inputAreaDate.prop('disabled', true);
         controlDate.append(inputAreaDate);
 
         //Append this columns to the container
         notesContainer.append(columnsNoteTypeDate);
 
-        //Create columns and column for the actual note
-        var columnsNote = $('<div>');
-        columnsNote.addClass('columns');
-        var columnNote = $('<div>');
-        columnNote.addClass('column');
-        columnsNote.append(columnNote);
+        //Create columns and column for the actual ticket
+        var columnsTicket = $('<div>');
+        columnsTicket.addClass('columns');
+        var columnTicket = $('<div>');
+        columnTicket.addClass('column');
+        columnsTicket.append(columnTicket);
 
         //Create the form input
-        var fieldNote = $('<div>');
-        fieldNote.addClass('field');
-        columnNote.append(fieldNote);
+        var fieldTicket = $('<div>');
+        fieldTicket.addClass('field');
+        columnTicket.append(fieldTicket);
 
-        var controlNote = $('<div>');
-        controlNote.addClass('control');
-        fieldNote.append(controlNote);
+        var controlTicket = $('<div>');
+        controlTicket.addClass('control');
+        fieldTicket.append(controlTicket);
         
 
         //Create the textarea with an incremental ID to save them all to the DB
-        var textareaNote = $('<textarea>');
-        textareaNote.addClass('textarea');
-        textareaNote.attr('placeholder',
+        var textareaTicket = $('<textarea>');
+        textareaTicket.addClass('textarea');
+        textareaTicket.attr('placeholder',
             'Cualquier interacción con el equipo o cliente debe de ser registrada aquí SIN EXCEPCIÓN.\r\n' 
             + 'Recuerda ser lo más claro y explícito posible, preferible de más, no de menos.\r\n');
-        textareaNote.attr('id', 'note-text-' + createdTicketAddNoteID);
-        controlNote.append(textareaNote);
+        textareaTicket.attr('id', 'ticket-text-' + createdTicketAddNoteID);
+        controlTicket.append(textareaTicket);
 
         //Apend this columns to the container
-        notesContainer.append(columnsNote);
+        notesContainer.append(columnsTicket);
 
         //Once the ID # has been used, add 1 to it
         createdTicketAddNoteID++;
 
+    });
+
+    //Click listener for save-new-note button
+    $('#save-new-note').on('click', function() {
+        addNote();
     });
 
     // --------------------- EVENT LISTENERS - END ---------------------
@@ -236,51 +258,69 @@ $(document).ready(function (){
 
     // --------------------- FUNCTIONS - START ---------------------
 
-    function displayNote(pNoteUID) {
-        //Hide the recent-notes-container and change the variable
-        $('#recent-notes-container').hide();
-        hideRecentNotesContainer = true;
+    //Display individually selected ticket
+    function displayTicket(pTicketUID) {
+        //Function variables
+        var selectedTicketData;
+
+        //Hide the recent-tickets-container and change the variable
+        $('#recent-tickets-container').hide();
+        hideRecentTicketsContainer = true;
+        //Show the selected-ticket-container
+        $('#selected-ticket-container').show();
+        hideSelectedTicketContainer = false;
 
         //Change the menu to show "results" as active and create a link in the menu back to search
-        $('#search-notes-list').removeClass('is-active');
-        $('#search-notes-list>a').attr('href', 'search.html')
-        $('#results-notes-list').addClass('is-active');
+        $('#search-tickets-list').removeClass('is-active');
+        $('#search-tickets-list>a').attr('href', 'search.html')
+        $('#results-tickets-list').addClass('is-active');
 
-        //Get the note data from firebase
-
-        /* Is bringing the correct note, but shows "accesories" only
-        var selectedNoteData = fullDatabase.ref(pNoteUID).limitToFirst(1);
-        selectedNoteData.on("value", function(data) {
-        console.log(data.val());
-        }, function (error) {
-        console.log("Error: " + error.code);
-        });
-        */
-
-        var selectedNoteData = fullDatabase.ref('notas/').limitToFirst(1);
-
-        //var selectedNoteData = fullDatabase.ref();
-
-        selectedNoteData.orderByChild("dateAdded").equalTo("1528310492484").on("child_added", function(data) {
-            console.log(data);
+        //Get the ticket data from firebase
+        fullDatabase.ref('tickets/').child(pTicketUID).on("value", function(snapshot) {
+            selectedTicketData = snapshot.val();
+        }, function(error) {
+            console.log("Error: " + error.code);
         });
 
-        fullDatabase.ref('-LELCYxY2bvHW4g0Jz_L').on("value", function(snapshot) {
-            console.log(snapshot);
-        });
+        //Populate the selected-ticket-container with the data from the ticket
+        locationSelector.val(selectedTicketData.location);
+        locationSelector.prop('disabled', true);
+        ticketNumSelector.val(selectedTicketData.ticketNum);
+        ticketNumSelector.prop('disabled', true);
+        dateSelector.val(selectedTicketData.date);
+        dateSelector.prop('disabled', true);
+        custNameSelector.val(selectedTicketData.custName);
+        custLastNameSelector.val(selectedTicketData.custLastName);
+        cellNumSelector.val(selectedTicketData.cellNum);
+        emailSelector.val(selectedTicketData.email);
+        zipCodeSelector.val(selectedTicketData.zipCode);
+        //add pref contact method code;
 
-        fullDatabase.ref().child('-LELCYxY2bvHW4g0Jz_L');
-
-        //Populate the selected-note-container with the data from the note
-        //Clear it first?
-
-
-
-        //Show the selected-note-container
-        $('#selected-note-container').show();
-        hideSelectedNoteContainer = false;
+        eqTypeSelector.val(selectedTicketData.eqType);
+        eqBrandSelector.val(selectedTicketData.eqBrand);
+        eqModelSelector.val(selectedTicketData.eqModel);
+        eqSerialNumSelector.val(selectedTicketData.eqSerialNum);
+        characteristicsSelector.val(selectedTicketData.characteristics);
+        accesoriesSelector.val(selectedTicketData.accesories);
+        reasonToVisitSelector.val(selectedTicketData.reasonToVisit);
 
     }
+
+    //Update individually selected ticket
+    function updateTicket() {
+
+    }
+
+    //Add individual note to tickets
+    function addNote() {
+        //ticketUID
+
+
+        //reenable the add-new-note button
+        //$('#add-new-note').prop('disabled', false);
+    }
+
+    //
 
     // --------------------- FUNCTIONS - END ---------------------
 });

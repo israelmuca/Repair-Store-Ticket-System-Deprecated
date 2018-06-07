@@ -64,7 +64,8 @@ $(document).ready(function (){
 
     //Momentjs date handler
     //Sets the date for the new tickets to now; SAVE BUTTON SHOULD SAVE WITH HOUR
-    $('#new-ticket-date-now').val(moment().format("dddd, D MMMM 'YY, h:mm a"));
+    dateSelector.val(moment().format("dddd, D MMMM 'YY, h:mm a"));
+    dateSelector.prop('disabled', true);
     
     //Click listeners for hiding containers as clicks are done on the respective boxes
     $('.minimize-cust-data-click').on('click', function() {
@@ -126,7 +127,7 @@ $(document).ready(function (){
         reasonToVisit = reasonToVisitSelector.val().trim();
 
         //push the values to the DB
-        database.ref().push({
+        database.ref('/tickets').push({
             location: location,
             ticketNum: ticketNum,
             date: date,
@@ -144,6 +145,8 @@ $(document).ready(function (){
             characteristics: characteristics,
             accesories: accesories,
             reasonToVisit: reasonToVisit,
+
+            internalNotes: 0,
             dateAdded: firebase.database.ServerValue.TIMESTAMP
         });
 

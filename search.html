@@ -42,13 +42,13 @@
             <nav class="tabs is-boxed is-fullwidth">
                 <div class="container">
                     <ul>
-                        <li id="create-note-list">
+                        <li id="create-ticket-list">
                             <a href="index.html" class="subtitle">Nuevo folio</a>
                         </li>
-                        <li class="is-active" id="search-notes-list">
+                        <li class="is-active" id="search-tickets-list">
                             <a  href="#" class="subtitle">Buscar folios</a>
                         </li>
-                        <li id="results-notes-list">
+                        <li id="results-tickets-list">
                             <a href="#" class="subtitle">Resultados</a>
                         </li>
                     </ul>
@@ -68,13 +68,13 @@
     <!-- Separator end-->
 
     <!-- Recent Tickets - begin -->
-    <div class="container" id="recent-notes-container">
+    <div class="container" id="recent-tickets-container">
         <div class="box">
-            <div class="minimize-recent-notes-click">
+            <div class="minimize-recent-tickets-click">
                 <p><p class="has-text-right">clic aquí para minimizar</p><h2 class="subtitle">Notas Más Recientes</h2></p>
             </div>
 
-            <div class="minimize-recent-notes">
+            <div class="minimize-recent-tickets">
                 <table class="table is-bordered is-striped is-hoverable is-fullwidth">
                     <thead>
                         <tr>
@@ -106,9 +106,9 @@
     </section>
     <!-- Separator ends -->
 
-    <!-- NoteToView - begin -->
+    <!-- ticketToView - begin -->
 
-    <div class="container" id="selected-note-container">
+    <div class="container" id="selected-ticket-container">
 
             <div class="columns">
 
@@ -139,7 +139,7 @@
                     <div class="field">
                         <label class="label">Fecha</label>
                         <div class="control">
-                            <input class="input" id="new-ticket-date-now" type="text" placeholder="Hoy">
+                            <input class="input" id="ticket-date" type="text" placeholder="Hoy">
                         </div>
                     </div>
                 </div>
@@ -342,7 +342,7 @@
             </div>
         <div class="field is-grouped is-grouped-right">
             <div class="control">
-                <button class="button is-link">Modificar folio</button>
+                <button class="button is-link" id="modify-ticket-button">Modificar folio</button>
             </div>
         </div>
 
@@ -384,7 +384,7 @@
                         <div class="field">
                             <label class="label">Fecha</label>
                             <div class="control">
-                                <input id="new-note-date-now" class="input" type="text" placeholder="Hoy">
+                                <input id="new-ticket-date-now" class="input" type="text" placeholder="Hoy">
                             </div>
                         </div>
                     </div>
@@ -396,7 +396,7 @@
                     <div class="column">
                         <div class="field">
                             <div class="control">
-                                <textarea id="note-text-" class="textarea" placeholder="Cualquier interacción con el equipo o cliente debe de ser registrada aquí SIN EXCEPCIÓN.&#10;Recuerda ser lo más claro y explícito posible, preferible de más, no de menos"></textarea>
+                                <textarea id="ticket-text-" class="textarea" placeholder="Cualquier interacción con el equipo o cliente debe de ser registrada aquí SIN EXCEPCIÓN.&#10;Recuerda ser lo más claro y explícito posible, preferible de más, no de menos"></textarea>
                             </div>
                         </div>
                     </div>
@@ -409,7 +409,7 @@
 
             <div class="field is-grouped is-grouped-right">
                 <div class="control">
-                    <button id="add-new-note" class="button is-link">Agrear nueva nota</button>
+                    <button id="add-new-note" class="button is-link">Agregar nueva nota</button>
                 </div>
                 <div class="control">
                     <button id="save-new-note" class="button is-link">Guardar Nota</button>
@@ -417,7 +417,16 @@
             </div>
     </div>
 
-    <!-- NoteToView - end -->
+    <!-- ticketToView - end -->
+
+    <!-- Separator begin -->
+    <section class="columns">
+        <div class="column"></div>
+    </section>
+    <section class="columns">
+        <div class="column"></div>
+    </section>
+    <!-- Separator ends -->
 
     <!-- JS Files -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
