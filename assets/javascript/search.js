@@ -12,6 +12,8 @@ $(document).ready(function (){
     firebase.initializeApp(config);
 
     //Global variables
+    var fullDatabase = firebase.database();
+
     var minimizeCustData = false;
     var minimizeEquipData = false;
     var minimizeRecentTickets = false;
@@ -19,9 +21,9 @@ $(document).ready(function (){
     var hideRecentTicketsContainer = false;
     var hideSelectedTicketContainer = true;
 
-    var createdTicketAddNoteID = 1; //change to internalNotes from the DB
     var ticketUID;
-    var fullDatabase = firebase.database();
+    var internalNotesCounter;
+    
 
     //Global selectors
     var locationSelector = $('#location-select');
@@ -84,8 +86,8 @@ $(document).ready(function (){
         newRow.append(tdEqModel);
 
         var tdNotes = $("<td>");
-        tdNotes.text(oneDatabaseChild.internalNotes);
-        newRow.append(tdTickets);
+        tdNotes.text(snapshot.child('notes').numChildren());
+        newRow.append(tdNotes);
 
     });
 
@@ -96,27 +98,39 @@ $(document).ready(function (){
     $('.minimize-recent-tickets-click').on('click', function() {
         if (!minimizeRecentTickets) {
             $('.minimize-recent-tickets').hide();
+            $('#recent-tickets-svg').removeClass('fa-minus-circle');
+            $('#recent-tickets-svg').addClass('fa-plus-circle');
             minimizeRecentTickets = true;
         } else {
             $('.minimize-recent-tickets').show();
+            $('#recent-tickets-svg').removeClass('fa-plus-circle');
+            $('#recent-tickets-svg').addClass('fa-minus-circle');
             minimizeRecentTickets = false;
         }
     });
     $('.minimize-cust-data-click').on('click', function() {
         if (!minimizeCustData) {
             $('.minimize-cust-data').hide();
+            $('#cust-data-svg').removeClass('fa-minus-circle');
+            $('#cust-data-svg').addClass('fa-plus-circle');
             minimizeCustData = true;
         } else {
             $('.minimize-cust-data').show();
+            $('#cust-data-svg').removeClass('fa-plus-circle');
+            $('#cust-data-svg').addClass('fa-minus-circle');
             minimizeCustData = false;
         }
     });
     $('.minimize-equipment-data-click').on('click', function() {
         if (!minimizeEquipData) {
             $('.minimize-equipment-data').hide();
+            $('#equipment-data-svg').removeClass('fa-minus-circle');
+            $('#equipment-data-svg').addClass('fa-plus-circle');
             minimizeEquipData = true;
         } else {
             $('.minimize-equipment-data').show();
+            $('#equipment-data-svg').removeClass('fa-plus-circle');
+            $('#equipment-data-svg').addClass('fa-minus-circle');
             minimizeEquipData = false;
         }
     });
@@ -133,7 +147,7 @@ $(document).ready(function (){
     });
 
 
-    //Button click listener for new notes inside made tickets
+    //Button click listener for add new note inside made tickets
     $('#add-new-note').on('click', function() {
         //disable the button (only one note at the time)
         $('#add-new-note').prop('disabled', true);
@@ -145,6 +159,13 @@ $(document).ready(function (){
             ' Cotización',
             ' Comunicación con cliente',
             ' Entrega programada'
+        ];
+        var radioIDs = [
+            'nota',
+            'diagnostico',
+            'cotizacion',
+            'comunicacion',
+            'entrega'
         ];
 
         //Create columns container for column TicketType and Date
@@ -176,7 +197,8 @@ $(document).ready(function (){
 
             var inputRadio = $('<input>');
             inputRadio.attr('type', 'radio');
-            inputRadio.attr('name', 'question-' + createdTicketAddNoteID);
+            inputRadio.attr('name', 'question-' + internalNotesCounter);
+            inputRadio.attr('id', radioIDs[i]);
             labelRadio.append(inputRadio);
 
             var labelRadioText = radioOptions[i];
@@ -206,7 +228,7 @@ $(document).ready(function (){
         var inputAreaDate = $('<input>');
         inputAreaDate.addClass('input');
         inputAreaDate.attr('type', 'text');
-        inputAreaDate.attr('id', 'new-ticket-date-' + createdTicketAddNoteID);
+        inputAreaDate.attr('id', 'new-ticket-date-' + internalNotesCounter);
         inputAreaDate.val(moment().format("dddd, D MMMM 'YY, h:mm a"));
         inputAreaDate.prop('disabled', true);
         controlDate.append(inputAreaDate);
@@ -237,20 +259,27 @@ $(document).ready(function (){
         textareaTicket.attr('placeholder',
             'Cualquier interacción con el equipo o cliente debe de ser registrada aquí SIN EXCEPCIÓN.\r\n' 
             + 'Recuerda ser lo más claro y explícito posible, preferible de más, no de menos.\r\n');
-        textareaTicket.attr('id', 'ticket-text-' + createdTicketAddNoteID);
+        textareaTicket.attr('id', 'ticket-text-' + internalNotesCounter);
         controlTicket.append(textareaTicket);
 
         //Apend this columns to the container
         notesContainer.append(columnsTicket);
 
+        //UPDATE THE DB WITH THE NEW NOTE AND THE COUNTER
+        var inputNameVar = 'input[name="question-' + internalNotesCounter + '"]:checked';
+        $(inputNameVar)[0].id; //Gets the id of the selected note
+
         //Once the ID # has been used, add 1 to it
-        createdTicketAddNoteID++;
+        //internalNotesCounter++;
+
+
 
     });
 
     //Click listener for save-new-note button
     $('#save-new-note').on('click', function() {
-        addNote();
+        saveNote();
+        //reactivate add note
     });
 
     // --------------------- EVENT LISTENERS - END ---------------------
@@ -304,6 +333,10 @@ $(document).ready(function (){
         accesoriesSelector.val(selectedTicketData.accesories);
         reasonToVisitSelector.val(selectedTicketData.reasonToVisit);
 
+        internalNotesCounter = selectedTicketData.internalNotesCounter;
+
+        //for each loop to add notes, if there's any
+
     }
 
     //Update individually selected ticket
@@ -312,7 +345,7 @@ $(document).ready(function (){
     }
 
     //Add individual note to tickets
-    function addNote() {
+    function saveNote() {
         //ticketUID
 
 

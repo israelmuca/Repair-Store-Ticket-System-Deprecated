@@ -67,8 +67,8 @@
     </section>
     <!-- Separator end-->
 
-    <!-- Create new note - begin -->
-    <div class="container" id="create-note-container">
+    <!-- Create new ticket - begin -->
+    <div class="container" id="create-ticket-container">
 
         <div class="columns">
 
@@ -91,7 +91,7 @@
                 <div class="field">
                     <label class="label">Número de folio</label>
                     <div class="control">
-                        <input class="input" id="ticket-number" type="text" placeholder="AGREGAR FUNCION">
+                        <input disabled class="input" id="ticket-number" type="text" placeholder="Selecciona una sucursal">
                     </div>
                 </div>
             </div>
@@ -99,41 +99,47 @@
                 <div class="field">
                     <label class="label">Fecha</label>
                     <div class="control">
-                        <input class="input" id="new-ticket-date-now" type="text" placeholder="Hoy">
+                        <input class="input" id="new-ticket-date-now" type="text">
                     </div>
                 </div>
             </div>
 
         </div>
 
-        <div class="box">
-            <div class="minimize-cust-data-click">
-                <p><p class="has-text-right">clic aquí para minimizar</p><h2 class="subtitle">Datos del cliente</h2></p>
+
+        <div class="box" id="validate-customer-exists">
+            <div class="minimize-cust-data-click columns">
+                <div class="column is-12 has-text-left"><h2 class="subtitle">Validemos la existencia del cliente</h2></div>
+            </div>
+            
+            <div class="columns">
+    
+                <div class="column is-6">
+                    <div class="field is-grouped">
+                        <div class="control is-expanded has-icons-left">
+                            <input class="input" type="tel" placeholder="Introduce el número celular del cliente" id="cellphone-number-validate">
+                            <span class="icon is-small is-left">
+                            <i class="fas fa-mobile-alt"></i>
+                            </span>
+                        </div>
+                        <p class="control">
+                            <a class="button is-dark" id="validate-customer-button">Verificar</a>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="box" id="customer-information">
+            <div class="minimize-cust-data-click columns">
+                <div class="column is-11 has-text-left"><h2 class="subtitle">Datos del cliente</h2></div>
+                <div class="column is-1"><i id="cust-data-svg" class="fas fa-minus-circle has-text-right"></i></div>
             </div>
             
 
             <div class="minimize-cust-data">
-                <div class="columns">
-        
-                    <div class="column is-4">
-                        <div class="field">
-                            <label class="label">Nombre</label>
-                            <div class="control">
-                                <input class="input" type="text" placeholder="Nombre" id="cust-name">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="column is-8">
-                        <div class="field">
-                            <label class="label">Apellidos</label>
-                            <div class="control">
-                                <input class="input" type="text" placeholder="Apellidos" id="cust-last-name">
-                            </div>
-                        </div>
-                    </div>
-        
-                </div>
-        
                 <div class="columns">
         
                     <div class="column is-4">
@@ -147,14 +153,19 @@
                             </div>
                         </div>
                     </div>
-                    <div class="column is-8">
+                    <div class="column is-3">
                         <div class="field">
-                            <label class="label">Email</label>
-                            <div class="control has-icons-left">
-                                <input class="input" type="email" placeholder="correo@ejemplo.com" id="email">
-                                <span class="icon is-small is-left">
-                                <i class="fas fa-envelope"></i>
-                                </span>
+                            <label class="label">Nombre</label>
+                            <div class="control">
+                                <input disabled class="input" type="text" placeholder="Nombre" id="cust-name">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column is-5">
+                        <div class="field">
+                            <label class="label">Apellidos</label>
+                            <div class="control">
+                                <input disabled class="input" type="text" placeholder="Apellidos" id="cust-last-name">
                             </div>
                         </div>
                     </div>
@@ -163,17 +174,34 @@
         
                 <div class="columns">
         
+                    <div class="column is-8">
+                        <div class="field">
+                            <label class="label">Email</label>
+                            <div class="control has-icons-left">
+                                <input disabled class="input" type="email" placeholder="correo@ejemplo.com" id="email">
+                                <span class="icon is-small is-left">
+                                <i class="fas fa-envelope"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="column is-4">
                         <div class="field">
                             <label class="label">Código Postal</label>
                             <div class="control">
-                                <input class="input" type="number" placeholder="6xxxx" id="zip-code">
+                                <input disabled class="input" type="number" placeholder="6xxxx" id="zip-code">
                             </div>
                         </div>
                     </div>
-                    <div class="column is-8">
+        
+                </div>
+        
+                <div class="columns">
+        
+                    <div class="column is-10">
                         <div class="field">
-                            <label class="label">Medio de contactos preferidos</label>
+                            <label class="label">Medios de contactos preferidos</label>
                             <div class="control">
                                 <label class="checkbox">
                                 <input type="checkbox" name="preferred-contact-method" value="whatsapp" >
@@ -190,6 +218,10 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="column is-2" id="save-customer-button-container">
+
+                    </div>
         
                 </div>
 
@@ -203,9 +235,10 @@
         </section>
         <!-- Separator ends -->
 
-        <div class="container box">
-            <div class="minimize-equipment-data-click">
-                <p><p class="has-text-right">clic aquí para minimizar</p><h2 class="subtitle">Datos del equipo</h2></p>
+        <div class="container box" id="equipment-information">
+            <div class="minimize-equipment-data-click columns">
+                <div class="column is-11 has-text-left"><h2 class="subtitle">Datos del equipo</h2></div>
+                <div class="column is-1"><i  id="equipment-data-svg" class="fas fa-minus-circle minimize"></i></div>
             </div>
 
             <div class="minimize-equipment-data">
@@ -299,15 +332,16 @@
                 </div>
             </div>
 
-        </div>
-        <div class="field is-grouped is-grouped-right">
-            <div class="control">
-                <button class="button is-link" id="add-ticket">Guardar folio</button>
+            <div class="field is-grouped is-grouped-right">
+                <div class="control">
+                    <button class="button is-link" id="add-ticket">Guardar folio</button>
+                </div>
             </div>
+
         </div>
 
     </div>
-    <!-- Create new note - end -->
+    <!-- Create new ticket - end -->
 
     <!-- Separator begin -->
     <section class="columns">

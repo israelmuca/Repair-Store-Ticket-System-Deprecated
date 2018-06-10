@@ -70,8 +70,9 @@
     <!-- Recent Tickets - begin -->
     <div class="container" id="recent-tickets-container">
         <div class="box">
-            <div class="minimize-recent-tickets-click">
-                <p><p class="has-text-right">clic aquí para minimizar</p><h2 class="subtitle">Notas Más Recientes</h2></p>
+            <div class="minimize-recent-tickets-click columns">
+                <div class="column is-11 has-text-left"><h2 class="subtitle">Folios más recientes</h2></div>
+                <div class="column is-1"><i id="recent-tickets-svg" class="fas fa-minus-circle"></i></div>
             </div>
 
             <div class="minimize-recent-tickets">
@@ -84,7 +85,7 @@
                             <th>Apellido</th>
                             <th>Marca de Equipo</th>
                             <th>Modelo de Equipo</th>
-                            <th>Notas?</th>
+                            <th>Notas</th>
                         </tr>
                     </thead>
                     <tbody id="table-body">
@@ -147,9 +148,10 @@
             </div>
     
             <div class="box">
-                <div class="minimize-cust-data-click">
-                    <p><p class="has-text-right">clic aquí para minimizar</p><h2 class="subtitle">Datos del cliente</h2></p>
-                </div>
+                    <div class="minimize-cust-data-click columns">
+                        <div class="column is-11 has-text-left"><h2 class="subtitle">Datos del cliente</h2></div>
+                        <div class="column is-1"><i id="cust-data-svg" class="fas fa-minus-circle has-text-right"></i></div>
+                    </div>
                 
     
                 <div class="minimize-cust-data">
@@ -244,8 +246,9 @@
             <!-- Separator ends -->
     
             <div class="container box">
-                <div class="minimize-equipment-data-click">
-                    <p><p class="has-text-right">clic aquí para minimizar</p><h2 class="subtitle">Datos del equipo</h2></p>
+                <div class="minimize-equipment-data-click columns">
+                    <div class="column is-11 has-text-left"><h2 class="subtitle">Datos del equipo</h2></div>
+                    <div class="column is-1"><i  id="equipment-data-svg" class="fas fa-minus-circle minimize"></i></div>
                 </div>
     
                 <div class="minimize-equipment-data">
