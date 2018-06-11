@@ -70,43 +70,6 @@
     <!-- Create new ticket - begin -->
     <div class="container" id="create-ticket-container">
 
-        <div class="columns">
-
-            <div class="column">
-                <div class="field">
-                    <label class="label">Sucursal</label>
-                    <div class="control is-expanded">
-                        <div class="select is-fullwidth">
-                        <select id="location-select">
-                            <option disabled selected>Selecciona una sucursal</option>
-                            <option data-location="avanta">Avanta</option>
-                            <option data-location="brisas" >Brisas</option>
-                            <option data-location="sienna">Sienna</option>
-                        </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="column">
-                <div class="field">
-                    <label class="label">Número de folio</label>
-                    <div class="control">
-                        <input disabled class="input" id="ticket-number" type="text" placeholder="Selecciona una sucursal">
-                    </div>
-                </div>
-            </div>
-            <div class="column">
-                <div class="field">
-                    <label class="label">Fecha</label>
-                    <div class="control">
-                        <input class="input" id="new-ticket-date-now" type="text">
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-
         <div class="box" id="validate-customer-exists">
             <div class="minimize-cust-data-click columns">
                 <div class="column is-12 has-text-left"><h2 class="subtitle">Validemos la existencia del cliente</h2></div>
@@ -146,7 +109,7 @@
                         <div class="field">
                             <label class="label">Número de celular</label>
                             <div class="control has-icons-left">
-                                <input class="input" type="tel" placeholder="Idealmente, con WhatsApp" id="cellphone-number">
+                                <input disabled class="input" type="tel" placeholder="Idealmente, con WhatsApp" id="cellphone-number">
                                 <span class="icon is-small is-left">
                                 <i class="fab fa-whatsapp"></i>
                                 </span>
@@ -174,7 +137,7 @@
         
                 <div class="columns">
         
-                    <div class="column is-8">
+                    <div class="column is-4">
                         <div class="field">
                             <label class="label">Email</label>
                             <div class="control has-icons-left">
@@ -186,7 +149,27 @@
                         </div>
                     </div>
 
-                    <div class="column is-4">
+                    <div class="column is-6">
+                        <div class="field">
+                            <label class="label">Medios de contactos preferidos</label>
+                            <div class="control">
+                                <label class="checkbox">
+                                <input disabled id="contact-whats" type="checkbox" name="preferred-contact-method" value="whatsapp" >
+                                WhatsApp
+                                </label>
+                                <label class="checkbox">
+                                <input disabled id="contact-call"   type="checkbox" name="preferred-contact-method" value="call" >
+                                Llamada telefónica
+                                </label>
+                                <label class="checkbox">
+                                <input disabled id="contact-email" type="checkbox" name="preferred-contact-method" value="email">
+                                Correo electrónico
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="column is-2">
                         <div class="field">
                             <label class="label">Código Postal</label>
                             <div class="control">
@@ -199,30 +182,24 @@
         
                 <div class="columns">
         
-                    <div class="column is-10">
-                        <div class="field">
-                            <label class="label">Medios de contactos preferidos</label>
-                            <div class="control">
-                                <label class="checkbox">
-                                <input type="checkbox" name="preferred-contact-method" value="whatsapp" >
-                                WhatsApp
-                                </label>
-                                <label class="checkbox">
-                                <input type="checkbox" name="preferred-contact-method" value="call" >
-                                Llamada telefónica
-                                </label>
-                                <label class="checkbox">
-                                <input type="checkbox" name="preferred-contact-method" value="email">
-                                Correo electrónico
-                                </label>
-                            </div>
+
+                    <div class="column is-12">
+                        <div class="field is-grouped is-grouped-right">
+                            <p class="control">
+                                <a class="button is-success" id="confirm-customer-button">Confirmar Datos</a>
+                            </p>
+                            <p class="control">
+                                <a class="button is-success" id="save-exist-customer-button">Guardar Datos</a>
+                            </p>
+                            <p class="control">
+                                <a class="button is-success" id="save-new-customer-button">Guardar Cliente</a>
+                            </p>
+                            <p class="control">
+                                <a class="button is-warning" id="modify-customer-button">Modificar Datos</a>
+                            </p>
                         </div>
                     </div>
 
-                    <div class="column is-2" id="save-customer-button-container">
-
-                    </div>
-        
                 </div>
 
             </div>
@@ -235,6 +212,45 @@
         </section>
         <!-- Separator ends -->
 
+        <div class="container" id="ticket-data">
+            <div class="columns">
+
+                <div class="column">
+                    <div class="field">
+                        <label class="label">Sucursal</label>
+                        <div class="control is-expanded">
+                            <div class="select is-fullwidth">
+                            <select id="location-select">
+                                <option disabled selected>Selecciona una sucursal</option>
+                                <option data-location="avanta">Avanta</option>
+                                <option data-location="brisas" >Brisas</option>
+                                <option data-location="sienna">Sienna</option>
+                            </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <label class="label">Número de folio</label>
+                        <div class="control">
+                            <input disabled class="input" id="ticket-number" type="text" placeholder="Selecciona una sucursal">
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <label class="label">Fecha</label>
+                        <div class="control">
+                            <input class="input" id="new-ticket-date-now" type="text">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <br>
+        <br>
         <div class="container box" id="equipment-information">
             <div class="minimize-equipment-data-click columns">
                 <div class="column is-11 has-text-left"><h2 class="subtitle">Datos del equipo</h2></div>
@@ -331,10 +347,10 @@
 
                 </div>
             </div>
-
+            <br>
             <div class="field is-grouped is-grouped-right">
                 <div class="control">
-                    <button class="button is-link" id="add-ticket">Guardar folio</button>
+                    <a class="button is-link" id="add-ticket-button">Guardar folio</a>
                 </div>
             </div>
 
