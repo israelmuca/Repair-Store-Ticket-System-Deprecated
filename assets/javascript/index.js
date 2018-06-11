@@ -424,15 +424,15 @@ $(document).ready(function (){
     }
 
     function goToSearch() {
-        /*Take the user to the search page (for local work)*/
+        /*Take the user to the search page (for local work)
         var oldURL = window.location.href;
         var newURL = oldURL.replace("index", "search");
         window.location.replace(newURL);
-    
-
-        /*Take the user to the search page (for Git online work)
-        window.location.href = 'search.html';
         */
+
+        /*Take the user to the search page (for Git online work)*/
+        window.location.href = 'search.html';
+        
     }
 // --------------------- FUNCTIONS -   END ---------------------
 });
