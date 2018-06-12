@@ -20,12 +20,17 @@ $(document).ready(function (){
 // --------------------- GLOBAL VARIABLES - START ---------------------
     //GLOBAL VARIABLES
     var database = firebase.database();
+    
+    //Patch to fix firebase's ascending order only problem
+    var startDate = moment('1990-04-26T10:15:00'); 
+    var nowDate = moment().format();
+    var descOrder = -Math.abs(startDate.diff(nowDate, 'seconds'));
+
     //Hide/unhide booleans
     var minimizeCustData = false;
     var minimizeEquipData = false;
     
     var mostRecentTicketNum;
-    var userKeyIfExists = false;
 
     //ticket data
     var ticketDBID;
@@ -44,7 +49,7 @@ $(document).ready(function (){
     var contactMetCall;
     var contactMetWhats;
     var contactMetEmail;
-
+    
     //equipment data
     var eqType;
     var eqBrand;
@@ -287,36 +292,42 @@ $(document).ready(function (){
             cellNum: cellNum,
             email: email,
             zipCode: zipCode,
+            descOrder: descOrder,
             dateAdded: firebase.database.ServerValue.TIMESTAMP
         })
-        .then(database.ref('/customers')
-        .child(custDBID + '/contactMethods')
-        .set({
-            whats: contactMetWhats,
-            call: contactMetCall,
-            email: contactMetEmail
-        }), function(error){
-            if(error) {
-                console.log('The creation of the new customer failed', error);
-            }
-        }).then( function() {
-            modCustButton.show();
-            confCustButton.show();
-            saveExistCustButton.hide();
-            saveNewCustButton.hide();
+        .then(
+            database.ref('/customers')
+            .child(custDBID + '/contactMethods')
+            .set(
+                {
+                whats: contactMetWhats,
+                call: contactMetCall,
+                email: contactMetEmail
+                }), 
+                function(error){
+                    if(error) {
+                        console.log('The creation of the new customer failed', error);
+                    }
+                }
+            )
+        .then( 
+            function() {
+                modCustButton.show();
+                confCustButton.show();
+                saveExistCustButton.hide();
+                saveNewCustButton.hide();
 
-            //add the 'disabled' prop to customer fields
-            cellNumSelector.prop('disabled', true);
-            emailSelector.prop('disabled', true);
-            custNameSelector.prop('disabled', true);
-            custLastNameSelector.prop('disabled', true);
-            zipCodeSelector.prop('disabled', true);
-            contactMetWhatsSelector.prop('disabled', true);
-            contactMetCallSelector.prop('disabled', true);
-            contactMetEmailSelector.prop('disabled', true);
-        })
-        
-        
+                //add the 'disabled' prop to customer fields
+                cellNumSelector.prop('disabled', true);
+                emailSelector.prop('disabled', true);
+                custNameSelector.prop('disabled', true);
+                custLastNameSelector.prop('disabled', true);
+                zipCodeSelector.prop('disabled', true);
+                contactMetWhatsSelector.prop('disabled', true);
+                contactMetCallSelector.prop('disabled', true);
+                contactMetEmailSelector.prop('disabled', true);
+            }
+        )
     }
 
     function createTicket() {
@@ -340,6 +351,8 @@ $(document).ready(function (){
         .child(ticketDBID)
         .set({
             customer: custDBID,
+            custName: custName,
+            custLastName: custLastName,
 
             location: location,
             fullTicketNum: fullTicketNum,
@@ -354,14 +367,16 @@ $(document).ready(function (){
             accesories: accesories,
             reasonToVisit: reasonToVisit,
 
+            descOrder: descOrder,
             dateAdded: firebase.database.ServerValue.TIMESTAMP
         })
-        .then(database.ref('/customers')
-        .child(custDBID + '/tickets/' + ticketDBID)
-        .set({
-            ticketID: ticketDBID,
-            dateAdded: firebase.database.ServerValue.TIMESTAMP
-        })
+        .then(
+            database.ref('/customers')
+            .child(custDBID + '/tickets/' + ticketDBID)
+            .set({
+                ticketID: ticketDBID,
+                dateAdded: firebase.database.ServerValue.TIMESTAMP
+            })
         ).then(goToSearch);
     }
 
@@ -373,11 +388,8 @@ $(document).ready(function (){
             if(!mostRecentTicketNum) {
                 mostRecentTicketNum = 1
             }
-        })
-        .then(setTicketNumber);
-    }// NEED TO TEST WHAT HAPPENS WHEN ANOTHER USER SAVES A NEW NOTE WHILE A USER IS SAVING A NOTE //SHOULD BE UPGRADED BEFORE V.1 RELEASE ! ! ! ! ! ! ! ! //-----------------//-----------------//-----------------//-----------------//-----------------
-    //IT SHOULD IN THEORY KEEP THE LISTENER OPEN AND CHANGE THE VALUE ACCORDINGLY
-    //THE SAVE DATA VALIDATION SHOULD INCLUDE A CHECL ON "mostRecentTicketNum"
+        }).then(setTicketNumber);
+    }
 
     function setTicketNumber() {
         var dateForTicket = moment().format("YYMM-");
@@ -424,14 +436,18 @@ $(document).ready(function (){
     }
 
     function goToSearch() {
-        /*Take the user to the search page (for local work)
+        /*
+            Take the user to the search page (for local work)
+        */
         var oldURL = window.location.href;
         var newURL = oldURL.replace("index", "search");
         window.location.replace(newURL);
-        */
+        
 
-        /*Take the user to the search page (for Git online work)*/
+        /*
+            Take the user to the search page (for Git online work)
         window.location.href = 'search.html';
+        */
         
     }
 // --------------------- FUNCTIONS -   END ---------------------

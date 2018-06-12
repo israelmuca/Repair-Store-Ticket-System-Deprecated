@@ -1,5 +1,5 @@
 $(document).ready(function (){
-
+// --------------------- ON LOAD EVENTS - START ---------------------
     // Initialize Firebase
     var config = {
         apiKey: "AIzaSyAYkl5opTyW9YF7801KmgT9YUhpV0JhYGY",
@@ -10,10 +10,13 @@ $(document).ready(function (){
         messagingSenderId: "768789228246"
     };
     firebase.initializeApp(config);
-
+// --------------------- ON LOAD EVENTS -   END ---------------------
+//-----------------
+// --------------------- GLOBAL VARIABLES - START ---------------------
     //Global variables
-    var fullDatabase = firebase.database();
+    var database = firebase.database();
 
+    //Hide/unhide booleans
     var minimizeCustData = false;
     var minimizeEquipData = false;
     var minimizeRecentTickets = false;
@@ -21,20 +24,33 @@ $(document).ready(function (){
     var hideRecentTicketsContainer = false;
     var hideSelectedTicketContainer = true;
 
-    var ticketUID;
+    var ticketDBID;
     var internalNotesCounter;
     
 
     //Global selectors
-    var locationSelector = $('#location-select');
-    var ticketNumSelector = $('#ticket-number');
-    var dateSelector = $('#ticket-date');
+    //buttons
+
+    //containers
+    var selectedTicketContainer = $('#selected-ticket-container');
+    selectedTicketContainer.hide();
+
+    var searchTicketsContainer = $('#search-tickets-container');
+
+    //Information fields (inputs, checks, etc...)
     var custNameSelector = $('#cust-name');
     var custLastNameSelector = $('#cust-last-name');
     var cellNumSelector = $('#cellphone-number');
     var emailSelector = $('#email');
     var zipCodeSelector = $('#zip-code');
-    //var prefContactMetSelector = $('#');       must research more
+    var contactMetCallSelector = $('#contact-call');
+    var contactMetWhatsSelector = $('#contact-whats');
+    var contactMetEmailSelector = $('#contact-email');
+
+    var locationSelector = $('#location-select');
+    var ticketNumSelector = $('#ticket-number');
+    var dateSelector = $('#new-ticket-date-now');
+
     var eqTypeSelector = $('#equipment-type');
     var eqBrandSelector = $('#equipment-brand');
     var eqModelSelector = $('#equipment-model');
@@ -42,51 +58,47 @@ $(document).ready(function (){
     var characteristicsSelector = $('#equipment-characteristics');
     var accesoriesSelector = $('#equipment-accesories');
     var reasonToVisitSelector = $('#equipment-reason');
-    var addTicketButtonSelector = $('#add-ticket');
+    
 
+    //Show last 15 tickets from DB
+    database.ref('/tickets')
+    .orderByChild('descOrder')
+    .limitToLast(15)
+    .on("child_added", function(ticketsSnapshot) {
 
-
-    //Hide selected-ticket-container on load, to wait until a ticket is selected
-    $('#selected-ticket-container').hide();
-
-    //Show ALL tickets from DB
-    fullDatabase.ref('/tickets').on("child_added", function(snapshot) {
-
-        var oneDatabaseChild = snapshot.val();
-        //console.log(oneDatabaseChild); testing purposes
+        var oneTicketChild = ticketsSnapshot.val();
 
         var tableBody = $("#table-body");
         var newRow = $("<tr>");
-        newRow.attr('data-ticket-uID', snapshot.ref.path.pieces_["1"]);
+        newRow.attr('data-ticket-DBID', ticketsSnapshot.ref.path.pieces_[1]);
+        newRow.attr('data-ticket-custDBID', oneTicketChild.customer);
         newRow.addClass('ticket');
         tableBody.append(newRow);
 
-        var tdLocation = $("<td>");
-        tdLocation.text(oneDatabaseChild.location);
-        newRow.append(tdLocation);
-
         var tdTicketNum = $("<td>");
-        tdTicketNum.text(oneDatabaseChild.ticketNum);
+        tdTicketNum.text(oneTicketChild.fullTicketNum);
         newRow.append(tdTicketNum);
 
+        var tdTicketDate= $("<td>");
+        var sliceDate = oneTicketChild.date;
+        tdTicketDate.text(sliceDate.slice(0,15));
+        newRow.append(tdTicketDate);
+
+        var fulloneCustomerName = oneTicketChild.custName + ' ' + oneTicketChild.custLastName;
         var tdCustName = $("<td>");
-        tdCustName.text(oneDatabaseChild.custName);
+        tdCustName.text(fulloneCustomerName);
         newRow.append(tdCustName);
 
-        var tdCustLastName = $("<td>");
-        tdCustLastName.text(oneDatabaseChild.custLastName);
-        newRow.append(tdCustLastName);
-
         var tdEqBrand = $("<td>");
-        tdEqBrand.text(oneDatabaseChild.eqBrand);
+        tdEqBrand.text(oneTicketChild.eqBrand);
         newRow.append(tdEqBrand);
 
         var tdEqModel = $("<td>");
-        tdEqModel.text(oneDatabaseChild.eqModel);
+        tdEqModel.text(oneTicketChild.eqModel);
         newRow.append(tdEqModel);
 
         var tdNotes = $("<td>");
-        tdNotes.text(snapshot.child('notes').numChildren());
+        tdNotes.text(ticketsSnapshot.child('notes').numChildren());
         newRow.append(tdNotes);
 
     });
@@ -95,16 +107,16 @@ $(document).ready(function (){
     // --------------------- EVENT LISTENERS - START ---------------------
 
     //Click listeners for hiding containers as clicks are done on the respective boxes
-    $('.minimize-recent-tickets-click').on('click', function() {
+    $('.minimize-search-tickets-click').on('click', function() {
         if (!minimizeRecentTickets) {
-            $('.minimize-recent-tickets').hide();
-            $('#recent-tickets-svg').removeClass('fa-minus-circle');
-            $('#recent-tickets-svg').addClass('fa-plus-circle');
+            $('.minimize-search-tickets').hide();
+            $('#search-tickets-svg').removeClass('fa-minus-circle');
+            $('#search-tickets-svg').addClass('fa-plus-circle');
             minimizeRecentTickets = true;
         } else {
-            $('.minimize-recent-tickets').show();
-            $('#recent-tickets-svg').removeClass('fa-plus-circle');
-            $('#recent-tickets-svg').addClass('fa-minus-circle');
+            $('.minimize-search-tickets').show();
+            $('#search-tickets-svg').removeClass('fa-plus-circle');
+            $('#search-tickets-svg').addClass('fa-minus-circle');
             minimizeRecentTickets = false;
         }
     });
@@ -142,8 +154,8 @@ $(document).ready(function (){
 
     //onClick listener for creating the ticket container, to view and modify the clicked ticket
     $('#table-body').on('click', '.ticket', function() {
-        ticketUID = this.dataset.ticketUid;
-        displayTicket(ticketUID);
+        ticketDBID = this.dataset.ticketDBID;
+        displayTicket(ticketDBID);
     });
 
 
@@ -288,13 +300,13 @@ $(document).ready(function (){
     // --------------------- FUNCTIONS - START ---------------------
 
     //Display individually selected ticket
-    function displayTicket(pTicketUID) {
+    function displayTicket(pticketDBID) {
         //Function variables
         var selectedTicketData;
 
-        //Hide the recent-tickets-container and change the variable
-        $('#recent-tickets-container').hide();
-        hideRecentTicketsContainer = true;
+        //Hide the search-tickets-container and change the variable
+        $('#search-tickets-container').hide();
+        hideSearchTicketsContainer = true;
         //Show the selected-ticket-container
         $('#selected-ticket-container').show();
         hideSelectedTicketContainer = false;
@@ -305,7 +317,7 @@ $(document).ready(function (){
         $('#results-tickets-list').addClass('is-active');
 
         //Get the ticket data from firebase
-        fullDatabase.ref('tickets/').child(pTicketUID).on("value", function(snapshot) {
+        database.ref('tickets/').child(pticketDBID).on("value", function(snapshot) {
             selectedTicketData = snapshot.val();
         }, function(error) {
             console.log("Error: " + error.code);
@@ -346,7 +358,7 @@ $(document).ready(function (){
 
     //Add individual note to tickets
     function saveNote() {
-        //ticketUID
+        //ticketDBID
 
 
         //reenable the add-new-note button
