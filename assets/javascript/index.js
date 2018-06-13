@@ -11,6 +11,7 @@ $(document).ready(function (){
     };
 
     firebase.initializeApp(config);
+    var database = firebase.database();
 
     //Sets the date for the new tickets to now; SAVE BUTTON SHOULD SAVE WITH HOUR
     $('#new-ticket-date-now').val(moment().format("dddd, D MMMM 'YY, h:mm a"));
@@ -19,8 +20,6 @@ $(document).ready(function (){
 //-----------------
 // --------------------- GLOBAL VARIABLES - START ---------------------
     //GLOBAL VARIABLES
-    var database = firebase.database();
-    
     //Patch to fix firebase's ascending order only problem
     var startDate = moment('1990-04-26T10:15:00'); 
     var nowDate = moment().format();
@@ -287,6 +286,7 @@ $(document).ready(function (){
         database.ref('/customers')
         .child(custDBID)
         .set({
+            custID: custDBID,
             custName: custName,
             custLastName: custLastName,
             cellNum: cellNum,
@@ -350,7 +350,7 @@ $(document).ready(function (){
         database.ref('/tickets')
         .child(ticketDBID)
         .set({
-            customer: custDBID,
+            custID: custDBID,
             custName: custName,
             custLastName: custLastName,
 
@@ -366,6 +366,7 @@ $(document).ready(function (){
             characteristics: characteristics,
             accesories: accesories,
             reasonToVisit: reasonToVisit,
+            internalNotesCounter: 0,
 
             descOrder: descOrder,
             dateAdded: firebase.database.ServerValue.TIMESTAMP
