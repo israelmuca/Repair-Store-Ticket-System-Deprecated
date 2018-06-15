@@ -366,7 +366,7 @@ $(document).ready(function (){
             characteristics: characteristics,
             accesories: accesories,
             reasonToVisit: reasonToVisit,
-            internalNotesCounter: 0,
+            internalNotesCounter: 1,
 
             descOrder: descOrder,
             dateAdded: firebase.database.ServerValue.TIMESTAMP
@@ -384,10 +384,12 @@ $(document).ready(function (){
     function getLatestTicketNum() {
         database.ref('/tickets')
         .limitToLast(1)
-        .once('child_added', function(snapshot){
-            mostRecentTicketNum = snapshot.val().shortTicketNum;
-            if(!mostRecentTicketNum) {
-                mostRecentTicketNum = 1
+        .once('value')
+        .then(function(snapshot) {
+            if(!snapshot.val()) {
+                mostRecentTicketNum = 0;
+            } else {
+                mostRecentTicketNum = snapshot.val().shortTicketNum;
             }
         }).then(setTicketNumber);
     }
@@ -446,8 +448,9 @@ $(document).ready(function (){
         
 
         /*
-            Take the user to the search page (for Git online work) */
+            Take the user to the search page (for Git online work)*/
         window.location.href = 'search.html';
+        
         
     }
 // --------------------- FUNCTIONS -   END ---------------------

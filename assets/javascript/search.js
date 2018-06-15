@@ -1,4 +1,19 @@
 $(document).ready(function (){
+    /*
+
+        TODO:
+                - Add search feature for ticket number and customer phone number
+                - ADD SECURITY
+                - ADD indexOf: rules to the DB
+                - Create the simple HTML view for the tickets
+                - Add the signature field
+                - Export to PDF
+                - HTML view for the mail to be sent
+                - Automailer
+                - Validate fields, most things shouldn't be valid if they're empty
+                - Notify successfull writes to the DB so the user knows things happened
+
+    */
 // --------------------- ON LOAD EVENTS - START ---------------------
     // Initialize Firebase
     var config = {
@@ -53,6 +68,8 @@ $(document).ready(function (){
 
     //Global selectors
     //buttons
+    var addNewNoteButton = $('#add-new-note-button');
+    var saveNewNoteButton = $('#save-new-note-button');
 
     //containers
     var selectedTicketContainer = $('#selected-ticket-container');
@@ -108,13 +125,10 @@ $(document).ready(function (){
 
 
     //Button click listener for add new note inside made tickets
-    $('#add-new-note-button').on('click', addNewNoteInTicket);
+    addNewNoteButton.on('click', addNewNoteInTicket);
 
     //Click listener for save-new-note button
-    $('#save-new-note-button').on('click', function() {
-        saveNote();
-        //reactivate add note
-    });
+    saveNewNoteButton.on('click', saveNewNoteInTicket);
 
     // --------------------- EVENT LISTENERS - END ---------------------
 
@@ -144,7 +158,7 @@ $(document).ready(function (){
 
             var tdTicketDate= $("<td>");
             var sliceDate = oneTicketChild.date;
-            tdTicketDate.text(sliceDate.slice(0,15));
+            tdTicketDate.text(sliceDate.slice(0,-5));
             newRow.append(tdTicketDate);
 
             var fulloneCustomerName = oneTicketChild.custName + ' ' + oneTicketChild.custLastName;
@@ -180,6 +194,9 @@ $(document).ready(function (){
         //Show the selected-ticket-container
         selectedTicketContainer.show();
         hideSelectedTicketContainer = false;
+
+        //Hide the save-note-button until there's something to save (add-note)
+        saveNewNoteButton.hide();
 
         //Change the menu to show "results" as active and create a link in the menu back to search
         $('#search-tickets-list').removeClass('is-active');
@@ -275,10 +292,10 @@ $(document).ready(function (){
 
         //Save all the values to vars
         var noteInternalNotesCounter = pNote.internalNotesCounter;
-        var noteDate = pNote.date;
+        var noteDate = pNote.noteDate;
         var noteID = pNote.noteID;
-        var noteType = pNote.type;
-        var noteMessage = pNote.message;
+        var noteType = pNote.noteType;
+        var noteMessage = pNote.noteText;
 
         //Create columns container for column TicketType and Date
         var columnsNoteTypeDate = $('<div>');
@@ -386,8 +403,9 @@ $(document).ready(function (){
     }
 
     function addNewNoteInTicket() {
-        //disable the button (only one note at the time)
-        $('#add-new-note-button').prop('disabled', true);
+        //Hide and show buttons
+        addNewNoteButton.hide();
+        saveNewNoteButton.show();
 
         //Create columns container for column TicketType and Date
         var columnsNoteTypeDate = $('<div>');
@@ -485,29 +503,54 @@ $(document).ready(function (){
         //Apend this columns to the container
         notesContainer.append(columnsTicket);
 
-        //Once the ID # has been used, add 1 to it before saving it to the DB
-        ticketInternalNotesCounter++;
+    }
+
+    //Add individual note to tickets
+    function saveNewNoteInTicket() {
+
+        //Disable the fields, then get their values
+        //Remove the '-x' before we can save it to the DB
+        for(var i=0; i < radioOptions.length; i++) { //Disable all radios
+            $('#' + radioIDs[i]+ '-' + ticketInternalNotesCounter).prop('disabled', true);
+        }
+        var newNoteTypeWithNumber = $('input[name="note-type-' + ticketInternalNotesCounter + '"]:checked')[0].id;
+        var newNoteType = newNoteTypeWithNumber.slice(0, newNoteTypeWithNumber.lastIndexOf('-'))
+
+        $('#new-ticket-date-' + ticketInternalNotesCounter).prop('disabled', true);
+        var newNoteDate = $('#new-ticket-date-' + ticketInternalNotesCounter).val();
+        $('#ticket-text-' + ticketInternalNotesCounter).prop('disabled', true);
+        var newNoteText = $('#ticket-text-' + ticketInternalNotesCounter).val();
+
+        var newNoteID = ticketsRef.child(ticketDBID + '/notes').push().key;
+        database.ref('/tickets/' + ticketDBID + '/notes')
+        .child(newNoteID)
+        .set({
+            noteType: newNoteType,
+            noteDate: newNoteDate,
+            noteText: newNoteText,
+            noteID: newNoteID,
+            internalNotesCounter: ticketInternalNotesCounter
+        })
+        .then(function() {
+            ticketInternalNotesCounter++;
+
+            //save the internalNotesCounter on the ticket
+            database.ref('/tickets')
+            .child(ticketDBID)
+            .update({
+                internalNotesCounter: ticketInternalNotesCounter
+            })
+        })
+
+        //Reenable the button to create a new note
+        addNewNoteButton.show();
+        saveNewNoteButton.hide();
 
     }
 
     //Update individually selected ticket
     function updateTicket() {
         //is it really needed? maybe just add comments?
-    }
-
-    //Add individual note to tickets
-    function saveNote() {
-        //ticketDBID
-
-
-        /*reenable the add-new-note button
-        $('#add-new-note').prop('disabled', false);
-
-        //UPDATE THE DB WITH THE NEW NOTE AND THE COUNTER
-        $('input[name="note-type-' + ticketInternalNotesCounter + '"]:checked');
-
-        $(inputNameVar)[0].id; //Gets the id of the selected note
-        */
     }
 
     //Minimize Customer Data Container
