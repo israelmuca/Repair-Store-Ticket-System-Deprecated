@@ -1,6 +1,9 @@
 $(document).ready(function (){
     /*
 
+        FIXME:
+            - When two tickets are created, they're validated from the date that the ticket is TRIED to be created, not at the moment it's saved
+
         TODO:
                 - ADD SECURITY
                 - Create the simple HTML view for the tickets

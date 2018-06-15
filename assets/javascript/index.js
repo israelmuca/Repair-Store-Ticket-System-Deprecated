@@ -116,12 +116,11 @@ $(document).ready(function (){
     saveExistCustButton.on('click', saveExistCustData);
     saveNewCustButton.on('click', saveNewCustData);
     //Click listener to save the form's data to FireBase
-    addTicketButton.on('click', createTicket);
+    addTicketButton.on('click', getLatestTicketNum);
 
     //Change listener to apply the 1st character of the new ticket number
     locationSelector.on('change', function() {
         location = this.value;
-        getLatestTicketNum();
     });
 
 // --------------------- EVENT LISTENERS -   END ---------------------
@@ -349,8 +348,6 @@ $(document).ready(function (){
 
         ticketDBID = database.ref().child('tickets').push().key;
 
-        getLatestTicketNum();
-
         database.ref('/tickets')
         .child(ticketDBID)
         .set({
@@ -400,22 +397,18 @@ $(document).ready(function (){
                     mostRecentTicketNum = snapshot.val()[key].shortTicketNum
                 }
             }
-        }).then(setTicketNumber);
+        }).then( function() {
+            var dateForTicket = moment().format("YYMM-");
+            shortTicketNum = mostRecentTicketNum+1;
+            if (location == 'Avanta') {
+                ticketNumSelector.val('A-'+ dateForTicket + shortTicketNum);
+            } else if (location == 'Brisas') {
+                ticketNumSelector.val('B-'+ dateForTicket + shortTicketNum);
+            } else if (location == 'Sienna') {
+                ticketNumSelector.val('S-'+ dateForTicket + shortTicketNum);
+            }
+        }).then(createTicket)
     }
-
-    function setTicketNumber() {
-        var dateForTicket = moment().format("YYMM-");
-        shortTicketNum = mostRecentTicketNum+1;
-        if (location == 'Avanta') {
-            ticketNumSelector.val('A-'+ dateForTicket + shortTicketNum);
-        } else if (location == 'Brisas') {
-            ticketNumSelector.val('B-'+ dateForTicket + shortTicketNum);
-        } else if (location == 'Sienna') {
-            ticketNumSelector.val('S-'+ dateForTicket + shortTicketNum);
-        }
-    }
-
-    //
 
     //Minimize Customer Data Container
     function minCustData() {
