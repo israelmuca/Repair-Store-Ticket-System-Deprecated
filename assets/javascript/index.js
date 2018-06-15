@@ -22,8 +22,8 @@ $(document).ready(function (){
     //GLOBAL VARIABLES
     //Patch to fix firebase's ascending order only problem
     var startDate = moment('1990-04-26T10:15:00'); 
-    var nowDate = moment().format();
-    var descOrder = -Math.abs(startDate.diff(nowDate, 'seconds'));
+    var nowDate;
+    var descOrder;
 
     //Hide/unhide booleans
     var minimizeCustData = false;
@@ -35,7 +35,8 @@ $(document).ready(function (){
     var ticketDBID;
     var location;
     var fullTicketNum;
-    var shortTicketNum
+    var shortTicketNum;
+    var fullNum;
     var date;
 
     //cust data
@@ -280,6 +281,10 @@ $(document).ready(function (){
         contactMetEmail = contactMetEmailSelector[0].checked;
         contactMetWhats = contactMetWhatsSelector[0].checked;
 
+        //Calculate the saved date right before the values are saved
+        nowDate = moment().format();
+        descOrder = -Math.abs(startDate.diff(nowDate, 'seconds'));
+
         custDBID = database.ref().child('customers').push().key;
 
         database.ref('/customers')
@@ -346,6 +351,10 @@ $(document).ready(function (){
         accesories = accesoriesSelector.val().trim();
         reasonToVisit = reasonToVisitSelector.val().trim();
 
+        //Calculate the saved date right before the values are saved
+        nowDate = moment().format();
+        descOrder = -Math.abs(startDate.diff(nowDate, 'seconds'));
+
         ticketDBID = database.ref().child('tickets').push().key;
 
         database.ref('/tickets')
@@ -358,6 +367,7 @@ $(document).ready(function (){
             location: location,
             fullTicketNum: fullTicketNum,
             shortTicketNum: shortTicketNum,
+            fullNum: fullNum,
             ticketID: ticketDBID,
             date: date,
 
@@ -400,13 +410,16 @@ $(document).ready(function (){
         }).then( function() {
             var dateForTicket = moment().format("YYMM-");
             shortTicketNum = mostRecentTicketNum+1;
+            var randomNumber = Math.floor(Math.random() * 10);
+            fullNum = randomNumber + shortTicketNum;
             if (location == 'Avanta') {
-                ticketNumSelector.val('A-'+ dateForTicket + shortTicketNum);
+                ticketNumSelector.val('A-'+ dateForTicket + randomNumber + shortTicketNum);
             } else if (location == 'Brisas') {
-                ticketNumSelector.val('B-'+ dateForTicket + shortTicketNum);
+                ticketNumSelector.val('B-'+ dateForTicket + randomNumber + shortTicketNum);
             } else if (location == 'Sienna') {
-                ticketNumSelector.val('S-'+ dateForTicket + shortTicketNum);
+                ticketNumSelector.val('S-'+ dateForTicket + randomNumber + shortTicketNum);
             }
+
         }).then(createTicket)
     }
 

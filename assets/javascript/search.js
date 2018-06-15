@@ -256,7 +256,7 @@ $(document).ready(function (){
         searchTicketsContainer.hide(900);
 
         ticketsRef
-        .orderByChild('shortTicketNum')
+        .orderByChild('fullNum')
         .equalTo(ticketNumberSearch)
         .once("value")
         .then(function(snapshot) {
