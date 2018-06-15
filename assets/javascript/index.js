@@ -140,10 +140,10 @@ $(document).ready(function (){
         .then(function(snapshot) {
             if(snapshot.val()) {
                 //customer exists in DB
-                snapshot.forEach(function(snapshotChild) { //Carefull, not validating for repeated phone numbers, could do that when customer is being added?
-                custDBID = snapshotChild.key;
-                viewOrCreateCustomer(snapshotChild.val());
-            })
+                snapshot.forEach(function(snapshotChild) {
+                    custDBID = snapshotChild.key;
+                    viewOrCreateCustomer(snapshotChild.val());
+                })
             } else {
                 //customer doesn't exist in DB
                 viewOrCreateCustomer();
@@ -153,7 +153,7 @@ $(document).ready(function (){
 
     //Receives the either nothing or the customer to paint it on the screen
     function viewOrCreateCustomer(pFirebaseVal) {
-        validateCustBox.hide('slow');
+        validateCustBox.hide(900);
         custInfoBox.show();
         if(pFirebaseVal) {
             //Logic for customer exists
@@ -331,6 +331,10 @@ $(document).ready(function (){
     }
 
     function createTicket() {
+
+        custName = custNameSelector.val().trim();
+        custLastName = custLastNameSelector.val().trim();
+
         location = locationSelector.val().trim();
         fullTicketNum = ticketNumSelector.val().trim();
         date = dateSelector.val().trim();
@@ -357,6 +361,7 @@ $(document).ready(function (){
             location: location,
             fullTicketNum: fullTicketNum,
             shortTicketNum: shortTicketNum,
+            ticketID: ticketDBID,
             date: date,
 
             eqType: eqType,
@@ -389,7 +394,11 @@ $(document).ready(function (){
             if(!snapshot.val()) {
                 mostRecentTicketNum = 0;
             } else {
-                mostRecentTicketNum = snapshot.val().shortTicketNum;
+                //loop to access the first instance inside the .val()
+                for (var key in snapshot.val()) {
+                    var mostRecentTicket = snapshot.val()[key];
+                    mostRecentTicketNum = snapshot.val()[key].shortTicketNum
+                }
             }
         }).then(setTicketNumber);
     }
@@ -439,19 +448,9 @@ $(document).ready(function (){
     }
 
     function goToSearch() {
-        /*
-            Take the user to the search page (for local work)
-        var oldURL = window.location.href;
-        var newURL = oldURL.replace("index", "search");
-        window.location.replace(newURL);
-        */
         
-        
-
-        /*
-            Take the user to the search page (for Git online work)*/
+        //Take the user to the search page
         window.location.href = 'search.html';
-        
         
     }
 // --------------------- FUNCTIONS -   END ---------------------

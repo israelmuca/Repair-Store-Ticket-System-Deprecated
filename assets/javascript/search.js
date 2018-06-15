@@ -2,9 +2,7 @@ $(document).ready(function (){
     /*
 
         TODO:
-                - Add search feature for ticket number and customer phone number
                 - ADD SECURITY
-                - ADD indexOf: rules to the DB
                 - Create the simple HTML view for the tickets
                 - Add the signature field
                 - Export to PDF
@@ -12,6 +10,8 @@ $(document).ready(function (){
                 - Automailer
                 - Validate fields, most things shouldn't be valid if they're empty
                 - Notify successfull writes to the DB so the user knows things happened
+                - Increment dropdown fields that save the different models that exist as they're being added?
+                    - Maybe there's an API for that?
 
     */
 // --------------------- ON LOAD EVENTS - START ---------------------
@@ -30,6 +30,8 @@ $(document).ready(function (){
     var ticketsRef = database.ref('/tickets');
     var customersRef = database.ref('customers/');
 
+    $('.minimize-search-tickets').hide();
+
     //Fills the recent-tickets-table
     fillRecentTickets();
 // --------------------- ON LOAD EVENTS -   END ---------------------
@@ -39,8 +41,10 @@ $(document).ready(function (){
     //Hide/unhide booleans
     var minimizeCustData = false;
     var minimizeEquipData = false;
+    var minimizeSearchTickets = true;
     var minimizeRecentTickets = false;
 
+    var hideSearchTicketsContainer = false;
     var hideRecentTicketsContainer = false;
     var hideSelectedTicketContainer = true;
 
@@ -70,12 +74,15 @@ $(document).ready(function (){
     //buttons
     var addNewNoteButton = $('#add-new-note-button');
     var saveNewNoteButton = $('#save-new-note-button');
+    var searchNumberButton = $('#search-number-button');
+    var searchTicketButton = $('#search-ticket-button');
 
     //containers
     var selectedTicketContainer = $('#selected-ticket-container');
     selectedTicketContainer.hide();
 
     var searchTicketsContainer = $('#search-tickets-container');
+    var recentTicketsContainer = $('#recent-tickets-container');
 
     //Information fields (inputs, checks, etc...)
     var custNameSelector = $('#cust-name');
@@ -107,8 +114,13 @@ $(document).ready(function (){
 
     //Click listeners for hiding containers as clicks are done on the respective boxes
     $('.minimize-search-tickets-click').on('click', minSearchTickets);
+    $('.minimize-recent-tickets-click').on('click', minRecentTickets);
     $('.minimize-cust-data-click').on('click', minCustData);
     $('.minimize-equipment-data-click').on('click', minEquipData);
+
+    //Click listeners for the search buttons
+    searchNumberButton.on('click', searchNumber);
+    searchTicketButton.on('click', searchTicket);
 
     //onHover listener for the recent tickets container, to show that they're links to the actual tickets
     $('#table-body').hover(function(){
@@ -144,53 +156,134 @@ $(document).ready(function (){
         .on("child_added", function(ticketsSnapshot) {
 
             var oneTicketChild = ticketsSnapshot.val();
-
-            var tableBody = $("#table-body");
-            var newRow = $("<tr>");
-            newRow.attr('data-ticket-DBID', ticketsSnapshot.ref.path.pieces_[1]);
-            newRow.attr('data-ticket-custDBID', oneTicketChild.custID);
-            newRow.addClass('ticket');
-            tableBody.append(newRow);
-
-            var tdTicketNum = $("<td>");
-            tdTicketNum.text(oneTicketChild.fullTicketNum);
-            newRow.append(tdTicketNum);
-
-            var tdTicketDate= $("<td>");
-            var sliceDate = oneTicketChild.date;
-            tdTicketDate.text(sliceDate.slice(0,-5));
-            newRow.append(tdTicketDate);
-
-            var fulloneCustomerName = oneTicketChild.custName + ' ' + oneTicketChild.custLastName;
-            var tdCustName = $("<td>");
-            tdCustName.text(fulloneCustomerName);
-            newRow.append(tdCustName);
-
-            var tdEqBrand = $("<td>");
-            tdEqBrand.text(oneTicketChild.eqBrand);
-            newRow.append(tdEqBrand);
-
-            var tdEqModel = $("<td>");
-            tdEqModel.text(oneTicketChild.eqModel);
-            newRow.append(tdEqModel);
-
-            var tdNotes = $("<td>");
-            tdNotes.text(ticketsSnapshot.child('notes').numChildren());
-            newRow.append(tdNotes);
+            createRowWithTicket(oneTicketChild, 'append')
 
         })
     }
 
+    //Delegate the row building here, to make sure other functions do only their main purpose
+    function createRowWithTicket(pOneTicketData, pOrder) {
+
+        var tableBody = $("#table-body");
+        var mainRow = $("#table-body-main-row");
+        var newRow = $("<tr>");
+        newRow.attr('data-ticket-DBID', pOneTicketData.ticketID);
+        newRow.attr('data-ticket-custDBID', pOneTicketData.custID);
+        newRow.addClass('ticket');
+
+        var tdTicketNum = $("<td>");
+        tdTicketNum.text(pOneTicketData.fullTicketNum);
+        newRow.append(tdTicketNum);
+
+        var tdTicketDate= $("<td>");
+        var sliceDate = pOneTicketData.date;
+        tdTicketDate.text(sliceDate.slice(0, sliceDate.lastIndexOf(" '")));
+        newRow.append(tdTicketDate);
+
+        var fulloneCustomerName = pOneTicketData.custName + ' ' + pOneTicketData.custLastName;
+        var tdCustName = $("<td>");
+        tdCustName.text(fulloneCustomerName);
+        newRow.append(tdCustName);
+
+        var tdEqType = $("<td>");
+        tdEqType.text(pOneTicketData.eqType);
+        newRow.append(tdEqType);
+
+        var tdEqBrand = $("<td>");
+        tdEqBrand.text(pOneTicketData.eqBrand);
+        newRow.append(tdEqBrand);
+
+        var tdEqModel = $("<td>");
+        tdEqModel.text(pOneTicketData.eqModel);
+        newRow.append(tdEqModel);
+
+        var tdNotes = $("<td>");
+        tdNotes.text(pOneTicketData.internalNotesCounter-1);
+        newRow.append(tdNotes);
+
+        //Finally, append or prepend the whole row to the tablebody
+        if (pOrder == 'prepend') {
+            tableBody.prepend(newRow);
+        } else if (pOrder == 'append') {
+            tableBody.append(newRow);
+        }
+        
+    }
+
+    //Search the DB for the phone number
+    function searchNumber() {
+        searchNumberButton.addClass('is-loading');
+        var phoneNumberSearch = $('#search-number-input').val().trim();
+        searchTicketsContainer.hide(900);
+        
+        //Clear table
+        $("#table-body").empty();
+
+        database.ref('customers')
+        .orderByChild('cellNum')
+        .equalTo(phoneNumberSearch)
+        .once('value')
+        .then(function(snapshot) {
+            if(snapshot.val()) {
+                //customer exists in DB
+                snapshot.forEach(function(snapshotChild) {
+                    customerTickets = snapshotChild.val().tickets;
+                    for (var key in customerTickets) {
+                        ticketsRef
+                        .child(key)
+                        .once("value")
+                        .then(function(oneTicketSnapshot) {
+                            var oneTicketData = oneTicketSnapshot.val()
+                            createRowWithTicket(oneTicketData, 'prepend');
+                        })    
+                    }
+
+                })
+            } else {
+                //TODO: Add modal to show that customer doesn't exist
+            }
+        });
+
+    }
+
+    //Search the DB for a ticket number
+    function searchTicket() {
+        searchTicketButton.addClass('is-loading');
+        var ticketNumberSearch = parseInt($('#search-ticket-input').val().trim());
+        searchTicketsContainer.hide(900);
+
+        ticketsRef
+        .orderByChild('shortTicketNum')
+        .equalTo(ticketNumberSearch)
+        .once("value")
+        .then(function(snapshot) {
+            if(snapshot.val()) {
+                //customer exists in DB
+                snapshot.forEach(function(snapshotChild) {
+                    ticketDBID = snapshotChild.val().ticketID;
+                    custDBID = snapshotChild.val().custID;
+                    displayTicket(ticketDBID, custDBID);
+                })
+            } else {
+                //TODO: Add modal to show that ticket doesn't exist
+            }
+        })
+
+    }
+
     //Display individually selected ticket
     function displayTicket(pTicketDBID, pCustDBID) {
+        
+        searchTicketsContainer.hide();
+
         //Function variables
         var selectedTicketData;
         var selectedCustID;
         var selectedCustData;
 
-        //Hide the search-tickets-container and change the variable
-        searchTicketsContainer.hide();
-        hideSearchTicketsContainer = true;
+        //Hide the recent-tickets-container and change the variable
+        recentTicketsContainer.hide();
+        hideRecentTicketsContainer = true;
         //Show the selected-ticket-container
         selectedTicketContainer.show();
         hideSelectedTicketContainer = false;
@@ -583,18 +676,33 @@ $(document).ready(function (){
         }
     }
 
+    //Minimize Recent Tickets Container
+    function minRecentTickets() {
+        if (!minimizeRecentTickets) {
+            $('.minimize-recent-tickets').hide();
+            $('#recent-tickets-svg').removeClass('fa-minus-circle');
+            $('#recent-tickets-svg').addClass('fa-plus-circle');
+            minimizeRecentTickets = true;
+        } else {
+            $('.minimize-recent-tickets').show();
+            $('#recent-tickets-svg').removeClass('fa-plus-circle');
+            $('#recent-tickets-svg').addClass('fa-minus-circle');
+            minimizeRecentTickets = false;
+        }
+    }
+
     //Minimize Search Tickets Container
     function minSearchTickets() {
-        if (!minimizeRecentTickets) {
+        if (!minimizeSearchTickets) {
             $('.minimize-search-tickets').hide();
             $('#search-tickets-svg').removeClass('fa-minus-circle');
             $('#search-tickets-svg').addClass('fa-plus-circle');
-            minimizeRecentTickets = true;
+            minimizeSearchTickets = true;
         } else {
             $('.minimize-search-tickets').show();
             $('#search-tickets-svg').removeClass('fa-plus-circle');
             $('#search-tickets-svg').addClass('fa-minus-circle');
-            minimizeRecentTickets = false;
+            minimizeSearchTickets = false;
         }
     }
 

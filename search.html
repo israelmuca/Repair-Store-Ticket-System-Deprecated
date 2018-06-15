@@ -67,21 +67,71 @@
     </section>
     <!-- Separator end-->
 
-    <!-- Recent Tickets - begin -->
+    <!-- Search box begin -->
     <div class="container" id="search-tickets-container">
         <div class="box">
             <div class="minimize-search-tickets-click columns">
-                <div class="column is-11 has-text-left"><h2 class="subtitle">15 folios más recientes</h2></div>
-                <div class="column is-1"><i id="search-tickets-svg" class="fas fa-minus-circle"></i></div>
+                <div class="column is-11 has-text-left"><h2 class="subtitle">Buscar por folio o teléfono</h2></div>
+                <div class="column is-1"><i id="search-tickets-svg" class="fas fa-plus-circle"></i></div>
             </div>
 
             <div class="minimize-search-tickets">
+                <div class="columns">
+                    <div class="column is-6">
+                        <div class="field has-addons">
+                            <div class="control is-expanded">
+                              <input class="input" id="search-number-input" type="text" placeholder="Teléfono del cliente">
+                            </div>
+                            <div class="control">
+                              <a class="button is-dark" id="search-number-button">
+                                Buscar
+                              </a>
+                            </div>
+                          </div>
+                    </div>
+                    <div class="column is-6">
+                        <div class="field has-addons has-addons-right">
+                            <div class="control is-expanded">
+                              <input class="input" id="search-ticket-input" type="text" placeholder="Ticket, solo los últimos números">
+                            </div>
+                            <div class="control">
+                              <a class="button is-dark" id="search-ticket-button">
+                                Buscar
+                              </a>
+                            </div>
+                          </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Search box end-->
+
+    <!-- Separator begin -->
+    <section class="columns">
+        <div class="column"></div>
+    </section>
+    <section class="columns">
+        <div class="column"></div>
+    </section>
+    <!-- Separator end-->
+
+    <!-- Recent Tickets - begin -->
+    <div class="container" id="recent-tickets-container">
+        <div class="box">
+            <div class="minimize-recent-tickets-click columns">
+                <div class="column is-11 has-text-left"><h2 class="subtitle">15 folios más recientes</h2></div>
+                <div class="column is-1"><i id="recent-tickets-svg" class="fas fa-minus-circle"></i></div>
+            </div>
+
+            <div class="minimize-recent-tickets">
                 <table class="table is-bordered is-striped is-hoverable is-fullwidth">
                     <thead>
                         <tr>
                             <th>Folio</th>
                             <th>Fecha</th>
                             <th>Cliente</th>
+                            <th>Equipo</th>
                             <th>Marca</th>
                             <th>Modelo</th>
                             <th>Notas</th>
