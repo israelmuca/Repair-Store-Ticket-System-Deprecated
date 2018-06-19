@@ -36,7 +36,7 @@ $(document).ready(function (){
     var location;
     var fullTicketNum;
     var shortTicketNum;
-    var fullNum;
+    var searchTicketNum;
     var date;
 
     //cust data
@@ -117,11 +117,13 @@ $(document).ready(function (){
     saveExistCustButton.on('click', saveExistCustData);
     saveNewCustButton.on('click', saveNewCustData);
     //Click listener to save the form's data to FireBase
-    addTicketButton.on('click', getLatestTicketNum);
+    addTicketButton.on('click', createTicket);
 
     //Change listener to apply the 1st character of the new ticket number
     locationSelector.on('change', function() {
-        location = this.value;
+        var locationUppercase = this.value;
+        location = locationUppercase.toLowerCase();
+        getLatestTicketNum();
     });
 
 // --------------------- EVENT LISTENERS -   END ---------------------
@@ -130,6 +132,7 @@ $(document).ready(function (){
 
     //Query Firebase for the phone number
     function queryFirebaseCellNum() {
+        //TODO: Validate the field is not empty
         $('#validate-customer-button').addClass('is-loading');
         var phoneNumToValidate = $('#cellphone-number-validate').val().trim();
 
@@ -339,7 +342,6 @@ $(document).ready(function (){
         custName = custNameSelector.val().trim();
         custLastName = custLastNameSelector.val().trim();
 
-        location = locationSelector.val().trim();
         fullTicketNum = ticketNumSelector.val().trim();
         date = dateSelector.val().trim();
 
@@ -366,8 +368,7 @@ $(document).ready(function (){
 
             location: location,
             fullTicketNum: fullTicketNum,
-            shortTicketNum: shortTicketNum,
-            fullNum: fullNum,
+            searchTicketNum: searchTicketNum,
             ticketID: ticketDBID,
             date: date,
 
@@ -382,45 +383,43 @@ $(document).ready(function (){
 
             descOrder: descOrder,
             dateAdded: firebase.database.ServerValue.TIMESTAMP
-        })
-        .then(
-            database.ref('/customers')
-            .child(custDBID + '/tickets/' + ticketDBID)
-            .set({
-                ticketID: ticketDBID,
-                dateAdded: firebase.database.ServerValue.TIMESTAMP
-            })
-        ).then(goToSearch);
+        }).then(
+                database.ref('/customers')
+                .child(custDBID + '/tickets/' + ticketDBID)
+                .set({
+                    ticketID: ticketDBID,
+                    dateAdded: firebase.database.ServerValue.TIMESTAMP
+                })
+                ).then(
+                    database.ref('/sucursales')
+                    .child(location)
+                    .update({
+                        latestTicketNum: shortTicketNum
+                    })).then(goToSearch);
     }
 
     function getLatestTicketNum() {
-        database.ref('/tickets')
-        .limitToLast(1)
-        .once('value')
-        .then(function(snapshot) {
-            if(!snapshot.val()) {
-                mostRecentTicketNum = 0;
-            } else {
-                //loop to access the first instance inside the .val()
-                for (var key in snapshot.val()) {
-                    var mostRecentTicket = snapshot.val()[key];
-                    mostRecentTicketNum = snapshot.val()[key].shortTicketNum
-                }
-            }
+
+        database.ref('/sucursales')
+        .child(location)
+        .once("value")
+        .then(function(latestTicketNumberSnapshot) {
+            mostRecentTicketNum = latestTicketNumberSnapshot.val().latestTicketNum
+
         }).then( function() {
             var dateForTicket = moment().format("YYMM-");
             shortTicketNum = mostRecentTicketNum+1;
-            var randomNumber = Math.floor(Math.random() * 10);
-            fullNum = randomNumber + shortTicketNum;
-            if (location == 'Avanta') {
-                ticketNumSelector.val('A-'+ dateForTicket + randomNumber + shortTicketNum);
-            } else if (location == 'Brisas') {
-                ticketNumSelector.val('B-'+ dateForTicket + randomNumber + shortTicketNum);
-            } else if (location == 'Sienna') {
-                ticketNumSelector.val('S-'+ dateForTicket + randomNumber + shortTicketNum);
+            if (location == 'avanta') {
+                ticketNumSelector.val(dateForTicket + 'A' + shortTicketNum);
+                searchTicketNum = "A" + shortTicketNum;
+            } else if (location == 'torres') {
+                ticketNumSelector.val(dateForTicket + 'T' + shortTicketNum);
+                searchTicketNum = "T" + shortTicketNum;
+            } else if (location == 'sienna') {
+                ticketNumSelector.val(dateForTicket + 'S' + shortTicketNum);
+                searchTicketNum = "S" + shortTicketNum;
             }
-
-        }).then(createTicket)
+            })
     }
 
     //Minimize Customer Data Container

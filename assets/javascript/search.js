@@ -1,20 +1,18 @@
 $(document).ready(function (){
     /*
 
-        FIXME:
-            - When two tickets are created, they're validated from the date that the ticket is TRIED to be created, not at the moment it's saved
-
         TODO:
-                - ADD SECURITY
-                - Create the simple HTML view for the tickets
-                - Add the signature field
-                - Export to PDF
-                - HTML view for the mail to be sent
-                - Automailer
-                - Validate fields, most things shouldn't be valid if they're empty
-                - Notify successfull writes to the DB so the user knows things happened
-                - Increment dropdown fields that save the different models that exist as they're being added?
-                    - Maybe there's an API for that?
+            - jQueryUI autocomplete for fields
+            - ADD SECURITY
+            - Create the simple HTML view for the tickets
+            - Add the signature field
+            - Export to PDF
+            - HTML view for the mail to be sent
+            - Automailer
+            - Validate fields, most things shouldn't be valid if they're empty
+            - Notify successfull writes to the DB so the user knows things happened
+            - Increment dropdown fields that save the different models that exist as they're being added?
+                - Maybe there's an API for that?
 
     */
 // --------------------- ON LOAD EVENTS - START ---------------------
@@ -145,6 +143,11 @@ $(document).ready(function (){
     //Click listener for save-new-note button
     saveNewNoteButton.on('click', saveNewNoteInTicket);
 
+    //Click listener to close the modal
+    $('#modal-close-button').on('click', closeModal);
+    $('#modal-close-background').on('click', closeModal);
+
+
     // --------------------- EVENT LISTENERS - END ---------------------
 
 
@@ -215,12 +218,10 @@ $(document).ready(function (){
 
     //Search the DB for the phone number
     function searchNumber() {
+        //TODO: Validate the field is not empty
         searchNumberButton.addClass('is-loading');
         var phoneNumberSearch = $('#search-number-input').val().trim();
         searchTicketsContainer.hide(900);
-        
-        //Clear table
-        $("#table-body").empty();
 
         database.ref('customers')
         .orderByChild('cellNum')
@@ -228,7 +229,9 @@ $(document).ready(function (){
         .once('value')
         .then(function(snapshot) {
             if(snapshot.val()) {
-                //customer exists in DB
+                //Customer exists in DB
+                //Clear table
+                $("#table-body").empty();
                 snapshot.forEach(function(snapshotChild) {
                     customerTickets = snapshotChild.val().tickets;
                     for (var key in customerTickets) {
@@ -243,7 +246,12 @@ $(document).ready(function (){
 
                 })
             } else {
-                //TODO: Add modal to show that customer doesn't exist
+                //Modify the texts in the modal
+                $('.modal-card-title').text('¡Cliente no encontrado!');
+                $('.modal-card-body').html('<p>Asegúrate de confirmar el número del cliente o de intentar con algún otro número</p>');
+
+                //Activate the modal
+                $('.modal').addClass('is-active');
             }
         });
 
@@ -251,12 +259,13 @@ $(document).ready(function (){
 
     //Search the DB for a ticket number
     function searchTicket() {
+        //TODO: Validate the field is not empty
         searchTicketButton.addClass('is-loading');
         var ticketNumberSearch = parseInt($('#search-ticket-input').val().trim());
         searchTicketsContainer.hide(900);
 
         ticketsRef
-        .orderByChild('fullNum')
+        .orderByChild('shortTicketNum')
         .equalTo(ticketNumberSearch)
         .once("value")
         .then(function(snapshot) {
@@ -268,7 +277,12 @@ $(document).ready(function (){
                     displayTicket(ticketDBID, custDBID);
                 })
             } else {
-                //TODO: Add modal to show that ticket doesn't exist
+                //Modify the texts in the modal
+                $('.modal-card-title').text('¡Folio no encontrado!');
+                $('.modal-card-body').html('<p>Recuerda que los números a usar para la búsqueda son la 1er letra de la sucursal seguido del número del folio, por ej: "A42".</p>');
+
+                //Activate the modal
+                $('.modal').addClass('is-active');
             }
         })
 
@@ -603,6 +617,7 @@ $(document).ready(function (){
 
     //Add individual note to tickets
     function saveNewNoteInTicket() {
+        //TODO: Validate the field is not empty
 
         //Disable the fields, then get their values
         //Remove the '-x' before we can save it to the DB
@@ -642,6 +657,13 @@ $(document).ready(function (){
         addNewNoteButton.show();
         saveNewNoteButton.hide();
 
+    }
+
+    function closeModal() {
+        searchNumberButton.removeClass('is-loading');
+        searchTicketButton.removeClass('is-loading');
+        searchTicketsContainer.show();
+        $('.modal').removeClass('is-active');
     }
 
     //Update individually selected ticket

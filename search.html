@@ -165,15 +165,8 @@
                 <div class="column">
                     <div class="field">
                         <label class="label">Sucursal</label>
-                        <div class="control is-expanded">
-                            <div class="select is-fullwidth">
-                            <select id="location-select">
-                                <option disabled selected>Selecciona una sucursal</option>
-                                <option data-location="avanta">Avanta</option>
-                                <option data-location="brisas" >Brisas</option>
-                                <option data-location="sienna">Sienna</option>
-                            </select>
-                            </div>
+                        <div class="control">
+                            <input class="input" id="location-select" type="text">
                         </div>
                     </div>
                 </div>
@@ -181,7 +174,7 @@
                     <div class="field">
                         <label class="label">Número de folio</label>
                         <div class="control">
-                            <input class="input" id="ticket-number" type="text" placeholder="AGREGAR FUNCION">
+                            <input class="input" id="ticket-number" type="text">
                         </div>
                     </div>
                 </div>
@@ -392,7 +385,7 @@
                 </div>
     
             </div>
-
+            
         <div class="container box">
             <h2 class="subtitle">Notas</h2>
 
@@ -451,9 +444,7 @@
                 </div>
                 TESTING FINISHED-->
             </div>
-
-        </div>
-
+            <br>
             <div class="field is-grouped is-grouped-right">
                 <div class="control">
                     <button id="add-new-note-button" class="button is-link">Agregar nueva nota</button>
@@ -462,9 +453,133 @@
                     <button id="save-new-note-button" class="button is-link">Guardar Nota</button>
                 </div>
             </div>
+
+        </div>
+
+            <div class="container box">
+                <h2 class="subtitle">Cierre de folio</h2>
+                <!-- TODO: Add IDs and JS logic -->
+
+                <div class="columns">
+
+                    <div class="column is-3">
+                        <div class="field">
+                            <label class="label">Cobro total</label>
+                            <div class="control has-icons-left">
+                                <input id="" class="input" type="text" placeholder="Cantidad total">
+                                <span class="icon is-small is-left">
+                                <i class="fas fa-dollar-sign"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="column is-3">
+                        <div class="field">
+                            <label class="label">Pagado?</label>
+                            <div class="control">
+                                <label class="checkbox">
+                                <input disabled id="" type="checkbox" name="payment-completed" value="payment-completed" >
+                                Pagado
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="column is-3">
+                        <div class="field">
+                            <label class="label">Fecha de pago</label>
+                            <div class="control">
+                                <input id="payment-completed-date" class="input" type="text">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="column is-3">
+                        <div class="field">
+                            <label class="label">Medio de pago</label>
+                            <div class="control is-expanded">
+                                <div class="select is-fullwidth">
+                                <select id="payment-method">
+                                    <option selected>Método de pago</option>
+                                    <option data-location="tarjeta-debito">Tarjeta Débito</option>
+                                    <option data-location="tarjeta-credito">Tarjeta Crédito</option>
+                                    <option data-location="efectivo">Efectivo</option>
+                                </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="columns">
+
+                    <div class="column is-3">
+                        <div class="field">
+                            <label class="label">Entregado?</label>
+                            <div class="control">
+                                <label class="checkbox">
+                                <input disabled id="" type="checkbox" name="deliver-completed" value="deliver-completed" >
+                                Entregado
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="column is-3">
+                        <div class="field">
+                            <label class="label">Fecha de entrega</label>
+                            <div class="control">
+                                <input id="deliver-completed-date" class="input" type="text">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="column is-3">
+                        <div class="field">
+                            <label class="label">Folio Cerrado?</label>
+                            <div class="control">
+                                <label class="checkbox">
+                                <input disabled id="" type="checkbox" name="ticket-completed" value="ticket-completed" >
+                                Folio cerrado
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="column is-3">
+                        <div class="field">
+                            <label class="label">Fecha de cierre</label>
+                            <div class="control">
+                                <input id="ticket-completed-date" class="input" type="text">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
     </div>
 
     <!-- ticketToView - end -->
+
+    <!-- Modal - begin -->
+
+    <div class="modal">
+        <div class="modal-background" id="modal-close-background" ></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Modal title</p>
+                    <button id="modal-close-button" class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    <!-- Content ... -->
+                </section>
+            </div>
+        </div>
+
+    <!-- Modal - end -->
 
     <!-- Separator begin -->
     <section class="columns">
