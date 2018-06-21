@@ -458,50 +458,41 @@
 
             <div class="container box">
                 <h2 class="subtitle">Cierre de folio</h2>
-                <!-- TODO: Add IDs and JS logic -->
+                <!-- TODO: Add JS logic -->
 
                 <div class="columns">
 
-                    <div class="column is-3">
+                    <div class="column is-1">
+                        <div class="field">
+                            <label class="label">Pagado</label>
+                            <div class="control has-text-centered">
+                                <label class="checkbox">
+                                <input id="payment-completed-checkbox" type="checkbox" name="payment-completed" value="payment-completed" >
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                    <div class="column is-3 payment-section">
                         <div class="field">
                             <label class="label">Cobro total</label>
                             <div class="control has-icons-left">
-                                <input id="" class="input" type="text" placeholder="Cantidad total">
+                                <input id="total-payment" class="input" type="text" placeholder="MXN">
                                 <span class="icon is-small is-left">
-                                <i class="fas fa-dollar-sign"></i>
+                                    <i class="fas fa-dollar-sign"></i>
                                 </span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="column is-3">
-                        <div class="field">
-                            <label class="label">Pagado?</label>
-                            <div class="control">
-                                <label class="checkbox">
-                                <input disabled id="" type="checkbox" name="payment-completed" value="payment-completed" >
-                                Pagado
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="column is-3">
-                        <div class="field">
-                            <label class="label">Fecha de pago</label>
-                            <div class="control">
-                                <input id="payment-completed-date" class="input" type="text">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="column is-3">
+                    <div class="column is-3 payment-section">
                         <div class="field">
                             <label class="label">Medio de pago</label>
                             <div class="control is-expanded">
                                 <div class="select is-fullwidth">
                                 <select id="payment-method">
-                                    <option selected>Método de pago</option>
+                                    <option selected disabled>Método de pago</option>
                                     <option data-location="tarjeta-debito">Tarjeta Débito</option>
                                     <option data-location="tarjeta-credito">Tarjeta Crédito</option>
                                     <option data-location="efectivo">Efectivo</option>
@@ -511,49 +502,139 @@
                         </div>
                     </div>
 
+                    <div class="column is-3 payment-section">
+                        <div class="field">
+                            <label class="label">Fecha de pago</label>
+                            <div class="control">
+                                <input disabled id="payment-completed-date" class="input" type="text">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="column is-1 payment-section payment-section-buttons">
+                        <div class="field has-text-centered">
+                            <label class="label">Guardar</label>
+                            <a class="button" id="payment-completed-save-button">
+                            <span class="icon has-text-success">
+                                <i class="fas fa-check fa-lg"></i>
+                            </span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="column is-1 payment-section payment-section-buttons">
+                        <div class="field has-text-centered">
+                            <label class="label">Borrar</label>
+                            <a class="button" id="payment-completed-cancel-button">
+                            <span class="icon has-text-danger">
+                                <i class="fas fa-times fa-lg"></i>
+                            </span>
+                            </a>
+                        </div>
+                    </div>
+
                 </div>
+
+                <hr>
 
                 <div class="columns">
 
-                    <div class="column is-3">
+                    <div class="column is-1">
                         <div class="field">
-                            <label class="label">Entregado?</label>
-                            <div class="control">
+                            <label class="label">Entregado</label>
+                            <div class="control has-text-centered">
                                 <label class="checkbox">
-                                <input disabled id="" type="checkbox" name="deliver-completed" value="deliver-completed" >
-                                Entregado
+                                <input  id="deliver-copleted-checkbox" type="checkbox" name="deliver-completed" value="deliver-completed" >
                                 </label>
                             </div>
                         </div>
                     </div>
+
+                    <div class="column is-2"></div>
 
                     <div class="column is-3">
                         <div class="field">
                             <label class="label">Fecha de entrega</label>
                             <div class="control">
-                                <input id="deliver-completed-date" class="input" type="text">
+                                <input disabled id="deliver-completed-date" class="input" type="text">
                             </div>
                         </div>
                     </div>
 
-                    <div class="column is-3">
+                    <div class="column is-2"></div>
+
+                    <div class="column is-1">
+                        <div class="field has-text-centered">
+                            <label class="label">Guardar</label>
+                            <a class="button">
+                            <span class="icon has-text-success">
+                                <i class="fas fa-check fa-lg"></i>
+                            </span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="column is-1">
+                        <div class="field has-text-centered">
+                            <label class="label">Borrar</label>
+                            <a class="button">
+                            <span class="icon has-text-danger">
+                                <i class="fas fa-times fa-lg"></i>
+                            </span>
+                            </a>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <hr>
+
+                <div class="columns">
+
+                    <div class="column is-1">
                         <div class="field">
-                            <label class="label">Folio Cerrado?</label>
-                            <div class="control">
+                            <label class="label">Folio Cerrado</label>
+                            <div class="control has-text-centered">
                                 <label class="checkbox">
-                                <input disabled id="" type="checkbox" name="ticket-completed" value="ticket-completed" >
-                                Folio cerrado
+                                <input id="ticket-closed-checkbox" type="checkbox" name="ticket-closed" value="ticket-closed" >
                                 </label>
                             </div>
                         </div>
                     </div>
 
+                    <div class="column is-2"></div>
+
                     <div class="column is-3">
                         <div class="field">
                             <label class="label">Fecha de cierre</label>
                             <div class="control">
-                                <input id="ticket-completed-date" class="input" type="text">
+                                <input disabled id="ticket-closed-date" class="input" type="text">
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="column is-2"></div>
+
+                    <div class="column is-1">
+                        <div class="field has-text-centered">
+                            <label class="label">Guardar</label>
+                            <a class="button">
+                            <span class="icon has-text-success">
+                                <i class="fas fa-check fa-lg"></i>
+                            </span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="column is-1">
+                        <div class="field has-text-centered">
+                            <label class="label">Borrar</label>
+                            <a class="button">
+                            <span class="icon has-text-danger">
+                                <i class="fas fa-times fa-lg"></i>
+                            </span>
+                            </a>
                         </div>
                     </div>
 
@@ -595,6 +676,7 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment-with-locales.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/locale/es-us.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
     <script src="assets/javascript/search.js"></script>
 </body>

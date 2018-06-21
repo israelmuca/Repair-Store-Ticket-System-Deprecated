@@ -2,7 +2,8 @@ $(document).ready(function (){
     /*
 
         TODO:
-            - jQueryUI autocomplete for fields
+            - jQueryUI autocomplete for fields?
+            - Validate fields
             - ADD SECURITY
             - Create the simple HTML view for the tickets
             - Add the signature field
@@ -49,6 +50,8 @@ $(document).ready(function (){
     var hideRecentTicketsContainer = false;
     var hideSelectedTicketContainer = true;
 
+    var hidePaymentSection = true;
+
     var ticketDBID;
     var custDBID;
     var ticketInternalNotesCounter;
@@ -77,6 +80,7 @@ $(document).ready(function (){
     var saveNewNoteButton = $('#save-new-note-button');
     var searchNumberButton = $('#search-number-button');
     var searchTicketButton = $('#search-ticket-button');
+    var paymentCompletedSaveButton = $('#payment-completed-save-button');
 
     //containers
     var selectedTicketContainer = $('#selected-ticket-container');
@@ -106,6 +110,18 @@ $(document).ready(function (){
     var characteristicsSelector = $('#equipment-characteristics');
     var accesoriesSelector = $('#equipment-accesories');
     var reasonToVisitSelector = $('#equipment-reason');
+
+    var paymentSectionSelector = $('.payment-section');
+    paymentSectionSelector.hide();
+    var totalPaymentSelector = $('#total-payment');
+    var paymentCompletedCheckboxSelector = $('#payment-completed-checkbox');
+    var paymentCompletedDateSelector = $('#payment-completed-date');
+    var paymentMethodSelector = $('#payment-method');
+    var paymentButtons = $('.payment-section-buttons');
+    var deliverCompletedCheckboxSelector = $('#deliver-copleted-checkbox');
+    var deliverCompletedDateSelector = $('#deliver-completed-date');
+    var ticketClosedCheckboxSelector = $('#ticket-closed-checkbox');
+    var ticketClosedDateSelector = $('#ticket-closed-date');
 
     var notesContainer = $('#created-ticket-notes-container');
     
@@ -142,6 +158,15 @@ $(document).ready(function (){
 
     //Click listener for save-new-note button
     saveNewNoteButton.on('click', saveNewNoteInTicket);
+
+    //Click listener for payment checkbox
+    paymentCompletedCheckboxSelector.on('change', paymentDone);
+
+    //.change() event listener for the number in the payment field
+    totalPaymentSelector.on('change', formatToMXN);
+
+    //Click listener for the save payment button
+    paymentCompletedSaveButton.on('click', savePayment);
 
     //Click listener to close the modal
     $('#modal-close-button').on('click', closeModal);
@@ -657,6 +682,30 @@ $(document).ready(function (){
         addNewNoteButton.show();
         saveNewNoteButton.hide();
 
+    }
+
+    function paymentDone() {
+        if (hidePaymentSection) {
+            paymentSectionSelector.show();
+            hidePaymentSection = false;
+            paymentCompletedDateSelector.val(moment().format("dddd, D MMMM 'YY, h:mm a"));
+        } else {
+            paymentSectionSelector.hide();
+            hidePaymentSection = true;
+        }
+    }
+
+    function savePayment() {
+        //TODO:
+    }
+
+    function cancelPayment() {
+        //TODO:
+    }
+
+    function formatToMXN() {
+        var currencyMXN = numeral(totalPaymentSelector.val()).format('0,0.00');
+        totalPaymentSelector.val(currencyMXN);
     }
 
     function closeModal() {

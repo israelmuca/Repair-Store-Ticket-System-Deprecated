@@ -126,32 +126,37 @@ $(document).ready(function (){
         getLatestTicketNum();
     });
 
+    //TODO: .change() event listener for the number in the payment field
+
 // --------------------- EVENT LISTENERS -   END ---------------------
 //-----------------
 // --------------------- FUNCTIONS - START ---------------------
 
     //Query Firebase for the phone number
     function queryFirebaseCellNum() {
-        //TODO: Validate the field is not empty
-        $('#validate-customer-button').addClass('is-loading');
-        var phoneNumToValidate = $('#cellphone-number-validate').val().trim();
+        if(!($('#cellphone-number-validate').val())) {
+            $('#empty-phone-validation').text('Necesitas escribir un teléfono!');
+        } else {
+            $('#validate-customer-button').addClass('is-loading');
+            var phoneNumToValidate = $('#cellphone-number-validate').val().trim();
 
-        database.ref('customers')
-        .orderByChild('cellNum')
-        .equalTo(phoneNumToValidate)
-        .once('value')
-        .then(function(snapshot) {
-            if(snapshot.val()) {
-                //customer exists in DB
-                snapshot.forEach(function(snapshotChild) {
-                    custDBID = snapshotChild.key;
-                    viewOrCreateCustomer(snapshotChild.val());
-                })
-            } else {
-                //customer doesn't exist in DB
-                viewOrCreateCustomer();
-            }
-        });
+            database.ref('customers')
+            .orderByChild('cellNum')
+            .equalTo(phoneNumToValidate)
+            .once('value')
+            .then(function(snapshot) {
+                if(snapshot.val()) {
+                    //customer exists in DB
+                    snapshot.forEach(function(snapshotChild) {
+                        custDBID = snapshotChild.key;
+                        viewOrCreateCustomer(snapshotChild.val());
+                    })
+                } else {
+                    //customer doesn't exist in DB
+                    viewOrCreateCustomer();
+                }
+            });
+        }
     }
 
     //Receives the either nothing or the customer to paint it on the screen
