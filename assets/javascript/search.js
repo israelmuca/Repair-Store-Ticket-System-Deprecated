@@ -51,6 +51,7 @@ $(document).ready(function (){
     var hideSelectedTicketContainer = true;
 
     var hidePaymentSection = true;
+    var hideDeliverSection = true;
 
     var ticketDBID;
     var custDBID;
@@ -62,16 +63,14 @@ $(document).ready(function (){
         ' Nota interna',
         ' Diagnóstico',
         ' Cotización',
-        ' Comunicación con cliente',
-        ' Entrega programada'
+        ' Comunicación con cliente'
     ];
 
     var radioIDs = [
         'nota',
         'diagnostico',
         'cotizacion',
-        'comunicacion',
-        'entrega'
+        'comunicacion'
     ];
 
     //Global selectors
@@ -80,7 +79,12 @@ $(document).ready(function (){
     var saveNewNoteButton = $('#save-new-note-button');
     var searchNumberButton = $('#search-number-button');
     var searchTicketButton = $('#search-ticket-button');
+    var paymentButtons = $('.payment-section-buttons');
     var paymentCompletedSaveButton = $('#payment-completed-save-button');
+    var paymentCompletedCancelButton = $('#payment-completed-cancel-button');
+    var deliverButtons = $('.deliver-section-buttons');
+    var deliverCompletedSaveButton = $('#deliver-completed-save-button');
+    var deliverCompletedCancelButton = $('#deliver-completed-cancel-button');
 
     //containers
     var selectedTicketContainer = $('#selected-ticket-container');
@@ -113,12 +117,13 @@ $(document).ready(function (){
 
     var paymentSectionSelector = $('.payment-section');
     paymentSectionSelector.hide();
+    var deliverSectionSelector = $('.deliver-section');
+    deliverSectionSelector.hide();
     var totalPaymentSelector = $('#total-payment');
     var paymentCompletedCheckboxSelector = $('#payment-completed-checkbox');
     var paymentCompletedDateSelector = $('#payment-completed-date');
     var paymentMethodSelector = $('#payment-method');
-    var paymentButtons = $('.payment-section-buttons');
-    var deliverCompletedCheckboxSelector = $('#deliver-copleted-checkbox');
+    var deliverCompletedCheckboxSelector = $('#deliver-completed-checkbox');
     var deliverCompletedDateSelector = $('#deliver-completed-date');
     var ticketClosedCheckboxSelector = $('#ticket-closed-checkbox');
     var ticketClosedDateSelector = $('#ticket-closed-date');
@@ -167,6 +172,18 @@ $(document).ready(function (){
 
     //Click listener for the save payment button
     paymentCompletedSaveButton.on('click', savePayment);
+
+    //Click listener for the cancel payment button
+    paymentCompletedCancelButton.on('click', cancelPayment);
+
+    //Click listener for deliver checkbox
+    deliverCompletedCheckboxSelector.on('change', deliverDone)
+
+    //Click listener for the save deliver button
+    deliverCompletedSaveButton.on('click', saveDeliver);
+
+    //Click listener for the cancel deliver button
+    deliverCompletedCancelButton.on('click', cancelDeliver);
 
     //Click listener to close the modal
     $('#modal-close-button').on('click', closeModal);
@@ -315,6 +332,8 @@ $(document).ready(function (){
 
     //Display individually selected ticket
     function displayTicket(pTicketDBID, pCustDBID) {
+
+        //FIXME: Add the ticket closing info
         
         searchTicketsContainer.hide();
 
@@ -696,16 +715,95 @@ $(document).ready(function (){
     }
 
     function savePayment() {
-        //TODO:
+        //TODO: Validate fields with switch
+
+        var paymentTotal = numeral(totalPaymentSelector.val())._value; //Make the payment total a number w/o format
+        var paymentMethod = paymentMethodSelector.val();
+        var paymentDate = paymentCompletedDateSelector.val();
+        var paymentTimestamp = firebase.database.ServerValue.TIMESTAMP;
+
+
+        ticketsRef
+        .child(ticketDBID)
+        .update({
+            paymentCompleted: true,
+            paymentTotal: paymentTotal,
+            paymentMethod: paymentMethod,
+            paymentDate: paymentDate,
+            paymentTimestamp: paymentTimestamp
+        })
+        .then(
+            customersRef
+            .child(custDBID + '/tickets/' + ticketDBID)
+            .update({
+                paymentCompleted: true,
+                paymentTotal: paymentTotal,
+                paymentMethod: paymentMethod,
+                paymentDate: paymentDate,
+                paymentTimestamp: paymentTimestamp
+        }))
+        .then(function(){
+            paymentButtons.hide();
+            paymentCompletedCheckboxSelector.prop('disabled', true);
+            totalPaymentSelector.prop('disabled', true);
+            paymentMethodSelector.prop('disabled', true);
+        })
+        
     }
 
     function cancelPayment() {
-        //TODO:
+        paymentSectionSelector.hide();
+        hidePaymentSection = true;
+        paymentCompletedCheckboxSelector.prop('checked', false);
     }
 
     function formatToMXN() {
         var currencyMXN = numeral(totalPaymentSelector.val()).format('0,0.00');
         totalPaymentSelector.val(currencyMXN);
+    }
+
+    function deliverDone() {
+        if (hideDeliverSection) {
+            deliverSectionSelector.show();
+            hideDeliverSection = false;
+            deliverCompletedDateSelector.val(moment().format("dddd, D MMMM 'YY, h:mm a"));
+        } else {
+            deliverSectionSelector.hide();
+            hideDeliverSection = true;
+        }
+    }
+
+    function saveDeliver() {
+        //TODO: Validate fields with switch
+
+        var deliverDate = deliverCompletedDateSelector.val();
+        var deliverTimestamp = firebase.database.ServerValue.TIMESTAMP;
+
+        ticketsRef
+        .child(ticketDBID)
+        .update({
+            deliverCompleted: true,
+            deliverDate: deliverDate,
+            deliverTimestamp: deliverTimestamp
+        })
+        .then(
+            customersRef
+            .child(custDBID + '/tickets/' + ticketDBID)
+            .update({
+                deliverCompleted: true,
+                deliverDate: deliverDate,
+                deliverTimestamp: deliverTimestamp
+        }))
+        .then(function(){
+            deliverButtons.hide();
+            deliverCompletedCheckboxSelector.prop('disabled', true);
+        })
+    }
+
+    function cancelDeliver() {
+        deliverSectionSelector.hide();
+        hideDeliverSection = true;
+        deliverCompletedCheckboxSelector.prop('checked', false);
     }
 
     function closeModal() {

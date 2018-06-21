@@ -126,8 +126,6 @@ $(document).ready(function (){
         getLatestTicketNum();
     });
 
-    //TODO: .change() event listener for the number in the payment field
-
 // --------------------- EVENT LISTENERS -   END ---------------------
 //-----------------
 // --------------------- FUNCTIONS - START ---------------------
