@@ -121,8 +121,7 @@ $(document).ready(function (){
 
     //Change listener to apply the 1st character of the new ticket number
     locationSelector.on('change', function() {
-        var locationUppercase = this.value;
-        location = locationUppercase.toLowerCase();
+        location = this.value;
         getLatestTicketNum();
     });
 
@@ -227,6 +226,7 @@ $(document).ready(function (){
 
     //customer exists in DB and info has been modified, save cust
     function saveExistCustData() {
+        //TODO: Validate fields not empty
         //Get data from inputs
         custName = custNameSelector.val().trim();
         custLastName = custLastNameSelector.val().trim();
@@ -277,6 +277,7 @@ $(document).ready(function (){
 
     //customer doesn't exist in DB, create new customer
     function saveNewCustData() {
+        //TODO: Validate fields not empty
         //Get data from inputs
         custName = custNameSelector.val().trim();
         custLastName = custLastNameSelector.val().trim();
@@ -341,7 +342,7 @@ $(document).ready(function (){
     }
 
     function createTicket() {
-
+        //TODO: Validate fields not empty
         custName = custNameSelector.val().trim();
         custLastName = custLastNameSelector.val().trim();
 
@@ -412,13 +413,13 @@ $(document).ready(function (){
         }).then( function() {
             var dateForTicket = moment().format("YYMM-");
             shortTicketNum = mostRecentTicketNum+1;
-            if (location == 'avanta') {
+            if (location == 'Avanta') {
                 ticketNumSelector.val(dateForTicket + 'A' + shortTicketNum);
                 searchTicketNum = "A" + shortTicketNum;
-            } else if (location == 'torres') {
+            } else if (location == 'Torres') {
                 ticketNumSelector.val(dateForTicket + 'T' + shortTicketNum);
                 searchTicketNum = "T" + shortTicketNum;
-            } else if (location == 'sienna') {
+            } else if (location == 'Sienna') {
                 ticketNumSelector.val(dateForTicket + 'S' + shortTicketNum);
                 searchTicketNum = "S" + shortTicketNum;
             }
@@ -456,10 +457,8 @@ $(document).ready(function (){
     }
 
     function goToSearch() {
-        
         //Take the user to the search page
         window.location.href = 'search.html';
-        
     }
 // --------------------- FUNCTIONS -   END ---------------------
 });

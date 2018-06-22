@@ -2,18 +2,20 @@ $(document).ready(function (){
     /*
 
         TODO:
-            - jQueryUI autocomplete for fields?
+            - Add button when user searchs, to reload the page
+            - Fix the wording when user searchs
             - Validate fields
-            - ADD SECURITY
-            - Create the simple HTML view for the tickets
-            - Add the signature field
+            - Add security
+                - Save who delivered and who received payment?
+            - Add signature field for ticket
+            - Create ticket (after creation)
+            - Create ticket (after delivery)
             - Export to PDF
-            - HTML view for the mail to be sent
-            - Automailer
-            - Validate fields, most things shouldn't be valid if they're empty
-            - Notify successfull writes to the DB so the user knows things happened
-            - Increment dropdown fields that save the different models that exist as they're being added?
-                - Maybe there's an API for that?
+            - HTML to be sent for email
+            - Automailer API
+            - Notify the user when it's important to know something happened
+            - Add direct selling option
+            - API for equipment data
 
     */
 // --------------------- ON LOAD EVENTS - START ---------------------
@@ -79,6 +81,8 @@ $(document).ready(function (){
     var saveNewNoteButton = $('#save-new-note-button');
     var searchNumberButton = $('#search-number-button');
     var searchTicketButton = $('#search-ticket-button');
+    var reloadButton = $('#reload-button');
+    reloadButton.hide();
     var paymentButtons = $('.payment-section-buttons');
     var paymentCompletedSaveButton = $('#payment-completed-save-button');
     var paymentCompletedCancelButton = $('#payment-completed-cancel-button');
@@ -228,7 +232,7 @@ $(document).ready(function (){
         tdTicketDate.text(sliceDate.slice(0, sliceDate.lastIndexOf(" '")));
         newRow.append(tdTicketDate);
 
-        var fulloneCustomerName = pOneTicketData.custName + ' ' + pOneTicketData.custLastName;
+        var fulloneCustomerName = pOneTicketData.custName + ' ' + (pOneTicketData.custLastName).slice(0,1) + '.';
         var tdCustName = $("<td>");
         tdCustName.text(fulloneCustomerName);
         newRow.append(tdCustName);
@@ -244,6 +248,14 @@ $(document).ready(function (){
         var tdEqModel = $("<td>");
         tdEqModel.text(pOneTicketData.eqModel);
         newRow.append(tdEqModel);
+
+        var tdTicketCompleted = $("<td>");
+        if (pOneTicketData.deliverCompleted && pOneTicketData.paymentCompleted) {
+            tdTicketCompleted.text('Sí');
+        } else {
+            tdTicketCompleted.text('No');
+        }
+        newRow.append(tdTicketCompleted);
 
         var tdNotes = $("<td>");
         tdNotes.text(pOneTicketData.internalNotesCounter-1);
@@ -264,6 +276,7 @@ $(document).ready(function (){
         searchNumberButton.addClass('is-loading');
         var phoneNumberSearch = $('#search-number-input').val().trim();
         searchTicketsContainer.hide(900);
+        reloadButton.show();
 
         database.ref('customers')
         .orderByChild('cellNum')
@@ -305,6 +318,7 @@ $(document).ready(function (){
         searchTicketButton.addClass('is-loading');
         var ticketNumberSearch = parseInt($('#search-ticket-input').val().trim());
         searchTicketsContainer.hide(900);
+        reloadButton.show();
 
         ticketsRef
         .orderByChild('shortTicketNum')
@@ -332,8 +346,6 @@ $(document).ready(function (){
 
     //Display individually selected ticket
     function displayTicket(pTicketDBID, pCustDBID) {
-
-        //FIXME: Add the ticket closing info
         
         searchTicketsContainer.hide();
 
@@ -414,6 +426,39 @@ $(document).ready(function (){
             for (var key in selectedTicketData.notes) {
                 var note = selectedTicketData.notes[key];
                 createNotesInTicket(note);
+            }
+
+            //Ticket closing info
+
+            if(selectedTicketData.paymentCompleted) {
+                //show the section, hide the buttons
+                paymentSectionSelector.show();
+                paymentButtons.hide();
+
+                //put the data in the fields
+                paymentCompletedCheckboxSelector.prop('checked', true);
+                totalPaymentSelector.val(selectedTicketData.paymentTotal);
+                formatToMXN();
+                paymentMethodSelector.val(selectedTicketData.paymentMethod);
+                paymentCompletedDateSelector.val(selectedTicketData.paymentDate);
+
+                //disable the fields
+                paymentCompletedCheckboxSelector.prop('disabled', true);
+                totalPaymentSelector.prop('disabled', true);
+                paymentMethodSelector.prop('disabled', true);
+            }
+
+            if(selectedTicketData.deliverCompleted) {
+                //show the section, hide the buttons
+                deliverSectionSelector.show();
+                deliverButtons.hide();
+
+                //put the data in the fields
+                deliverCompletedCheckboxSelector.prop('checked', true);
+                deliverCompletedDateSelector.val(selectedTicketData.deliverDate);
+
+                //disable the field
+                deliverCompletedCheckboxSelector.prop('disabled', true);
             }
 
         })

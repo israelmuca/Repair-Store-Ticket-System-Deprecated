@@ -43,13 +43,13 @@
                 <div class="container">
                     <ul>
                         <li id="create-ticket-list">
-                            <a href="index.html" class="subtitle">Nuevo folio</a>
+                            <a href="index.html" class="subtitle">Crear</a>
                         </li>
                         <li class="is-active" id="search-tickets-list">
-                            <a  href="#" class="subtitle">Buscar folios</a>
+                            <a  href="#" class="subtitle">Buscar</a>
                         </li>
                         <li id="results-tickets-list">
-                            <a href="#" class="subtitle">Resultados</a>
+                            <a href="#" class="subtitle">Ticket</a>
                         </li>
                     </ul>
                 </div>
@@ -124,8 +124,8 @@
                 <div class="column is-1"><i id="recent-tickets-svg" class="fas fa-minus-circle"></i></div>
             </div>
 
-            <div class="minimize-recent-tickets">
-                <table class="table is-bordered is-striped is-hoverable is-fullwidth">
+            <div class="minimize-recent-tickets table-container">
+                <table class="table is-bordered is-striped is-hoverable is-fullwidth table-container">
                     <thead>
                         <tr>
                             <th>Folio</th>
@@ -134,6 +134,7 @@
                             <th>Equipo</th>
                             <th>Marca</th>
                             <th>Modelo</th>
+                            <th>Cerrado</th>
                             <th>Notas</th>
                         </tr>
                     </thead>
@@ -142,6 +143,11 @@
                 </table>
             </div>
 
+            <div class="buttons has-addons is-right">
+                <a  href="." class="button is-info" id="reload-button">
+                    Restablecer
+                </a>
+            </div>
         </div>
 
     </div>
