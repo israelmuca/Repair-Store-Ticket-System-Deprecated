@@ -10,3 +10,7 @@
 label.checkbox:not(:first-child) {
     margin-left: 15px;
 }
+
+.error-text {
+    padding-top: 5px;
+}

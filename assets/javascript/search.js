@@ -2,9 +2,6 @@ $(document).ready(function (){
     /*
 
         TODO:
-            - Add button when user searchs, to reload the page
-            - Fix the wording when user searchs
-            - Validate fields
             - Add security
                 - Save who delivered and who received payment?
             - Add signature field for ticket
@@ -98,6 +95,9 @@ $(document).ready(function (){
     var recentTicketsContainer = $('#recent-tickets-container');
 
     //Information fields (inputs, checks, etc...)
+
+    var searchText = $('#search-text');
+
     var custNameSelector = $('#cust-name');
     var custLastNameSelector = $('#cust-last-name');
     var cellNumSelector = $('#cellphone-number');
@@ -272,7 +272,6 @@ $(document).ready(function (){
 
     //Search the DB for the phone number
     function searchNumber() {
-        //TODO: Validate the field is not empty
         searchNumberButton.addClass('is-loading');
         var phoneNumberSearch = $('#search-number-input').val().trim();
         searchTicketsContainer.hide(900);
@@ -294,8 +293,9 @@ $(document).ready(function (){
                         .child(key)
                         .once("value")
                         .then(function(oneTicketSnapshot) {
-                            var oneTicketData = oneTicketSnapshot.val()
+                            var oneTicketData = oneTicketSnapshot.val();
                             createRowWithTicket(oneTicketData, 'prepend');
+                            searchText.text('15 folios más recientes de ' +oneTicketData.custName+ ' ' +oneTicketData.custLastName);
                         })    
                     }
 
@@ -314,7 +314,6 @@ $(document).ready(function (){
 
     //Search the DB for a ticket number
     function searchTicket() {
-        //TODO: Validate the field is not empty
         searchTicketButton.addClass('is-loading');
         var ticketNumberSearch = $('#search-ticket-input').val().trim();
         searchTicketsContainer.hide(900);
@@ -706,20 +705,35 @@ $(document).ready(function (){
 
     //Add individual note to tickets
     function saveNewNoteInTicket() {
-        //TODO: Validate the field is not empty
+        
+        //Confirm a radio is selected
+        if(!($('input[name="note-type-' + ticketInternalNotesCounter + '"]:checked')[0])) {
+            $('#error-text-note').removeClass('is-invisible');
+            return;
+        }
+        $('#error-text-note').addClass('is-invisible');
 
-        //Disable the fields, then get their values
+        //Get the values
         //Remove the '-x' before we can save it to the DB
+        var newNoteTypeWithNumber = $('input[name="note-type-' + ticketInternalNotesCounter + '"]:checked')[0].id;
+        var newNoteType = newNoteTypeWithNumber.slice(0, newNoteTypeWithNumber.lastIndexOf('-'))
+        var newNoteDate = $('#new-ticket-date-' + ticketInternalNotesCounter).val();
+        var newNoteText = $('#ticket-text-' + ticketInternalNotesCounter).val();
+
+        //Confirm text is written
+        if (!newNoteText) {
+            $('#error-text-note').removeClass('is-invisible');
+            return;
+        }
+        $('#error-text-note').addClass('is-invisible');
+
+        //Disable the fields once validation is done
+        $('#new-ticket-date-' + ticketInternalNotesCounter).prop('disabled', true);
+        $('#ticket-text-' + ticketInternalNotesCounter).prop('disabled', true);
         for(var i=0; i < radioOptions.length; i++) { //Disable all radios
             $('#' + radioIDs[i]+ '-' + ticketInternalNotesCounter).prop('disabled', true);
         }
-        var newNoteTypeWithNumber = $('input[name="note-type-' + ticketInternalNotesCounter + '"]:checked')[0].id;
-        var newNoteType = newNoteTypeWithNumber.slice(0, newNoteTypeWithNumber.lastIndexOf('-'))
 
-        $('#new-ticket-date-' + ticketInternalNotesCounter).prop('disabled', true);
-        var newNoteDate = $('#new-ticket-date-' + ticketInternalNotesCounter).val();
-        $('#ticket-text-' + ticketInternalNotesCounter).prop('disabled', true);
-        var newNoteText = $('#ticket-text-' + ticketInternalNotesCounter).val();
 
         var newNoteID = ticketsRef.child(ticketDBID + '/notes').push().key;
         database.ref('/tickets/' + ticketDBID + '/notes')
@@ -760,12 +774,17 @@ $(document).ready(function (){
     }
 
     function savePayment() {
-        //TODO: Validate fields with switch
 
         var paymentTotal = numeral(totalPaymentSelector.val())._value; //Make the payment total a number w/o format
         var paymentMethod = paymentMethodSelector.val();
         var paymentDate = paymentCompletedDateSelector.val();
         var paymentTimestamp = firebase.database.ServerValue.TIMESTAMP;
+
+        if (!paymentTotal || !paymentMethod) {
+            $('#error-text-payment').removeClass('is-invisible');
+            return;
+        }
+        $('#error-text-payment').addClass('is-invisible');
 
 
         ticketsRef
@@ -819,7 +838,6 @@ $(document).ready(function (){
     }
 
     function saveDeliver() {
-        //TODO: Validate fields with switch
 
         var deliverDate = deliverCompletedDateSelector.val();
         var deliverTimestamp = firebase.database.ServerValue.TIMESTAMP;

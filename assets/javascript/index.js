@@ -226,7 +226,6 @@ $(document).ready(function (){
 
     //customer exists in DB and info has been modified, save cust
     function saveExistCustData() {
-        //TODO: Validate fields not empty
         //Get data from inputs
         custName = custNameSelector.val().trim();
         custLastName = custLastNameSelector.val().trim();
@@ -236,6 +235,12 @@ $(document).ready(function (){
         contactMetCall = contactMetCallSelector[0].checked;
         contactMetEmail = contactMetEmailSelector[0].checked;
         contactMetWhats = contactMetWhatsSelector[0].checked;
+
+        if (!custName || !custLastName || !cellNum || !email || !zipCode ) {
+            $('#error-text-customer').removeClass('is-invisible');
+            return;
+        }
+        $('#error-text-customer').addClass('is-invisible');
 
 
         database.ref('/customers')
@@ -277,7 +282,6 @@ $(document).ready(function (){
 
     //customer doesn't exist in DB, create new customer
     function saveNewCustData() {
-        //TODO: Validate fields not empty
         //Get data from inputs
         custName = custNameSelector.val().trim();
         custLastName = custLastNameSelector.val().trim();
@@ -287,6 +291,12 @@ $(document).ready(function (){
         contactMetCall = contactMetCallSelector[0].checked;
         contactMetEmail = contactMetEmailSelector[0].checked;
         contactMetWhats = contactMetWhatsSelector[0].checked;
+
+        if (!custName || !custLastName || !cellNum || !email || !zipCode ) {
+            $('#error-text-customer').removeClass('is-invisible');
+            return;
+        }
+        $('#error-text-customer').addClass('is-invisible');
 
         //Calculate the saved date right before the values are saved
         nowDate = moment().format();
@@ -342,20 +352,25 @@ $(document).ready(function (){
     }
 
     function createTicket() {
-        //TODO: Validate fields not empty
         custName = custNameSelector.val().trim();
         custLastName = custLastNameSelector.val().trim();
 
         fullTicketNum = ticketNumSelector.val().trim();
         date = dateSelector.val().trim();
 
-        eqType = eqTypeSelector.val().trim();
+        eqType = eqTypeSelector.val();
         eqBrand = eqBrandSelector.val().trim();
         eqModel = eqModelSelector.val().trim();
         eqSerialNum = eqSerialNumSelector.val().trim();
         characteristics = characteristicsSelector.val().trim();
         accesories = accesoriesSelector.val().trim();
         reasonToVisit = reasonToVisitSelector.val().trim();
+
+        if (!fullTicketNum || !eqType || !eqBrand || !eqModel || !eqSerialNum || !characteristics || !accesories || !reasonToVisit ) {
+            $('#error-text-ticket').removeClass('is-invisible');
+            return;
+        }
+        $('#error-text-ticket').addClass('is-invisible');
 
         //Calculate the saved date right before the values are saved
         nowDate = moment().format();
