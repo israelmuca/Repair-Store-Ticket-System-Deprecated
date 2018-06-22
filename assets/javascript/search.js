@@ -316,12 +316,12 @@ $(document).ready(function (){
     function searchTicket() {
         //TODO: Validate the field is not empty
         searchTicketButton.addClass('is-loading');
-        var ticketNumberSearch = parseInt($('#search-ticket-input').val().trim());
+        var ticketNumberSearch = $('#search-ticket-input').val().trim();
         searchTicketsContainer.hide(900);
         reloadButton.show();
 
         ticketsRef
-        .orderByChild('shortTicketNum')
+        .orderByChild('searchTicketNum')
         .equalTo(ticketNumberSearch)
         .once("value")
         .then(function(snapshot) {
