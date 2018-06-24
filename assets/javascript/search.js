@@ -28,6 +28,9 @@ $(document).ready(function (){
     firebase.initializeApp(config);
     var database = firebase.database();
 
+    //Verify if the user has logged in
+    checkLoginStatus();
+
     var ticketsRef = database.ref('/tickets');
     var customersRef = database.ref('customers/');
 
@@ -189,15 +192,53 @@ $(document).ready(function (){
     //Click listener for the cancel deliver button
     deliverCompletedCancelButton.on('click', cancelDeliver);
 
-    //Click listener to close the modal
-    $('#modal-close-button').on('click', closeModal);
-    $('#modal-close-background').on('click', closeModal);
-
 
     // --------------------- EVENT LISTENERS - END ---------------------
 
 
     // --------------------- FUNCTIONS - START ---------------------
+
+    //Verify the user's login status
+    function checkLoginStatus() {
+        firebase.auth().onAuthStateChanged(function (user) {
+            console.log(user)
+            if (!user) {
+                //Take the user to the login page
+                window.location.href = 'login.html';
+            } else {
+                //validate user is auth
+                isUserAuth(user.uid);
+            }
+        });
+    }
+
+    //Check if user is authorized to actually use the system
+    function isUserAuth(pUserUid) {
+        //Query the DB
+        database.ref('users')
+        .orderByChild('uid')
+        .equalTo(pUserUid)
+        .once('value')
+        .then(function(snapshot) {
+            if(snapshot.val()) {
+                //User exists, let them continue
+                userName = snapshot.val().name;
+            } else {
+                //User not authorized, tell them, then take them to the login
+
+                //Modify the texts in the modal
+                $('.modal-card-title').text('¡Usuario no autorizado!');
+                $('.modal-card-body').html('<p>Asegúrate de hacer login con el usuario que te fue proporcionado</p>');
+
+                //Activate the modal
+                $('.modal').addClass('is-active');
+
+                setTimeout(function(){
+                    window.location.href = 'login.html';
+                }, 5000);
+            }
+        })
+    }
 
     ////Fills the recent-tickets-table
     function fillRecentTickets() {
@@ -869,12 +910,6 @@ $(document).ready(function (){
         deliverCompletedCheckboxSelector.prop('checked', false);
     }
 
-    function closeModal() {
-        searchNumberButton.removeClass('is-loading');
-        searchTicketButton.removeClass('is-loading');
-        searchTicketsContainer.show();
-        $('.modal').removeClass('is-active');
-    }
 
     //Update individually selected ticket
     function updateTicket() {

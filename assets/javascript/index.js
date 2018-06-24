@@ -13,6 +13,9 @@ $(document).ready(function (){
     firebase.initializeApp(config);
     var database = firebase.database();
 
+    //Verify if the user has logged in
+    checkLoginStatus();
+
     //Sets the date for the new tickets to now; SAVE BUTTON SHOULD SAVE WITH HOUR
     $('#new-ticket-date-now').val(moment().format("dddd, D MMMM 'YY, h:mm a"));
     $('#new-ticket-date-now').prop('disabled', true);
@@ -30,6 +33,8 @@ $(document).ready(function (){
     var minimizeEquipData = false;
     
     var mostRecentTicketNum;
+
+    var userName;
 
     //ticket data
     var ticketDBID;
@@ -125,9 +130,55 @@ $(document).ready(function (){
         getLatestTicketNum();
     });
 
+    //Click listener to close the modal
+    $('#modal-close-button').on('click', closeModal);
+    $('#modal-close-background').on('click', closeModal);
+
 // --------------------- EVENT LISTENERS -   END ---------------------
 //-----------------
 // --------------------- FUNCTIONS - START ---------------------
+
+    //Verify the user's login status
+    function checkLoginStatus() {
+        firebase.auth().onAuthStateChanged(function (user) {
+            console.log(user)
+            if (!user) {
+                //Take the user to the login page
+                window.location.href = 'login.html';
+            } else {
+                //validate user is auth
+                isUserAuth(user.uid);
+            }
+        });
+    }
+
+    //Check if user is authorized to actually use the system
+    function isUserAuth(pUserUid) {
+        //Query the DB
+        database.ref('users')
+        .orderByChild('uid')
+        .equalTo(pUserUid)
+        .once('value')
+        .then(function(snapshot) {
+            if(snapshot.val()) {
+                //User exists, let them continue
+                userName = snapshot.val().name;
+            } else {
+                //User not authorized, tell them, then take them to the login
+
+                //Modify the texts in the modal
+                $('.modal-card-title').text('¡Usuario no autorizado!');
+                $('.modal-card-body').html('<p>Asegúrate de hacer login con el usuario que te fue proporcionado</p>');
+
+                //Activate the modal
+                $('.modal').addClass('is-active');
+
+                setTimeout(function(){
+                    window.location.href = 'login.html';
+                }, 5000);
+            }
+        })
+    }
 
     //Query Firebase for the phone number
     function queryFirebaseCellNum() {
@@ -410,7 +461,7 @@ $(document).ready(function (){
                     dateAdded: firebase.database.ServerValue.TIMESTAMP
                 })
                 ).then(
-                    database.ref('/sucursales')
+                    database.ref('/locations')
                     .child(location)
                     .update({
                         latestTicketNum: shortTicketNum
@@ -419,7 +470,7 @@ $(document).ready(function (){
 
     function getLatestTicketNum() {
 
-        database.ref('/sucursales')
+        database.ref('/locations')
         .child(location)
         .once("value")
         .then(function(latestTicketNumberSnapshot) {
