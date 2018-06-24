@@ -2,7 +2,6 @@ $(document).ready(function (){
     /*
 
         TODO:
-            - Add security
                 - Save who delivered and who received payment?
             - Add signature field for ticket
             - Create ticket (after creation)
@@ -11,7 +10,7 @@ $(document).ready(function (){
             - HTML to be sent for email
             - Automailer API
             - Notify the user when it's important to know something happened
-            - Add direct selling option
+            - Add direct selling option (https://css-tricks.com/html-invoice/)
             - API for equipment data
 
     */
@@ -191,6 +190,11 @@ $(document).ready(function (){
 
     //Click listener for the cancel deliver button
     deliverCompletedCancelButton.on('click', cancelDeliver);
+
+    //Click listener for logout button
+    $('#log-out-button').on('click', function(){
+        firebase.auth().signOut();
+    });
 
 
     // --------------------- EVENT LISTENERS - END ---------------------

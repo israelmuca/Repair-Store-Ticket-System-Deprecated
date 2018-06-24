@@ -130,9 +130,10 @@ $(document).ready(function (){
         getLatestTicketNum();
     });
 
-    //Click listener to close the modal
-    $('#modal-close-button').on('click', closeModal);
-    $('#modal-close-background').on('click', closeModal);
+    //Click listener for logout button
+    $('#log-out-button').on('click', function(){
+        firebase.auth().signOut();
+    });
 
 // --------------------- EVENT LISTENERS -   END ---------------------
 //-----------------
