@@ -21,15 +21,17 @@
                         <img src="assets/images/logos/XT-icono-gradiente-tamNormal.png" alt="Logo">
                     </a>
                 </div>
-                <div class="navbar-end">
-                    <span class="navbar-item">
-                        <a class="button is-dark is-inverted" id="log-out-button" >
-                            <span class="icon">
-                            <i class="fas fa-sign-out-alt"></i>
-                            </span>
-                            <span>Cerrar Sesión</span>
-                        </a>
-                    </span>
+                <div class="navbar-menu is-active">
+                    <div class="navbar-end">
+                        <span class="navbar-item">
+                            <a class="button is-dark is-inverted" id="log-out-button">
+                                <span id="user-name-log-out">Cerrar Sesión</span>
+                                <span class="icon">
+                                <i class="fas fa-sign-out-alt"></i>
+                                </span>
+                            </a>
+                        </span>
+                    </div>
                 </div>
             </div>
             </nav>
@@ -247,6 +249,14 @@
                         <label class="label">Número de folio</label>
                         <div class="control">
                             <input disabled class="input" id="ticket-number" type="text" placeholder="Selecciona una sucursal">
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <label class="label">Creado por</label>
+                        <div class="control">
+                            <input disabled class="input" id="user-name-ticket" type="text">
                         </div>
                     </div>
                 </div>

@@ -43,6 +43,7 @@ $(document).ready(function (){
     var shortTicketNum;
     var searchTicketNum;
     var date;
+    var ticketCreatedBy;
 
     //cust data
     var custDBID;
@@ -162,8 +163,11 @@ $(document).ready(function (){
         .once('value')
         .then(function(snapshot) {
             if(snapshot.val()) {
-                //User exists, let them continue
-                userName = snapshot.val().name;
+                //User exists, save the user name and continue
+                snapshot.forEach(function(userSnapshot){
+                    userName = userSnapshot.val().name;
+                    $('#user-name-log-out').text(userName);
+                })
             } else {
                 //User not authorized, tell them, then take them to the login
 
@@ -441,6 +445,7 @@ $(document).ready(function (){
             fullTicketNum: fullTicketNum,
             searchTicketNum: searchTicketNum,
             ticketID: ticketDBID,
+            ticketCreatedBy: ticketCreatedBy,
             date: date,
 
             eqType: eqType,
@@ -470,6 +475,10 @@ $(document).ready(function (){
     }
 
     function getLatestTicketNum() {
+
+        //Also set user who created ticket
+        $('#user-name-ticket').val(userName);
+        ticketCreatedBy = userName;
 
         database.ref('/locations')
         .child(location)

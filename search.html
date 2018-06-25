@@ -24,10 +24,10 @@
                 <div class="navbar-end">
                     <span class="navbar-item">
                         <a class="button is-dark is-inverted" id="log-out-button">
+                            <span id="user-name-log-out">Cerrar Sesión</span>
                             <span class="icon">
                             <i class="fas fa-sign-out-alt"></i>
                             </span>
-                            <span>Cerrar Sesión</span>
                         </a>
                     </span>
                 </div>
@@ -191,6 +191,14 @@
                         <label class="label">Número de folio</label>
                         <div class="control">
                             <input class="input" id="ticket-number" type="text">
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <label class="label">Creado por</label>
+                        <div class="control">
+                            <input disabled class="input" id="user-name-ticket" type="text">
                         </div>
                     </div>
                 </div>
@@ -429,10 +437,14 @@
                                 <input type="radio" name="question-">
                                 Comunicación con cliente
                                 </label>
-                                <label class="radio">
-                                <input type="radio" name="question-">
-                                Entrega programada
-                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column is-2">
+                        <div class="field">
+                            <label class="label">Creada por</label>
+                            <div class="control">
+                                <input disabled class="input" id="user-name-note" type="text">
                             </div>
                         </div>
                     </div>
@@ -440,7 +452,7 @@
                         <div class="field">
                             <label class="label">Fecha</label>
                             <div class="control">
-                                <input id="new-ticket-date-now" class="input" type="text" placeholder="Hoy">
+                                <input id="new-ticket-date-now" class="input" type="text" placeholder="Hoy (dinámico)">
                             </div>
                         </div>
                     </div>
@@ -452,7 +464,7 @@
                     <div class="column">
                         <div class="field">
                             <div class="control">
-                                <textarea id="ticket-text-" class="textarea" placeholder="Cualquier interacción con el equipo o cliente debe de ser registrada aquí SIN EXCEPCIÓN.&#10;Recuerda ser lo más claro y explícito posible, preferible de más, no de menos"></textarea>
+                                <textarea id="ticket-text-" class="textarea" placeholder="Cualquier interacción con el equipo o cliente debe de ser registrada aquí SIN EXCEPCIÓN.&#10;Recuerda ser lo más claro y explícito posible, preferible de más, no de menos.&#10;Si envias archivos a cliente, debes poner enlaces a Google Drive con los archivos enviados."></textarea>
                             </div>
                         </div>
                     </div>
@@ -498,8 +510,16 @@
                         </div>
                     </div>
                     
+                    <div class="column is-2 payment-section">
+                        <div class="field">
+                            <label class="label">Cobrado por</label>
+                            <div class="control">
+                                <input disabled class="input" id="user-name-payment" type="text">
+                            </div>
+                        </div>
+                    </div>
 
-                    <div class="column is-3 payment-section">
+                    <div class="column is-2 payment-section">
                         <div class="field">
                             <label class="label">Cobro total</label>
                             <div class="control has-icons-left">
@@ -511,7 +531,7 @@
                         </div>
                     </div>
 
-                    <div class="column is-3 payment-section">
+                    <div class="column is-2 payment-section">
                         <div class="field">
                             <label class="label">Medio de pago</label>
                             <div class="control is-expanded">
@@ -581,7 +601,14 @@
                         </div>
                     </div>
 
-                    <div class="column is-2 deliver-section"></div>
+                    <div class="column is-2 deliver-section">
+                        <div class="field">
+                            <label class="label">Entregado por</label>
+                            <div class="control">
+                                <input disabled class="input" id="user-name-deliver" type="text">
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="column is-3 deliver-section">
                         <div class="field">
@@ -620,6 +647,7 @@
 
 
                 </div>
+                <div class="columns"><div class="column is-12"></div></div>
 
             </div>
     </div>

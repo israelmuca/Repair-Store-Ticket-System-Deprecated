@@ -2,7 +2,6 @@ $(document).ready(function (){
     /*
 
         TODO:
-                - Save who delivered and who received payment?
             - Add signature field for ticket
             - Create ticket (after creation)
             - Create ticket (after delivery)
@@ -111,6 +110,7 @@ $(document).ready(function (){
 
     var locationSelector = $('#location-select');
     var ticketNumSelector = $('#ticket-number');
+    var ticketCreatedBySelector =$('#user-name-ticket');
     var dateSelector = $('#ticket-date');
 
     var eqTypeSelector = $('#equipment-type');
@@ -205,7 +205,6 @@ $(document).ready(function (){
     //Verify the user's login status
     function checkLoginStatus() {
         firebase.auth().onAuthStateChanged(function (user) {
-            console.log(user)
             if (!user) {
                 //Take the user to the login page
                 window.location.href = 'login.html';
@@ -225,8 +224,11 @@ $(document).ready(function (){
         .once('value')
         .then(function(snapshot) {
             if(snapshot.val()) {
-                //User exists, let them continue
-                userName = snapshot.val().name;
+                //User exists, save the user name and continue
+                snapshot.forEach(function(userSnapshot){
+                    userName = userSnapshot.val().name;
+                    $('#user-name-log-out').text(userName);
+                })
             } else {
                 //User not authorized, tell them, then take them to the login
 
@@ -453,6 +455,7 @@ $(document).ready(function (){
             //Populate the selected-ticket-container with the data from the ticket
             locationSelector.val(selectedTicketData.location);
             ticketNumSelector.val(selectedTicketData.fullTicketNum);
+            ticketCreatedBySelector.val(selectedTicketData.ticketCreatedBy);
             dateSelector.val(selectedTicketData.date);
 
             eqTypeSelector.val(selectedTicketData.eqType);
@@ -481,6 +484,7 @@ $(document).ready(function (){
 
                 //put the data in the fields
                 paymentCompletedCheckboxSelector.prop('checked', true);
+                $('#user-name-payment').val(selectedTicketData.paymentUserBy);
                 totalPaymentSelector.val(selectedTicketData.paymentTotal);
                 formatToMXN();
                 paymentMethodSelector.val(selectedTicketData.paymentMethod);
@@ -499,6 +503,9 @@ $(document).ready(function (){
 
                 //put the data in the fields
                 deliverCompletedCheckboxSelector.prop('checked', true);
+                $('#user-name-deliver').val(selectedTicketData.deliverUserBy);
+
+
                 deliverCompletedDateSelector.val(selectedTicketData.deliverDate);
 
                 //disable the field
@@ -535,6 +542,7 @@ $(document).ready(function (){
 
         //Save all the values to vars
         var noteInternalNotesCounter = pNote.internalNotesCounter;
+        var noteBy = pNote.noteBy
         var noteDate = pNote.noteDate;
         var noteID = pNote.noteID;
         var noteType = pNote.noteType;
@@ -584,6 +592,33 @@ $(document).ready(function (){
 
             controlNoteType.append(labelRadio);
         }
+
+        //Create the 'created by' field next to the radios
+        var columnBy = $('<div>');
+        columnBy.addClass('column');
+        columnBy.addClass('is-2');
+        columnsNoteTypeDate.append(columnBy);
+        var fieldBy = $('<div>');
+        fieldBy.addClass('field');
+        columnBy.append(fieldBy);
+        var labelBy = $('<label>');
+        labelBy.addClass('label');
+        labelBy.text('Creada por');
+        fieldBy.append(labelBy);
+
+        var controlBy = $('<div>');
+        controlBy.addClass('control');
+        fieldBy.append(controlBy);
+
+        //Create the textarea with incremental ID to save the created by to the DB
+        var inputAreaBy = $('<input>');
+        inputAreaBy.addClass('input');
+        inputAreaBy.attr('type', 'text');
+        inputAreaBy.attr('id', 'created-by-' + noteInternalNotesCounter);
+        inputAreaBy.val(userName);
+        inputAreaBy.prop('disabled', true);
+        controlBy.append(inputAreaBy)
+
 
         //Create the date and place it on the right side
         var columnDate = $('<div>');
@@ -688,6 +723,32 @@ $(document).ready(function (){
             controlNoteType.append(labelRadio);
         }
 
+        //Create the 'created by' field next to the radios
+        var columnBy = $('<div>');
+        columnBy.addClass('column');
+        columnBy.addClass('is-2');
+        columnsNoteTypeDate.append(columnBy);
+        var fieldBy = $('<div>');
+        fieldBy.addClass('field');
+        columnBy.append(fieldBy);
+        var labelBy = $('<label>');
+        labelBy.addClass('label');
+        labelBy.text('Creada por');
+        fieldBy.append(labelBy);
+
+        var controlBy = $('<div>');
+        controlBy.addClass('control');
+        fieldBy.append(controlBy);
+
+        //Create the textarea with incremental ID to save the created by to the DB
+        var inputAreaBy = $('<input>');
+        inputAreaBy.addClass('input');
+        inputAreaBy.attr('type', 'text');
+        inputAreaBy.attr('id', 'created-by-' + ticketInternalNotesCounter);
+        inputAreaBy.val(userName);
+        inputAreaBy.prop('disabled', true);
+        controlBy.append(inputAreaBy)
+
         //Create the date and place it on the right side
         var columnDate = $('<div>');
         columnDate.addClass('column');
@@ -739,7 +800,8 @@ $(document).ready(function (){
         textareaTicket.addClass('textarea');
         textareaTicket.attr('placeholder',
             'Cualquier interacción con el equipo o cliente debe de ser registrada aquí SIN EXCEPCIÓN.\r\n' 
-            + 'Recuerda ser lo más claro y explícito posible, preferible de más, no de menos.\r\n');
+            + 'Recuerda ser lo más claro y explícito posible, preferible de más, no de menos.\r\n'
+            + 'Si envias archivos a cliente, debes poner enlaces a Google Drive con los archivos enviados.');
         textareaTicket.attr('id', 'ticket-text-' + ticketInternalNotesCounter);
         controlTicket.append(textareaTicket);
 
@@ -761,7 +823,8 @@ $(document).ready(function (){
         //Get the values
         //Remove the '-x' before we can save it to the DB
         var newNoteTypeWithNumber = $('input[name="note-type-' + ticketInternalNotesCounter + '"]:checked')[0].id;
-        var newNoteType = newNoteTypeWithNumber.slice(0, newNoteTypeWithNumber.lastIndexOf('-'))
+        var newNoteType = newNoteTypeWithNumber.slice(0, newNoteTypeWithNumber.lastIndexOf('-'));
+        var newNoteBy = userName;
         var newNoteDate = $('#new-ticket-date-' + ticketInternalNotesCounter).val();
         var newNoteText = $('#ticket-text-' + ticketInternalNotesCounter).val();
 
@@ -812,14 +875,17 @@ $(document).ready(function (){
             paymentSectionSelector.show();
             hidePaymentSection = false;
             paymentCompletedDateSelector.val(moment().format("dddd, D MMMM 'YY, h:mm a"));
+            $('#user-name-payment').val(userName);
         } else {
             paymentSectionSelector.hide();
             hidePaymentSection = true;
+            $('#error-text-payment').addClass('is-invisible');
         }
     }
 
     function savePayment() {
 
+        var paymentUserBy = userName;
         var paymentTotal = numeral(totalPaymentSelector.val())._value; //Make the payment total a number w/o format
         var paymentMethod = paymentMethodSelector.val();
         var paymentDate = paymentCompletedDateSelector.val();
@@ -836,6 +902,7 @@ $(document).ready(function (){
         .child(ticketDBID)
         .update({
             paymentCompleted: true,
+            paymentUserBy: paymentUserBy,
             paymentTotal: paymentTotal,
             paymentMethod: paymentMethod,
             paymentDate: paymentDate,
@@ -846,6 +913,7 @@ $(document).ready(function (){
             .child(custDBID + '/tickets/' + ticketDBID)
             .update({
                 paymentCompleted: true,
+                paymentUserBy: paymentUserBy,
                 paymentTotal: paymentTotal,
                 paymentMethod: paymentMethod,
                 paymentDate: paymentDate,
@@ -864,6 +932,7 @@ $(document).ready(function (){
         paymentSectionSelector.hide();
         hidePaymentSection = true;
         paymentCompletedCheckboxSelector.prop('checked', false);
+        $('#error-text-payment').addClass('is-invisible');
     }
 
     function formatToMXN() {
@@ -876,6 +945,7 @@ $(document).ready(function (){
             deliverSectionSelector.show();
             hideDeliverSection = false;
             deliverCompletedDateSelector.val(moment().format("dddd, D MMMM 'YY, h:mm a"));
+            $('#user-name-deliver').val(userName);
         } else {
             deliverSectionSelector.hide();
             hideDeliverSection = true;
@@ -885,12 +955,14 @@ $(document).ready(function (){
     function saveDeliver() {
 
         var deliverDate = deliverCompletedDateSelector.val();
+        var deliverUserBy = userName;
         var deliverTimestamp = firebase.database.ServerValue.TIMESTAMP;
 
         ticketsRef
         .child(ticketDBID)
         .update({
             deliverCompleted: true,
+            deliverUserBy: deliverUserBy,
             deliverDate: deliverDate,
             deliverTimestamp: deliverTimestamp
         })
@@ -899,6 +971,7 @@ $(document).ready(function (){
             .child(custDBID + '/tickets/' + ticketDBID)
             .update({
                 deliverCompleted: true,
+                deliverUserBy: deliverUserBy,
                 deliverDate: deliverDate,
                 deliverTimestamp: deliverTimestamp
         }))
