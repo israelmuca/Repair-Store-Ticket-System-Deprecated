@@ -136,6 +136,12 @@ $(document).ready(function (){
         firebase.auth().signOut();
     });
 
+    //Click listener for the ticket print button
+    $('#print-ticket-button').on('click', function(){
+        printJS('print-view-ticket', 'html');
+        console.log('print');
+    })
+
 // --------------------- EVENT LISTENERS -   END ---------------------
 //-----------------
 // --------------------- FUNCTIONS - START ---------------------
@@ -172,11 +178,11 @@ $(document).ready(function (){
                 //User not authorized, tell them, then take them to the login
 
                 //Modify the texts in the modal
-                $('.modal-card-title').text('¡Usuario no autorizado!');
-                $('.modal-card-body').html('<p>Asegúrate de hacer login con el usuario que te fue proporcionado</p>');
+                $('#modal-user-auth-title').text('¡Usuario no autorizado!');
+                $('#modal-user-auth-body').html('<p>Asegúrate de hacer login con el usuario que te fue proporcionado</p>');
 
                 //Activate the modal
-                $('.modal').addClass('is-active');
+                $('#modal-user-auth').addClass('is-active');
 
                 setTimeout(function(){
                     window.location.href = 'login.html';
