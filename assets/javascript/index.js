@@ -36,6 +36,8 @@ $(document).ready(function (){
 
     var userName;
 
+    var printTimes = 0;
+
     //ticket data
     var ticketDBID;
     var location;
@@ -122,8 +124,12 @@ $(document).ready(function (){
     modCustButton.on('click', modCustData);
     saveExistCustButton.on('click', saveExistCustData);
     saveNewCustButton.on('click', saveNewCustData);
-    //Click listener to save the form's data to FireBase
-    addTicketButton.on('click', createTicket);
+
+    //Click listener to show the button in the modal and prepare to print it
+    $('#confirm-ticket-button').on('click', prepareModalPrint); 
+    
+    //Now send from the modal to the DB after printing
+    addTicketButton.on('click', createTicket); 
 
     //Change listener to apply the 1st character of the new ticket number
     locationSelector.on('change', function() {
@@ -139,7 +145,11 @@ $(document).ready(function (){
     //Click listener for the ticket print button
     $('#print-ticket-button').on('click', function(){
         printJS('print-view-ticket', 'html');
-        console.log('print');
+        printTimes++;
+        if(printTimes == 2) {
+            //show the save cust button
+            addTicketButton.show();
+        }
     })
 
 // --------------------- EVENT LISTENERS -   END ---------------------
@@ -413,7 +423,10 @@ $(document).ready(function (){
         )
     }
 
-    function createTicket() {
+    //Confirm all the data was entered, and activate the print modal
+    function prepareModalPrint() {
+
+        //Validate there's no empty fields
         custName = custNameSelector.val().trim();
         custLastName = custLastNameSelector.val().trim();
 
@@ -433,6 +446,24 @@ $(document).ready(function (){
             return;
         }
         $('#error-text-ticket').addClass('is-invisible');
+
+        //Activate and pass the values to the modal
+        $('#modal-ticket').addClass('is-active');
+
+        addTicketButton.hide();
+        
+        $('#print-view-ticket-num').text(fullTicketNum);
+        $('#print-view-ticket-date').text(date);
+        $('#print-view-ticket-cust').text(custName + custLastName);
+        $('#print-view-ticket-brandmodel').text(eqBrand + eqModel);
+        $('#print-view-ticket-serial').text(eqSerialNum);
+        $('#print-view-ticket-characteristics').text(characteristics);
+        $('#print-view-ticket-accesories').text(accesories);
+        $('#print-view-ticket-reason').text(reasonToVisit);
+    }
+
+    //Once the modal is printed, save the ticket!
+    function createTicket() {
 
         //Calculate the saved date right before the values are saved
         nowDate = moment().format();

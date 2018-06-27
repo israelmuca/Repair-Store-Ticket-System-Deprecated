@@ -354,6 +354,10 @@ $(document).ready(function (){
 
                 //Activate the modal
                 $('.modal').addClass('is-active');
+
+                setTimeout(function(){ //FIXME: Shouldn't use this!
+                    window.location.href = 'search.html';
+                }, 3000);
             }
         });
 
@@ -385,6 +389,10 @@ $(document).ready(function (){
 
                 //Activate the modal
                 $('.modal').addClass('is-active');
+
+                setTimeout(function(){ //FIXME: Shouldn't use this!
+                    window.location.href = 'search.html';
+                }, 3000);
             }
         })
 
