@@ -623,7 +623,7 @@ $(document).ready(function (){
         inputAreaBy.addClass('input');
         inputAreaBy.attr('type', 'text');
         inputAreaBy.attr('id', 'created-by-' + noteInternalNotesCounter);
-        inputAreaBy.val(userName);
+        inputAreaBy.val(noteBy);
         inputAreaBy.prop('disabled', true);
         controlBy.append(inputAreaBy)
 
@@ -858,6 +858,7 @@ $(document).ready(function (){
             noteType: newNoteType,
             noteDate: newNoteDate,
             noteText: newNoteText,
+            noteBy: newNoteBy,
             noteID: newNoteID,
             internalNotesCounter: ticketInternalNotesCounter
         })
