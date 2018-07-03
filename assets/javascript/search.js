@@ -3,6 +3,8 @@ $(document).ready(function (){
 
         TODO:
             - Add signature field for ticket
+            - Analyse a way to add smaller payments
+            - Analyse a way to create a little quotes app
             - Create ticket (after creation)
             - Create ticket (after delivery)
             - Export to PDF
@@ -251,7 +253,7 @@ $(document).ready(function (){
         //Show last 15 tickets from DB
         database.ref('/tickets')
         .orderByChild('descOrder')
-        .limitToLast(15)
+        .limitToFirst(15)
         .on("child_added", function(ticketsSnapshot) {
 
             var oneTicketChild = ticketsSnapshot.val();
@@ -366,7 +368,7 @@ $(document).ready(function (){
     //Search the DB for a ticket number
     function searchTicket() {
         searchTicketButton.addClass('is-loading');
-        var ticketNumberSearch = $('#search-ticket-input').val().trim();
+        var ticketNumberSearch = ($('#search-ticket-input').val().trim()).toUpperCase();
         searchTicketsContainer.hide(900);
         reloadButton.show();
 
