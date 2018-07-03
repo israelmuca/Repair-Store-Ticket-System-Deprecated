@@ -253,7 +253,7 @@ $(document).ready(function (){
         //Show last 15 tickets from DB
         database.ref('/tickets')
         .orderByChild('descOrder')
-        .limitToFirst(15)
+        .limitToFirst(30)
         .on("child_added", function(ticketsSnapshot) {
 
             var oneTicketChild = ticketsSnapshot.val();
