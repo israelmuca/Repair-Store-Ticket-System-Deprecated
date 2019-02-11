@@ -2,11 +2,21 @@ $(document).ready(function (){
     /*
 
         TODO:
+            - Add pwd field
+            - Add 'transferencia' to payment options
+            - Add reprint of ticket
+            - Add a closing ticket
+            - Reapertura por garantía
+            
+            - Let the user come back after 1st print of ticket (for if there's an error)
+            - Add a selling ticket that can or cannot be added to a specific customer
+            - prepare weekly report
+            - add a search option of non closed tickets
+            - add a task panel for technicians to know what they need to work on
+            - add user's job for filtering of options
             - Add signature field for ticket
             - Analyse a way to add smaller payments
             - Analyse a way to create a little quotes app
-            - Create ticket (after creation)
-            - Create ticket (after delivery)
             - Export to PDF
             - HTML to be sent for email
             - Automailer API
@@ -251,13 +261,23 @@ $(document).ready(function (){
     ////Fills the recent-tickets-table
     function fillRecentTickets() {
         //Show last 15 tickets from DB
+        // database.ref('/tickets')
+        // .orderByChild('descOrder')
+        // //.limitToFirst(200)
+        // .on("child_added", function(ticketsSnapshot) {
+
+        //     var oneTicketChild = ticketsSnapshot.val();
+        //     createRowWithTicket(oneTicketChild, 'append')
+
+        // })
+
+        //For use with reports
         database.ref('/tickets')
-        .orderByChild('descOrder')
-        .limitToFirst(30)
+        .orderByChild('paymentCompleted')
         .on("child_added", function(ticketsSnapshot) {
 
             var oneTicketChild = ticketsSnapshot.val();
-            createRowWithTicket(oneTicketChild, 'append')
+            createRowWithTicketReport(oneTicketChild, 'append');
 
         })
     }
@@ -303,6 +323,78 @@ $(document).ready(function (){
             tdTicketCompleted.text('Sí');
         } else {
             tdTicketCompleted.text('No');
+        }
+        newRow.append(tdTicketCompleted);
+
+        var tdNotes = $("<td>");
+        tdNotes.text(pOneTicketData.internalNotesCounter-1);
+        newRow.append(tdNotes);
+
+        //Finally, append or prepend the whole row to the tablebody
+        if (pOrder == 'prepend') {
+            tableBody.prepend(newRow);
+        } else if (pOrder == 'append') {
+            tableBody.append(newRow);
+        }
+        
+    }
+
+    //Delegate the row building here, to make sure other functions do only their main purpose
+    function createRowWithTicketReport(pOneTicketData, pOrder) {
+
+        //Activate for when I only want to see laptops
+        if(pOneTicketData.eqType != "Laptop") {
+            return;
+        }
+
+        //Activate for when I only want to see equipments that have been paid for
+        if(!pOneTicketData.paymentCompleted) {
+            return;
+        }
+
+        //Activate for when I only want to see equipments paid for with Card (debit or credit)
+        // if(pOneTicketData.paymentMethod.indexOf("Tarjeta") == -1) {
+        //     return;
+        // }
+
+        var tableBody = $("#table-body");
+        var mainRow = $("#table-body-main-row");
+        var newRow = $("<tr>");
+        newRow.attr('data-ticket-DBID', pOneTicketData.ticketID);
+        newRow.attr('data-ticket-custDBID', pOneTicketData.custID);
+        newRow.addClass('ticket');
+
+        var tdTicketNum = $("<td>");
+        tdTicketNum.text(pOneTicketData.fullTicketNum);
+        newRow.append(tdTicketNum);
+
+        var tdTicketDate= $("<td>");
+        var sliceDate = pOneTicketData.date;
+        tdTicketDate.text(sliceDate.slice(0, sliceDate.lastIndexOf(" '")));
+        newRow.append(tdTicketDate);
+
+        var fulloneCustomerName = pOneTicketData.custName + ' ' + (pOneTicketData.custLastName).slice(0,1) + '.';
+        var tdCustName = $("<td>");
+        tdCustName.text(fulloneCustomerName);
+        newRow.append(tdCustName);
+
+        var tdEqType = $("<td>");
+        tdEqType.text(pOneTicketData.eqType);
+        newRow.append(tdEqType);
+
+        var tdEqBrand = $("<td>");
+        tdEqBrand.text(pOneTicketData.paymentMethod);
+        newRow.append(tdEqBrand);
+
+        var tdEqModel = $("<td>");
+        tdEqModel.text(pOneTicketData.paymentTotal);
+        newRow.append(tdEqModel);
+
+        var tdTicketCompleted = $("<td>");
+        if (pOneTicketData.deliverCompleted && pOneTicketData.paymentCompleted) {
+            tdTicketCompleted.text(pOneTicketData.paymentDate);
+        } else {
+            tdTicketCompleted.text(pOneTicketData.paymentDate);
         }
         newRow.append(tdTicketCompleted);
 

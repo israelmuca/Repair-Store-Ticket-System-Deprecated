@@ -1,32 +1,28 @@
 // Initialize Firebase
-var config = {
-    apiKey: "AIzaSyAYkl5opTyW9YF7801KmgT9YUhpV0JhYGY",
-    authDomain: "notas-xtm-fixc.firebaseapp.com",
-    databaseURL: "https://notas-xtm-fixc.firebaseio.com",
-    projectId: "notas-xtm-fixc",
-    storageBucket: "notas-xtm-fixc.appspot.com",
-    messagingSenderId: "768789228246"
-};
-
+// 'config' is being imported through the HTML's script tag (./.env/firebase.config.js)
+// For your own development, you need to change the 'example.env' folder to '.env' and change the values inside to reflect the values you get from Firebase
 firebase.initializeApp(config);
 
-/*Take the user to the search page (for local work)*/
+// URL values to get the user to the main page once they login
+// They won't work in development, only once deployed
+// For local development you have to manually go to the index.html
 var oldURL = window.location.href;
 var newURL = oldURL.replace("login", "index");
-/*Otherwise, use the full url for index*/
 
-// FirebaseUI config.
+// FirebaseUI config
 var uiConfig = {
-    signInSuccessUrl: newURL,
+    signInSuccessUrl: newURL, // Our URL above
     signInOptions: [
-        // Gmail or email auth
+        // In here you can change the authorization providers you wish to use
+        // I chose Google and custom email
         firebase.auth.GoogleAuthProvider.PROVIDER_ID,
         firebase.auth.EmailAuthProvider.PROVIDER_ID,
     ],
     // Terms of service url.
-    tosUrl: '' //we'll get there...
+    tosUrl: ''
 };
 // Initialize the FirebaseUI Widget using Firebase.
 var loginUI = new firebaseui.auth.AuthUI(firebase.auth());
-// The start method will wait until the DOM is loaded.
+
+// The start method will wait until the DOM is loaded and then will put the login box in the UI
 loginUI.start('#login-ui', uiConfig);

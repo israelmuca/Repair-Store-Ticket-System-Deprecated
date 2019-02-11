@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>TechCRM</title>
+    <title>Ticket System</title>
+    <!-- CSS Files -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 <body>
-
     <!-- Header - begin -->
     <section class="hero is-dark is-bold is-small">
         <!-- Hero head: will stick at the top -->
@@ -25,7 +25,7 @@
                     <div class="navbar-end">
                         <span class="navbar-item">
                             <a class="button is-dark is-inverted" id="log-out-button">
-                                <span id="user-name-log-out">Cerrar Sesión</span>
+                                <span id="user-name-log-out">Log out</span>
                                 <span class="icon">
                                 <i class="fas fa-sign-out-alt"></i>
                                 </span>
@@ -41,24 +41,24 @@
         <div class="hero-body">
             <div class="container has-text-centered">
             <h1 class="title">
-                XpressTech.Mx / Fixcel
+                Company Name
             </h1>
             <h2 class="subtitle">
-                Sistema de folios
+                Ticket System
             </h2>
             </div>
         </div>
         
-        <!-- Hero footer: will stick at the bottom -->
+        <!-- Hero footer: will stick at the bottom of the hero -->
         <div class="hero-foot">
             <nav class="tabs is-boxed is-fullwidth">
                 <div class="container">
                     <ul>
                         <li class="is-active" id="create-note-list">
-                            <a href="#" class="subtitle">Crear</a>
+                            <a href="#" class="subtitle">Create</a>
                         </li>
                         <li id="search-notes-list">
-                            <a href="search.html" class="subtitle">Buscar</a>
+                            <a href="search.html" class="subtitle">Search</a>
                         </li>
                         <li id="results-notes-list">
                             <a href="#" class="subtitle">Ticket</a>
@@ -84,31 +84,28 @@
 
         <div class="box" id="validate-customer-exists">
             <div class="minimize-cust-data-click columns">
-                <div class="column is-12 has-text-left"><h2 class="subtitle">Validemos la existencia del cliente</h2></div>
+                <div class="column is-12 has-text-left"><h2 class="subtitle">Check if the customer exists</h2></div>
             </div>
             
             <div class="columns">
-    
                 <div class="column is-6">
                     <div class="field is-grouped">
                         <div class="control is-expanded has-icons-left">
-                            <input class="input" type="tel" placeholder="Introduce el número celular del cliente" id="cellphone-number-validate">
+                            <input class="input" type="tel" placeholder="Customer's cellphone number" id="cellphone-number-validate">
                             <span class="icon is-small is-left">
                                 <i class="fas fa-mobile-alt"></i>
                             </span>
                             <p id="empty-phone-validation" class="help is-danger"></p>
                         </div>
-                        <a class="button is-dark" id="validate-customer-button">Verificar</a>
+                        <a class="button is-dark" id="validate-customer-button">Check</a>
                     </div>
                 </div>
-
             </div>
-
         </div>
 
         <div class="box" id="customer-information">
             <div class="minimize-cust-data-click columns">
-                <div class="column is-11 has-text-left"><h2 class="subtitle">Datos del cliente</h2></div>
+                <div class="column is-11 has-text-left"><h2 class="subtitle">Customer Data</h2></div>
                 <div class="column is-1"><i id="cust-data-svg" class="fas fa-minus-circle has-text-right"></i></div>
             </div>
             
@@ -118,7 +115,7 @@
         
                     <div class="column is-4">
                         <div class="field">
-                            <label class="label">Número de celular</label>
+                            <label class="label">Cellphone Number</label>
                             <div class="control has-icons-left">
                                 <input disabled class="input" type="tel" placeholder="Idealmente, con WhatsApp" id="cellphone-number">
                                 <span class="icon is-small is-left">
@@ -129,17 +126,17 @@
                     </div>
                     <div class="column is-3">
                         <div class="field">
-                            <label class="label">Nombre</label>
+                            <label class="label">Name</label>
                             <div class="control">
-                                <input disabled class="input" type="text" placeholder="Nombre" id="cust-name">
+                                <input disabled class="input" type="text" placeholder="Name" id="cust-name">
                             </div>
                         </div>
                     </div>
                     <div class="column is-5">
                         <div class="field">
-                            <label class="label">Apellidos</label>
+                            <label class="label">Last Name</label>
                             <div class="control">
-                                <input disabled class="input" type="text" placeholder="Apellidos" id="cust-last-name">
+                                <input disabled class="input" type="text" placeholder="Last Name" id="cust-last-name">
                             </div>
                         </div>
                     </div>
@@ -152,7 +149,7 @@
                         <div class="field">
                             <label class="label">Email</label>
                             <div class="control has-icons-left">
-                                <input disabled class="input" type="email" placeholder="correo@ejemplo.com" id="email">
+                                <input disabled class="input" type="email" placeholder="email@test.com" id="email">
                                 <span class="icon is-small is-left">
                                 <i class="fas fa-envelope"></i>
                                 </span>
@@ -162,7 +159,7 @@
 
                     <div class="column is-6">
                         <div class="field">
-                            <label class="label">Medios de contactos preferidos</label>
+                            <label class="label">Preferred contact methods</label>
                             <div class="control">
                                 <label class="checkbox">
                                 <input disabled id="contact-whats" type="checkbox" name="preferred-contact-method" value="whatsapp" >
@@ -170,11 +167,11 @@
                                 </label>
                                 <label class="checkbox">
                                 <input disabled id="contact-call"   type="checkbox" name="preferred-contact-method" value="call" >
-                                Llamada telefónica
+                                Phone call
                                 </label>
                                 <label class="checkbox">
                                 <input disabled id="contact-email" type="checkbox" name="preferred-contact-method" value="email">
-                                Correo electrónico
+                                Email
                                 </label>
                             </div>
                         </div>
@@ -182,9 +179,9 @@
 
                     <div class="column is-2">
                         <div class="field">
-                            <label class="label">Código Postal</label>
+                            <label class="label">Zip Code</label>
                             <div class="control">
-                                <input disabled class="input" type="number" placeholder="6xxxx" id="zip-code">
+                                <input disabled class="input" type="number" placeholder="123456" id="zip-code">
                             </div>
                         </div>
                     </div>
@@ -194,22 +191,22 @@
                 <div class="columns">
 
                     <div class="column is-6">
-                        <p id="error-text-customer" class="error-text is-invisible has-text-right has-text-danger has-text-weight-light">Error: Verifica que no dejes campos vacíos</p>
+                        <p id="error-text-customer" class="error-text is-invisible has-text-right has-text-danger has-text-weight-light">Error: Don't leave fields empty.</p>
                     </div>
 
                     <div class="column is-6">
                         <div class="field is-grouped is-grouped-right">
                             <p class="control">
-                                <a class="button is-success" id="confirm-customer-button">Confirmar Datos</a>
+                                <a class="button is-success" id="confirm-customer-button">Confirm Data</a>
                             </p>
                             <p class="control">
-                                <a class="button is-success" id="save-exist-customer-button">Guardar Datos</a>
+                                <a class="button is-success" id="save-exist-customer-button">Save Data</a>
                             </p>
                             <p class="control">
-                                <a class="button is-success" id="save-new-customer-button">Guardar Cliente</a>
+                                <a class="button is-success" id="save-new-customer-button">Save Customer</a>
                             </p>
                             <p class="control">
-                                <a class="button is-warning" id="modify-customer-button">Modificar Datos</a>
+                                <a class="button is-warning" id="modify-customer-button">Modify Data</a>
                             </p>
                         </div>
                     </div>
@@ -231,14 +228,15 @@
 
                 <div class="column">
                     <div class="field">
-                        <label class="label">Sucursal</label>
+                        <label class="label">Location</label>
                         <div class="control is-expanded">
                             <div class="select is-fullwidth">
                             <select id="location-select">
-                                <option disabled selected>Selecciona una sucursal</option>
-                                <option data-location="avanta">Avanta</option>
-                                <option data-location="torres">Torres</option>
-                                <option data-location="sienna">Sienna</option>
+                                <!-- These options have to be manually set in the HTML -->
+                                <option disabled selected>Select a location</option>
+                                <option data-location="test">Test</option>
+                                <option data-location="fake">Fake</option>
+                                <option data-location="another">Another</option>
                             </select>
                             </div>
                         </div>
@@ -246,15 +244,15 @@
                 </div>
                 <div class="column">
                     <div class="field">
-                        <label class="label">Número de folio</label>
+                        <label class="label">Ticket Number</label>
                         <div class="control">
-                            <input disabled class="input" id="ticket-number" type="text" placeholder="Selecciona una sucursal">
+                            <input disabled class="input" id="ticket-number" type="text" placeholder="Choose a location">
                         </div>
                     </div>
                 </div>
                 <div class="column">
                     <div class="field">
-                        <label class="label">Creado por</label>
+                        <label class="label">Created by</label>
                         <div class="control">
                             <input disabled class="input" id="user-name-ticket" type="text">
                         </div>
@@ -262,7 +260,7 @@
                 </div>
                 <div class="column">
                     <div class="field">
-                        <label class="label">Fecha</label>
+                        <label class="label">Date</label>
                         <div class="control">
                             <input class="input" id="new-ticket-date-now" type="text">
                         </div>
@@ -275,7 +273,7 @@
         <br>
         <div class="container box" id="equipment-information">
             <div class="minimize-equipment-data-click columns">
-                <div class="column is-11 has-text-left"><h2 class="subtitle">Datos del equipo</h2></div>
+                <div class="column is-11 has-text-left"><h2 class="subtitle">Equipment Data</h2></div>
                 <div class="column is-1"><i  id="equipment-data-svg" class="fas fa-minus-circle minimize"></i></div>
             </div>
 
@@ -284,12 +282,13 @@
 
                     <div class="column is-6">
                         <div class="field">
-                            <label class="label">Tipo de equipo</label>
+                            <label class="label">Type of equipment</label>
                             <div class="control is-expanded">
                                 <div class="select is-fullwidth">
                                 <select id="equipment-type">
-                                    <option disabled selected>Selecciona una opción</option>
-                                    <option data-equipment="cellphone">Celular</option>
+                                    <!-- These options have to be manually set in the HTML -->
+                                    <option disabled selected>Choose an option</option>
+                                    <option data-equipment="cellphone">Cellphone</option>
                                     <option data-equipment="laptop">Laptop</option>
                                     <option data-equipment="tablet">Tablet</option>
                                     <option data-equipment="desktop">Desktop</option>
@@ -300,9 +299,9 @@
                     </div>
                     <div class="column is-6">
                         <div class="field">
-                            <label class="label">Marca</label>
+                            <label class="label">Brand</label>
                             <div class="control">
-                                <input class="input" type="text" placeholder="Marca del equipo" id="equipment-brand">
+                                <input class="input" type="text" placeholder="Equipment brand" id="equipment-brand">
                             </div>
                         </div>
                     </div>
@@ -313,30 +312,17 @@
 
                     <div class="column">
                         <div class="field">
-                            <label class="label">Modelo</label>
+                            <label class="label">Model</label>
                             <div class="control">
-                                <input class="input" type="text" id="equipment-model" placeholder="A veces en la parte inferior, a veces bajo la batería">
+                                <input class="input" type="text" id="equipment-model" placeholder="Sometimes it's on the bottom case or under the battery">
                             </div>
                         </div>
                     </div>
                     <div class="column">
                         <div class="field">
-                            <label class="label">Número de serie</label>
+                            <label class="label">Serial Number</label>
                             <div class="control">
-                                <input class="input" type="text" id="equipment-serial-number" placeholder="No siempre es fácil de encontrar!">
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="columns">
-
-                    <div class="column">
-                        <div class="field">
-                            <label class="label">Características</label>
-                            <div class="control">
-                                <input class="input" type="text" id="equipment-characteristics" placeholder="Color, calcamonías, golpes, rayones, teclas sueltas, pantallas dañadas, bisagras flojas, etc...; aunque no venga por eso">
+                                <input class="input" type="text" id="equipment-serial-number" placeholder="It's not always easy to find!">
                             </div>
                         </div>
                     </div>
@@ -347,9 +333,9 @@
 
                     <div class="column">
                         <div class="field">
-                            <label class="label">Accesorios</label>
+                            <label class="label">Characteristics</label>
                             <div class="control">
-                                <input class="input" type="text"  id="equipment-accesories" placeholder="Idealmente recibimos el equipo sin accesorios, en caso de incluír algo (cargador, funda, etc...) incluírlo aquí">
+                                <input class="input" type="text" id="equipment-characteristics" placeholder="Color, stickers, bumps, scratches, loose keys, damaged displays, squeaky hinges, etc...">
                             </div>
                         </div>
                     </div>
@@ -360,9 +346,22 @@
 
                     <div class="column">
                         <div class="field">
-                            <label class="label">Razón de la visita</label>
+                            <label class="label">Accesories</label>
                             <div class="control">
-                                <textarea class="textarea" id="equipment-reason" placeholder="Recuerda ser lo más claro y explícito posible, preferible de más, no de menos"></textarea>
+                                <input class="input" type="text"  id="equipment-accesories" placeholder="Charger, case, cables, backpacks, etc...">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="columns">
+
+                    <div class="column">
+                        <div class="field">
+                            <label class="label">Reason for visit</label>
+                            <div class="control">
+                                <textarea class="textarea" id="equipment-reason" placeholder="Be as explicit as possible, we'd rather have extra data than be lacking data"></textarea>
                             </div>
                         </div>
                     </div>
@@ -374,13 +373,13 @@
             <div class="columns">
 
                 <div class="column is-9">
-                    <p id="error-text-ticket" class="error-text is-invisible has-text-right has-text-danger has-text-weight-light">Error: Verifica que no dejes campos vacíos</p>
+                    <p id="error-text-ticket" class="error-text is-invisible has-text-right has-text-danger has-text-weight-light">Error: Please don't leave empty fields</p>
                 </div>
 
                 <div class="column is-3">
                     <div class="field is-grouped is-grouped-right">
                         <div class="control">
-                            <a class="button is-link" id="confirm-ticket-button">Confirmar folio</a>
+                            <a class="button is-link" id="confirm-ticket-button">Confirm Ticket</a>
                         </div>
                     </div>
                 </div>
@@ -417,51 +416,53 @@
         </div>
 
     <!-- Modal - end -->
-    <!-- Modal - begin -->
+
+    <!-- Modal - begin - TICKET TO BE PRINTED -->
 
     <div class="modal" id="modal-ticket">
         <div class="modal-background"></div>
             <div class="modal-card">
                 <header class="modal-card-head">
-                    <p class="modal-card-title">Confirmar ticket</p>
+                    <p class="modal-card-title">Confirm ticket</p>
                 </header>
                 <section class="modal-card-body">
                     <div id="print-view-ticket">
-                        <!-- Datos sucursal ticket -->
+                        <!-- ALL THIS DATA WILL BE PRINTED, SET YOUR OWN VALUES -->
+                        <!-- Ticket Data - Business -->
                         <div class="columns">
                             <div class="column">
-                                <h2 class="subtitle">XpressTechMx / Fixcel</h2>
+                                <h2 class="subtitle">Company Name</h2>
                             </div>
                         </div>
                         <div class="columns">
                             <div class="column">
-                                <p>Teléfono: 2261 0302</p>
+                                <p>Phone Number: 123 - 456 - 789</p>
                             </div>
                         </div>
                         <div class="columns">
                             <div class="column">
-                                <p>WhatsApp: 812 606 0404</p>
+                                <p>WhatsApp: 123 - 456 - 789</p>
                             </div>
                         </div>
                         
-                        <!-- Datos folio ticket 
+                        <!-- Ticket Data - Customer
                         <div class="is-divider" data-content="FOLIO"></div> -->
                         <hr>
                         <div class="columns">
                             <div class="column">
-                                <p class="is-size-3"><strong>Folio: </strong><span id="print-view-ticket-num"></span></p>
+                                <p class="is-size-3"><strong>Ticket number: </strong><span id="print-view-ticket-num"></span></p>
                             </div>
                             <div class="column is-half"></div>
                         </div>
                         <div class="columns">
                             <div class="column">
-                                <p><strong>Fecha: </strong><span id="print-view-ticket-date"></span></p>
+                                <p><strong>Date: </strong><span id="print-view-ticket-date"></span></p>
                             </div>
                             <div class="column is-half"></div>
                         </div>
                         <div class="columns">
                             <div class="column">
-                                <p><strong>Cliente: </strong><span id="print-view-ticket-cust"></span></p>
+                                <p><strong>Customer: </strong><span id="print-view-ticket-cust"></span></p>
                             </div>
                             <div class="column is-half"></div>
                         </div>
@@ -474,80 +475,80 @@
                         </div>
                         -->
 
-                        <!-- Datos equipo ticket
+                        <!-- Ticket Data - Equipment
                         <div class="is-divider" data-content="EQUIPO"></div>  -->
                         <hr>
                         <div class="columns">
                             <div class="column">
-                                <p><strong>Equipo: </strong><span id="print-view-ticket-brandmodel"></span></p>
+                                <p><strong>Equipment: </strong><span id="print-view-ticket-brandmodel"></span></p>
                             </div>
                             <div class="column is-half"></div>
                         </div>
                         <div class="columns">
                             <div class="column">
-                                <p><strong>Número de serie: </strong><span id="print-view-ticket-serial"></span></p>
+                                <p><strong>Serial Number: </strong><span id="print-view-ticket-serial"></span></p>
                             </div>
                             <div class="column is-half"></div>
                         </div>
                         <div class="columns">
                             <div class="column">
-                                <p><strong>Características: </strong><span id="print-view-ticket-characteristics"></span></p>
+                                <p><strong>Characteristics: </strong><span id="print-view-ticket-characteristics"></span></p>
                             </div>
                             <div class="column is-half"></div>
                         </div>
                         <div class="columns">
                             <div class="column">
-                                <p><strong>Accesorios: </strong><span id="print-view-ticket-accesories"></span></p>
+                                <p><strong>Accesories: </strong><span id="print-view-ticket-accesories"></span></p>
                             </div>
                             <div class="column is-half"></div>
                         </div>
                         <div class="columns">
                             <div class="column">
-                                <p><strong>Razón de la visita: </strong><span id="print-view-ticket-reason"></span></p>
+                                <p><strong>Reason to visit: </strong><span id="print-view-ticket-reason"></span></p>
                             </div>
                             <div class="column is-half"></div>
                         </div>
 
-                        <!-- Datos acuerdo ticket 
+                        <!-- Ticket Data - Customer agrees
                         <div class="is-divider" data-content="EQUIPO"></div> -->
                         <div class="columns">
                             <div class="column">
-                                <p><i>Estoy de acuerdo con la información aquí arriba mostrada.</i></p>
+                                <p><i>I agree with the information above.</i></p>
                             </div>
                             <div class="column is-half"></div>
                         </div>
                         <br>
                         <div class="columns">
                             <div class="column">
-                                <p><strong>Nombre: </strong><span> ___________________________________</span></p>
+                                <p><strong>Name: </strong><span> ___________________________________</span></p>
                             </div>
                         </div>
                         <br><br>
                         <div class="columns">
                             <div class="column">
-                                <p><strong>Firma: </strong><span></span></p>
+                                <p><strong>Signature: </strong><span></span></p>
                             </div>
                         </div>
                         <br>
 
-                        <!-- Datos condiciones ticket 
+                        <!-- Ticket Data - ToS
                         <div class="is-divider" data-content="CONDICIONES"></div> -->
                         <hr>
                         <div class="columns">
                             <div class="column">
-                                <p><strong>Términos y condiciones</strong></p>
+                                <p><strong>Terms of Service</strong></p>
                             </div>
                         </div>
                         <div class="columns">
                             <div class="column">
                                 <ul>
-                                    <li>- Si el equipo es abandonado más de 60 días, lo dono al taller -</li>
-                                    <li>- No se entrega el equipo sin la orden de servicio correspondiente -</li>
-                                    <li>- Todo equipo reparado tiene 30 días de garantía, excepto se establezcla algo distinto -</li>
-                                    <li>- Los precios cotizados pueden variar sin previo aviso -</li>
-                                    <li>- No hay cancelaciones de servicios una vez autorizados -</li>
-                                    <li>- Aunque cuidamos la información almacenada en los dispositivos, no nos podemos hacer responsables de la misma -</li>
-                                    <li>- No nos hacemos responsables en caso de robo, incendio, vandalismo, desastres naturales y/o daños ocasionados al equipo por fallas eléctricas -</li>
+                                    <li>- Consequat nulla duis amet irure ut non veniam cillum sint sit mollit nisi proident. -</li>
+                                    <li>- Fugiat nostrud nisi est incididunt. -</li>
+                                    <li>- Dolor ea dolore exercitation amet incididunt in elit cupidatat mollit ullamco enim culpa aute deserunt. -</li>
+                                    <li>- Occaecat nulla in nulla cupidatat. -</li>
+                                    <li>- Commodo amet reprehenderit Lorem et ullamco. -</li>
+                                    <li>- Incididunt adipisicing eiusmod consequat sint do nulla tempor ut ex ex minim est aliqua. -</li>
+                                    <li>- Pariatur proident enim pariatur sint et officia consequat ut. -</li>
                                 </ul>
                             </div>
                             <div class="column is-half"></div>
@@ -567,8 +568,8 @@
                 <footer class="modal-card-foot">
                     <div class="field is-grouped is-grouped-right">
                         <div class="control">
-                            <button class="button" id="print-ticket-button">Imprimir</button>
-                            <a class="button is-link" id="add-ticket-button">Guardar folio</a>
+                            <button class="button" id="print-ticket-button">Print</button>
+                            <a class="button is-link" id="add-ticket-button">Save ticket</a>
                         </div>
                     </div>
                 </footer>
@@ -584,6 +585,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/locale/es-us.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
     <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
-    <script src="assets/javascript/index.js"></script>
+    <script src="./assets/javascript/.env/firebase.config.js"></script>
+    <script src="./assets/javascript/index.js"></script>
 </body>
 </html>

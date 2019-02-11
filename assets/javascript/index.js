@@ -1,30 +1,22 @@
 $(document).ready(function (){
 // --------------------- ON LOAD EVENTS - START ---------------------
     // Initialize Firebase
-    var config = {
-        apiKey: "AIzaSyAYkl5opTyW9YF7801KmgT9YUhpV0JhYGY",
-        authDomain: "notas-xtm-fixc.firebaseapp.com",
-        databaseURL: "https://notas-xtm-fixc.firebaseio.com",
-        projectId: "notas-xtm-fixc",
-        storageBucket: "notas-xtm-fixc.appspot.com",
-        messagingSenderId: "768789228246"
-    };
-
+    // 'config' is being imported through the HTML's script tag (./.env/firebase.config.js)
+    // For your own development, you need to change the 'example.env' folder to '.env' and change the values inside to reflect the values you get from Firebase
     firebase.initializeApp(config);
     var database = firebase.database();
 
-    //Verify if the user has logged in
+    //Verify if the user is logged in
     checkLoginStatus();
 
-    //Sets the date for the new tickets to now; SAVE BUTTON SHOULD SAVE WITH HOUR
+    //Sets the date for the new tickets to now
     $('#new-ticket-date-now').val(moment().format("dddd, D MMMM 'YY, h:mm a"));
     $('#new-ticket-date-now').prop('disabled', true);
 // --------------------- ON LOAD EVENTS -   END ---------------------
 //-----------------
 // --------------------- GLOBAL VARIABLES - START ---------------------
     //GLOBAL VARIABLES
-    //Patch to fix firebase's ascending order only problem
-    var startDate = moment('1990-04-26T10:15:00'); 
+    var startDate = moment('1990-04-26T10:15:00'); // Patch to fix firebase's ascending order only problem
     var nowDate;
     var descOrder;
 
@@ -38,7 +30,7 @@ $(document).ready(function (){
 
     var printTimes = 0;
 
-    //ticket data
+    // Ticket data
     var ticketDBID;
     var location;
     var fullTicketNum;
@@ -47,7 +39,7 @@ $(document).ready(function (){
     var date;
     var ticketCreatedBy;
 
-    //cust data
+    // Cust data
     var custDBID;
     var custName;
     var custLastName;
@@ -58,7 +50,7 @@ $(document).ready(function (){
     var contactMetWhats;
     var contactMetEmail;
     
-    //equipment data
+    // Equipment data
     var eqType;
     var eqBrand;
     var eqModel;
@@ -67,8 +59,8 @@ $(document).ready(function (){
     var accesories;
     var reasonToVisit;
 
-    //GLOBAL SELECTORS
-    //buttons
+    // GLOBAL SELECTORS
+    // Buttons
     var saveExistCustButton = $('#save-exist-customer-button');
     saveExistCustButton.hide(); //only activated when a cust exists and we want to modify it
     var saveNewCustButton = $('#save-new-customer-button');
@@ -77,7 +69,7 @@ $(document).ready(function (){
     var modCustButton = $('#modify-customer-button');
     var addTicketButton = $('#add-ticket-button');
 
-    //containers
+    // Containers
     var validateCustBox = $('#validate-customer-exists');
     var custInfoBox = $('#customer-information');
     custInfoBox.hide();
@@ -86,7 +78,7 @@ $(document).ready(function (){
     var ticketDataBox = $('#ticket-data');
     ticketDataBox.hide();
 
-    //Information fields (inputs, checks, etc...)
+    // Information fields (inputs, checks, etc...)
     var custNameSelector = $('#cust-name');
     var custLastNameSelector = $('#cust-last-name');
     var cellNumSelector = $('#cellphone-number');
@@ -112,42 +104,41 @@ $(document).ready(function (){
 //-----------------
 // --------------------- EVENT LISTENERS - START ---------------------
 
-    //Click listeners for hiding containers as clicks are done on the respective boxes
+    // Click listeners for hiding containers as clicks are done on the respective boxes
     $('.minimize-cust-data-click').on('click', minCustData);
     $('.minimize-equipment-data-click').on('click', minEquipData);
 
-    //Click listener for the validate customer button
+    // Click listener for the validate customer button
     $('#validate-customer-button').on('click', queryFirebaseCellNum);
 
-    //Click listeners for the customer's data buttons (confirm, modify and save)
+    // Click listeners for the customer's data buttons (confirm, modify and both saves)
     confCustButton.on('click', confCustData);
     modCustButton.on('click', modCustData);
     saveExistCustButton.on('click', saveExistCustData);
     saveNewCustButton.on('click', saveNewCustData);
 
-    //Click listener to show the button in the modal and prepare to print it
+    // Click listener to show the button in the modal and prepare to print it
     $('#confirm-ticket-button').on('click', prepareModalPrint); 
     
-    //Now send from the modal to the DB after printing
+    // Now send from the modal to Firebase after printing
     addTicketButton.on('click', createTicket); 
 
-    //Change listener to apply the 1st character of the new ticket number
+    // Change listener to apply the 1st character of the location to the new ticket number
     locationSelector.on('change', function() {
         location = this.value;
         getLatestTicketNum();
     });
 
-    //Click listener for logout button
+    // Click listener for logout button
     $('#log-out-button').on('click', function(){
         firebase.auth().signOut();
     });
 
-    //Click listener for the ticket print button
+    // Click listener for the ticket print button
     $('#print-ticket-button').on('click', function(){
         printJS('print-view-ticket', 'html');
         printTimes++;
-        if(printTimes == 2) {
-            //show the save cust button
+        if(printTimes == 2) { // We want to make sure the ticket is printed twice, once for the customer another for the company
             addTicketButton.show();
         }
     })
@@ -156,44 +147,46 @@ $(document).ready(function (){
 //-----------------
 // --------------------- FUNCTIONS - START ---------------------
 
-    //Verify the user's login status
+    // Verify the user's login status
     function checkLoginStatus() {
         firebase.auth().onAuthStateChanged(function (user) {
             console.log(user)
             if (!user) {
-                //Take the user to the login page
+                // Take the user to the login page
                 window.location.href = 'login.html';
             } else {
-                //validate user is auth
+                // Validate user is auth
                 isUserAuth(user.uid);
             }
         });
     }
 
-    //Check if user is authorized to actually use the system
+    // Check if user is authorized to actually use the system
+    // Was added because anyone can signup using Google auth, but if they're not on the DB they can't do anything in the system
     function isUserAuth(pUserUid) {
-        //Query the DB
+        // Query the DB
         database.ref('users')
         .orderByChild('uid')
         .equalTo(pUserUid)
         .once('value')
         .then(function(snapshot) {
             if(snapshot.val()) {
-                //User exists, save the user name and continue
+                // User exists, save the user name and continue
                 snapshot.forEach(function(userSnapshot){
                     userName = userSnapshot.val().name;
                     $('#user-name-log-out').text(userName);
                 })
             } else {
-                //User not authorized, tell them, then take them to the login
+                // User not authorized, tell them, then take them to the login
 
-                //Modify the texts in the modal
-                $('#modal-user-auth-title').text('¡Usuario no autorizado!');
-                $('#modal-user-auth-body').html('<p>Asegúrate de hacer login con el usuario que te fue proporcionado</p>');
+                // Modify the texts in the modal
+                $('#modal-user-auth-title').text('The user is not authorized!');
+                $('#modal-user-auth-body').html('<p>Make sure to login using the provided user</p>');
 
-                //Activate the modal
+                // Activate the modal
                 $('#modal-user-auth').addClass('is-active');
 
+                // Send the user back to login
                 setTimeout(function(){
                     window.location.href = 'login.html';
                 }, 5000);
@@ -201,10 +194,10 @@ $(document).ready(function (){
         })
     }
 
-    //Query Firebase for the phone number
+    // Query Firebase for the phone number
     function queryFirebaseCellNum() {
         if(!($('#cellphone-number-validate').val())) {
-            $('#empty-phone-validation').text('Necesitas escribir un teléfono!');
+            $('#empty-phone-validation').text('You need to write a phone number!');
         } else {
             $('#validate-customer-button').addClass('is-loading');
             var phoneNumToValidate = $('#cellphone-number-validate').val().trim();
@@ -215,25 +208,25 @@ $(document).ready(function (){
             .once('value')
             .then(function(snapshot) {
                 if(snapshot.val()) {
-                    //customer exists in DB
+                    // Customer exists in DB
                     snapshot.forEach(function(snapshotChild) {
                         custDBID = snapshotChild.key;
                         viewOrCreateCustomer(snapshotChild.val());
                     })
                 } else {
-                    //customer doesn't exist in DB
+                    // Customer doesn't exist in DB
                     viewOrCreateCustomer();
                 }
             });
         }
     }
 
-    //Receives the either nothing or the customer to paint it on the screen
+    // Function to view a customer (customer), or creates a customer ()
     function viewOrCreateCustomer(pFirebaseVal) {
         validateCustBox.hide(900);
         custInfoBox.show();
         if(pFirebaseVal) {
-            //Logic for customer exists
+            // Logic for customer exists
             custNameSelector.val(pFirebaseVal.custName);
             custLastNameSelector.val(pFirebaseVal.custLastName);
             cellNumSelector.val(pFirebaseVal.cellNum);
@@ -260,10 +253,10 @@ $(document).ready(function (){
         }
     }
 
-    //Modifies fields to let the user change customer's data
+    // Modifies fields to let the user change customer's data
     function modCustData(pPhoneNum) {
-        //if the function is called because a customer exists and wants to be modified it receives an object
-        //if the function is called because a customer doesn't exist, prefill the phone number it is received
+        // If the function is called because a customer exists and wants to be modified it receives an object
+        // If the function is called because a customer doesn't exist, prefill the phone number it is received
         if(typeof(pPhoneNum) == 'object') {
             //hide/show buttons as needed
             modCustButton.hide();
@@ -278,7 +271,7 @@ $(document).ready(function (){
             saveNewCustButton.show();
         } 
 
-        //remove the 'disabled' prop from customer fields
+        // Remove the 'disabled' prop from customer fields
         cellNumSelector.prop('disabled', false);
         emailSelector.prop('disabled', false);
         custNameSelector.prop('disabled', false);
@@ -289,16 +282,16 @@ $(document).ready(function (){
         contactMetEmailSelector.prop('disabled', false);
     }
 
-    //customer exists in DB and info is correct, proceed with ticket creation
+    // Customer exists in DB and info is correct, proceed with ticket creation
     function confCustData() {
         minCustData();
         ticketDataBox.show();
         eqInfoBox.show();
     }
 
-    //customer exists in DB and info has been modified, save cust
+    // Customer exists in DB and info has been modified, save cust
     function saveExistCustData() {
-        //Get data from inputs
+        // Get data from inputs
         custName = custNameSelector.val().trim();
         custLastName = custLastNameSelector.val().trim();
         cellNum = cellNumSelector.val().trim();
@@ -340,7 +333,7 @@ $(document).ready(function (){
             confCustButton.show();
             saveExistCustButton.hide();
 
-            //remove the 'disabled' prop from customer fields
+            // Remove the 'disabled' prop from customer fields
             cellNumSelector.prop('disabled', true);
             emailSelector.prop('disabled', true);
             custNameSelector.prop('disabled', true);
@@ -352,9 +345,9 @@ $(document).ready(function (){
         })
     }
 
-    //customer doesn't exist in DB, create new customer
+    // If the customer doesn't exist in DB, create new customer
     function saveNewCustData() {
-        //Get data from inputs
+        // Get data from inputs
         custName = custNameSelector.val().trim();
         custLastName = custLastNameSelector.val().trim();
         cellNum = cellNumSelector.val().trim();
@@ -364,18 +357,19 @@ $(document).ready(function (){
         contactMetEmail = contactMetEmailSelector[0].checked;
         contactMetWhats = contactMetWhatsSelector[0].checked;
 
-        if (!custName || !custLastName || !cellNum || !email || !zipCode ) {
+        if (!custName || !custLastName || !cellNum || !email || !zipCode ) { // Show an error if any field is empty
             $('#error-text-customer').removeClass('is-invisible');
             return;
         }
         $('#error-text-customer').addClass('is-invisible');
 
-        //Calculate the saved date right before the values are saved
+        // Calculate the saved date right before the values are saved
         nowDate = moment().format();
-        descOrder = -Math.abs(startDate.diff(nowDate, 'seconds'));
+        descOrder = -Math.abs(startDate.diff(nowDate, 'seconds')); // This value is used on the DB to set a descending order due to a problem with Firebase
 
         custDBID = database.ref().child('customers').push().key;
 
+        // Call the database and save the data
         database.ref('/customers')
         .child(custDBID)
         .set({
@@ -399,7 +393,7 @@ $(document).ready(function (){
                 }), 
                 function(error){
                     if(error) {
-                        console.log('The creation of the new customer failed', error);
+                        console.log('The creation of the new customer failed: ', error);
                     }
                 }
             )
@@ -410,7 +404,7 @@ $(document).ready(function (){
                 saveExistCustButton.hide();
                 saveNewCustButton.hide();
 
-                //add the 'disabled' prop to customer fields
+                // Add the 'disabled' prop to customer fields
                 cellNumSelector.prop('disabled', true);
                 emailSelector.prop('disabled', true);
                 custNameSelector.prop('disabled', true);
@@ -423,10 +417,10 @@ $(document).ready(function (){
         )
     }
 
-    //Confirm all the data was entered, and activate the print modal
+    // Confirm all the data was entered, and activate the print modal
     function prepareModalPrint() {
 
-        //Validate there's no empty fields
+        // Validate there's no empty fields
         custName = custNameSelector.val().trim();
         custLastName = custLastNameSelector.val().trim();
 
@@ -441,13 +435,14 @@ $(document).ready(function (){
         accesories = accesoriesSelector.val().trim();
         reasonToVisit = reasonToVisitSelector.val().trim();
 
+        // Show an error if any field is empty
         if (!fullTicketNum || !eqType || !eqBrand || !eqModel || !eqSerialNum || !characteristics || !accesories || !reasonToVisit ) {
-            $('#error-text-ticket').removeClass('is-invisible');
+            $('#error-text-ticket').removeClass('is-invisible'); 
             return;
         }
         $('#error-text-ticket').addClass('is-invisible');
 
-        //Activate and pass the values to the modal
+        // Activate and pass the values to the modal
         $('#modal-ticket').addClass('is-active');
 
         addTicketButton.hide();
@@ -462,15 +457,16 @@ $(document).ready(function (){
         $('#print-view-ticket-reason').text(reasonToVisit);
     }
 
-    //Once the modal is printed, save the ticket!
+    // Once the modal is printed, save the ticket!
     function createTicket() {
 
-        //Calculate the saved date right before the values are saved
+        // Calculate the saved date right before the values are saved
         nowDate = moment().format();
         descOrder = -Math.abs(startDate.diff(nowDate, 'seconds'));
 
         ticketDBID = database.ref().child('tickets').push().key;
 
+        // Call the db to save the ticket
         database.ref('/tickets')
         .child(ticketDBID)
         .set({
@@ -497,6 +493,7 @@ $(document).ready(function (){
             descOrder: descOrder,
             dateAdded: firebase.database.ServerValue.TIMESTAMP
         }).then(
+                // Call the db to save the customer's new ticket number
                 database.ref('/customers')
                 .child(custDBID + '/tickets/' + ticketDBID)
                 .set({
@@ -504,19 +501,21 @@ $(document).ready(function (){
                     dateAdded: firebase.database.ServerValue.TIMESTAMP
                 })
                 ).then(
+                    // Call the db to save the new location's next ticket number
                     database.ref('/locations')
                     .child(location)
                     .update({
                         latestTicketNum: shortTicketNum
-                    })).then(goToSearch);
+                    })).then(goToSearch); // Once everything is done, go to SearchTickets
     }
 
     function getLatestTicketNum() {
 
-        //Also set user who created ticket
+        // Get the user who is creating the ticket
         $('#user-name-ticket').val(userName);
         ticketCreatedBy = userName;
 
+        // Ask the db what's the next ticket number
         database.ref('/locations')
         .child(location)
         .once("value")
@@ -524,22 +523,23 @@ $(document).ready(function (){
             mostRecentTicketNum = latestTicketNumberSnapshot.val().latestTicketNum
 
         }).then( function() {
+            // Get the date and print the ticket number to screen
             var dateForTicket = moment().format("YYMM-");
             shortTicketNum = mostRecentTicketNum+1;
-            if (location == 'Avanta') {
-                ticketNumSelector.val(dateForTicket + 'A' + shortTicketNum);
-                searchTicketNum = "A" + shortTicketNum;
-            } else if (location == 'Torres') {
+            if (location == 'Test') {
                 ticketNumSelector.val(dateForTicket + 'T' + shortTicketNum);
                 searchTicketNum = "T" + shortTicketNum;
-            } else if (location == 'Sienna') {
-                ticketNumSelector.val(dateForTicket + 'S' + shortTicketNum);
-                searchTicketNum = "S" + shortTicketNum;
+            } else if (location == 'Fake') {
+                ticketNumSelector.val(dateForTicket + 'F' + shortTicketNum);
+                searchTicketNum = "F" + shortTicketNum;
+            } else if (location == 'Another') {
+                ticketNumSelector.val(dateForTicket + 'A' + shortTicketNum);
+                searchTicketNum = "A" + shortTicketNum;
             }
             })
     }
 
-    //Minimize Customer Data Container
+    // Minimize Customer Data Container
     function minCustData() {
         if (!minimizeCustData) {
             $('.minimize-cust-data').hide();
@@ -554,7 +554,7 @@ $(document).ready(function (){
         }
     }
 
-    //Minimize Equipment Data Container
+    // Minimize Equipment Data Container
     function minEquipData() {
         if (!minimizeEquipData) {
             $('.minimize-equipment-data').hide();

@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>TechCRM</title>
+    <title>Ticket System</title>
+    <!-- CSS Files -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 <body>
-
     <!-- Header - begin -->
     <section class="hero is-dark is-bold is-small">
         <!-- Hero head: will stick at the top -->
@@ -24,7 +24,7 @@
                 <div class="navbar-end">
                     <span class="navbar-item">
                         <a class="button is-dark is-inverted" id="log-out-button">
-                            <span id="user-name-log-out">Cerrar Sesión</span>
+                            <span id="user-name-log-out">Log out</span>
                             <span class="icon">
                             <i class="fas fa-sign-out-alt"></i>
                             </span>
@@ -39,15 +39,15 @@
         <div class="hero-body">
             <div class="container has-text-centered">
             <h1 class="title">
-                XpressTech.Mx / Fixcel
+                Company Name
             </h1>
             <h2 class="subtitle">
-                Sistema de folios
+                Ticket System
             </h2>
             </div>
         </div>
         
-        <!-- Hero footer: will stick at the bottom -->
+        <!-- Hero footer: will stick at the bottom of the hero -->
         <div class="hero-foot">
             <nav class="tabs is-boxed is-fullwidth">
                 <div class="container">
@@ -77,11 +77,11 @@
     </section>
     <!-- Separator end-->
 
-    <!-- Search box begin -->
+    <!-- Search box - begin -->
     <div class="container" id="search-tickets-container">
         <div class="box">
             <div class="minimize-search-tickets-click columns">
-                <div class="column is-11 has-text-left"><h2 class="subtitle">Buscar por folio o teléfono</h2></div>
+                <div class="column is-11 has-text-left"><h2 class="subtitle">Search by ticket number or phone number</h2></div>
                 <div class="column is-1"><i id="search-tickets-svg" class="fas fa-plus-circle"></i></div>
             </div>
 
@@ -90,11 +90,11 @@
                     <div class="column is-6">
                         <div class="field has-addons">
                             <div class="control is-expanded">
-                              <input class="input" id="search-number-input" type="text" placeholder="Teléfono del cliente">
+                              <input class="input" id="search-number-input" type="text" placeholder="Customer's phone number">
                             </div>
                             <div class="control">
                               <a class="button is-dark" id="search-number-button">
-                                Buscar
+                                Search
                               </a>
                             </div>
                           </div>
@@ -102,11 +102,11 @@
                     <div class="column is-6">
                         <div class="field has-addons has-addons-right">
                             <div class="control is-expanded">
-                              <input class="input" id="search-ticket-input" type="text" placeholder="Ticket, solo los últimos números">
+                              <input class="input" id="search-ticket-input" type="text" placeholder="Ticket's last digits">
                             </div>
                             <div class="control">
                               <a class="button is-dark" id="search-ticket-button">
-                                Buscar
+                                Search
                               </a>
                             </div>
                           </div>
@@ -130,7 +130,7 @@
     <div class="container" id="recent-tickets-container">
         <div class="box">
             <div class="minimize-recent-tickets-click columns">
-                <div class="column is-11 has-text-left"><h2 id="search-text" class="subtitle">30 folios más recientes</h2></div>
+                <div class="column is-11 has-text-left"><h2 id="search-text" class="subtitle">50 most recent tickets</h2></div>
                 <div class="column is-1"><i id="recent-tickets-svg" class="fas fa-minus-circle"></i></div>
             </div>
 
@@ -138,14 +138,14 @@
                 <table class="table is-bordered is-striped is-hoverable is-fullwidth table-container">
                     <thead>
                         <tr>
-                            <th>Folio</th>
-                            <th>Fecha</th>
-                            <th>Cliente</th>
-                            <th>Equipo</th>
-                            <th>Marca</th>
-                            <th>Modelo</th>
-                            <th>Cerrado</th>
-                            <th>Notas</th>
+                            <th>Ticket</th>
+                            <th>Date</th>
+                            <th>Customer</th>
+                            <th>Equipment</th>
+                            <th>Brand</th>
+                            <th>Model</th>
+                            <th>Closed?</th>
+                            <th>Notes</th>
                         </tr>
                     </thead>
                     <tbody id="table-body">
@@ -154,8 +154,8 @@
             </div>
 
             <div class="buttons has-addons is-right">
-                <a  href="javascript:window.location.href='search.html'" class="button is-info" id="reload-button">
-                    Restablecer
+                <a href="javascript:window.location.href='search.html'" class="button is-info" id="reload-button">
+                    Reload
                 </a>
             </div>
         </div>
@@ -180,7 +180,7 @@
 
                 <div class="column">
                     <div class="field">
-                        <label class="label">Sucursal</label>
+                        <label class="label">Location</label>
                         <div class="control">
                             <input class="input" id="location-select" type="text">
                         </div>
@@ -188,7 +188,7 @@
                 </div>
                 <div class="column">
                     <div class="field">
-                        <label class="label">Número de folio</label>
+                        <label class="label">Ticket Number</label>
                         <div class="control">
                             <input class="input" id="ticket-number" type="text">
                         </div>
@@ -196,7 +196,7 @@
                 </div>
                 <div class="column">
                     <div class="field">
-                        <label class="label">Creado por</label>
+                        <label class="label">Created by</label>
                         <div class="control">
                             <input disabled class="input" id="user-name-ticket" type="text">
                         </div>
@@ -204,9 +204,9 @@
                 </div>
                 <div class="column">
                     <div class="field">
-                        <label class="label">Fecha</label>
+                        <label class="label">Date</label>
                         <div class="control">
-                            <input class="input" id="ticket-date" type="text" placeholder="Hoy">
+                            <input class="input" id="ticket-date" type="text" placeholder="Today">
                         </div>
                     </div>
                 </div>
@@ -215,7 +215,7 @@
     
             <div class="box">
                     <div class="minimize-cust-data-click columns">
-                        <div class="column is-11 has-text-left"><h2 class="subtitle">Datos del cliente</h2></div>
+                        <div class="column is-11 has-text-left"><h2 class="subtitle">Customer's data</h2></div>
                         <div class="column is-1"><i id="cust-data-svg" class="fas fa-minus-circle has-text-right"></i></div>
                     </div>
                 
@@ -225,17 +225,17 @@
             
                         <div class="column is-4">
                             <div class="field">
-                                <label class="label">Nombre</label>
+                                <label class="label">Name</label>
                                 <div class="control">
-                                    <input class="input" type="text" placeholder="Nombre" id="cust-name">
+                                    <input class="input" type="text" placeholder="Name" id="cust-name">
                                 </div>
                             </div>
                         </div>
                         <div class="column is-8">
                             <div class="field">
-                                <label class="label">Apellidos</label>
+                                <label class="label">Last name</label>
                                 <div class="control">
-                                    <input class="input" type="text" placeholder="Apellidos" id="cust-last-name">
+                                    <input class="input" type="text" placeholder="Last name" id="cust-last-name">
                                 </div>
                             </div>
                         </div>
@@ -246,9 +246,9 @@
             
                         <div class="column is-4">
                             <div class="field">
-                                <label class="label">Número de celular</label>
+                                <label class="label">Cellphone number</label>
                                 <div class="control has-icons-left">
-                                    <input class="input" type="tel" placeholder="Idealmente, con WhatsApp" id="cellphone-number">
+                                    <input class="input" type="tel" placeholder="Ideally, with WhatsApp" id="cellphone-number">
                                     <span class="icon is-small is-left">
                                     <i class="fab fa-whatsapp"></i>
                                     </span>
@@ -259,7 +259,7 @@
                             <div class="field">
                                 <label class="label">Email</label>
                                 <div class="control has-icons-left">
-                                    <input class="input" type="email" placeholder="correo@ejemplo.com" id="email">
+                                    <input class="input" type="email" placeholder="email@test.com" id="email">
                                     <span class="icon is-small is-left">
                                     <i class="fas fa-envelope"></i>
                                     </span>
@@ -273,15 +273,15 @@
             
                         <div class="column is-4">
                             <div class="field">
-                                <label class="label">Código Postal</label>
+                                <label class="label">Zip Code</label>
                                 <div class="control">
-                                    <input class="input" type="number" placeholder="6xxxx" id="zip-code">
+                                    <input class="input" type="number" placeholder="123456" id="zip-code">
                                 </div>
                             </div>
                         </div>
                         <div class="column is-8">
                             <div class="field">
-                                <label class="label">Medios de contactos preferidos</label>
+                                <label class="label">Preferred contact methods</label>
                                 <div class="control">
                                     <label class="checkbox">
                                     <input disabled id="contact-whats" type="checkbox" name="preferred-contact-method" value="whatsapp" >
@@ -289,11 +289,11 @@
                                     </label>
                                     <label class="checkbox">
                                     <input disabled id="contact-call"   type="checkbox" name="preferred-contact-method" value="call" >
-                                    Llamada telefónica
+                                    Phone call
                                     </label>
                                     <label class="checkbox">
                                     <input disabled id="contact-email" type="checkbox" name="preferred-contact-method" value="email">
-                                    Correo electrónico
+                                    Email
                                     </label>
                                 </div>
                             </div>
@@ -313,7 +313,7 @@
     
             <div class="container box">
                 <div class="minimize-equipment-data-click columns">
-                    <div class="column is-11 has-text-left"><h2 class="subtitle">Datos del equipo</h2></div>
+                    <div class="column is-11 has-text-left"><h2 class="subtitle">Equipment data</h2></div>
                     <div class="column is-1"><i  id="equipment-data-svg" class="fas fa-minus-circle minimize"></i></div>
                 </div>
     
@@ -322,12 +322,13 @@
     
                         <div class="column is-6">
                             <div class="field">
-                                <label class="label">Tipo de equipo</label>
+                                <label class="label">Type of equipment</label>
                                 <div class="control is-expanded">
                                     <div class="select is-fullwidth">
                                     <select id="equipment-type">
-                                        <option disabled selected>Selecciona una opción</option>
-                                        <option data-equipment="cellphone">Celular</option>
+                                        <!-- These options have to be manually set in the HTML -->
+                                        <option disabled selected>Choose an option</option>
+                                        <option data-equipment="cellphone">Cellphone</option>
                                         <option data-equipment="laptop">Laptop</option>
                                         <option data-equipment="tablet">Tablet</option>
                                         <option data-equipment="desktop">Desktop</option>
@@ -338,56 +339,45 @@
                         </div>
                         <div class="column is-6">
                             <div class="field">
-                                <label class="label">Marca</label>
-                                <div class="control">
-                                    <input class="input" type="text" placeholder="Marca del equipo" id="equipment-brand">
-                                </div>
+                                <label class="label"><div class="column is-6">
+                        <div class="field">
+                            <label class="label">Brand</label>
+                            <div class="control">
+                                <input class="input" type="text" placeholder="Equipment brand" id="equipment-brand">
                             </div>
                         </div>
-                        
                     </div>
+                    
+                </div>
+
+                <div class="columns">
+
+                    <div class="column">
+                        <div class="field">
+                            <label class="label">Model</label>
+                            <div class="control">
+                                <input class="input" type="text" id="equipment-model" placeholder="Sometimes it's on the bottom case or under the battery">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="field">
+                            <label class="label">Serial Number</label>
+                            <div class="control">
+                                <input class="input" type="text" id="equipment-serial-number" placeholder="It's not always easy to find!">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
     
                     <div class="columns">
     
                         <div class="column">
                             <div class="field">
-                                <label class="label">Modelo</label>
+                                <label class="label">Characteristics</label>
                                 <div class="control">
-                                    <input class="input" type="text" id="equipment-model" placeholder="A veces en la parte inferior, a veces bajo la batería">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="column">
-                            <div class="field">
-                                <label class="label">Número de serie</label>
-                                <div class="control">
-                                    <input class="input" type="text" id="equipment-serial-number" placeholder="No siempre es fácil de encontrar!">
-                                </div>
-                            </div>
-                        </div>
-    
-                    </div>
-    
-                    <div class="columns">
-    
-                        <div class="column">
-                            <div class="field">
-                                <label class="label">Características</label>
-                                <div class="control">
-                                    <input class="input" type="text" id="equipment-characteristics" placeholder="Color, calcamonías, golpes, rayones, teclas sueltas, pantallas dañadas, bisagras flojas, etc...; aunque no venga por eso">
-                                </div>
-                            </div>
-                        </div>
-    
-                    </div>
-    
-                    <div class="columns">
-    
-                        <div class="column">
-                            <div class="field">
-                                <label class="label">Accesorios</label>
-                                <div class="control">
-                                    <input class="input" type="text"  id="equipment-accesories" placeholder="Idealmente recibimos el equipo sin accesorios, en caso de incluír algo (cargador, funda, etc...) incluírlo aquí">
+                                    <input class="input" type="text" id="equipment-characteristics" placeholder="Color, stickers, bumps, scratches, loose keys, damaged displays, squeaky hinges, etc...">
                                 </div>
                             </div>
                         </div>
@@ -398,9 +388,22 @@
     
                         <div class="column">
                             <div class="field">
-                                <label class="label">Razón de la visita</label>
+                                <label class="label">Accesories</label>
                                 <div class="control">
-                                    <textarea class="textarea" id="equipment-reason" placeholder="Recuerda ser lo más claro y explícito posible, preferible de más, no de menos"></textarea>
+                                    <input class="input" type="text"  id="equipment-accesories" placeholder="Charger, case, cables, backpacks, etc...">
+                                </div>
+                            </div>
+                        </div>
+    
+                    </div>
+    
+                    <div class="columns">
+    
+                        <div class="column">
+                            <div class="field">
+                                <label class="label">Reason for visit</label>
+                                <div class="control">
+                                    <textarea class="textarea" id="equipment-reason" placeholder="Be as explicit as possible, we'd rather have extra data than be lacking data"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -411,10 +414,10 @@
             </div>
             
         <div class="container box">
-            <h2 class="subtitle">Notas</h2>
+            <h2 class="subtitle">Notes</h2>
 
             <div id="created-ticket-notes-container">
-                <!--TESTING STARTED
+                <!--TESTING STARTED - Only here to understand how to build this programmatically 
                 <div class="columns">
 
                     <div class="column">
@@ -476,16 +479,16 @@
             <div class="columns">
 
                 <div class="column is-8">
-                    <p id="error-text-note" class="error-text is-invisible has-text-right has-text-danger has-text-weight-light">Error: Verifica que no dejes campos vacíos</p>
+                    <p id="error-text-note" class="error-text is-invisible has-text-right has-text-danger has-text-weight-light">Error: Don't leave fields empty.</p>
                 </div>
 
                 <div class="column is-4">
                     <div class="field is-grouped is-grouped-right">
                         <div class="control">
-                            <button id="add-new-note-button" class="button is-link">Agregar nueva nota</button>
+                            <button id="add-new-note-button" class="button is-link">Add new note</button>
                         </div>
                         <div class="control">
-                            <button id="save-new-note-button" class="button is-link">Guardar Nota</button>
+                            <button id="save-new-note-button" class="button is-link">Save note</button>
                         </div>
                     </div>
                 </div>
@@ -495,13 +498,13 @@
         </div>
 
             <div class="container box">
-                <h2 class="subtitle">Cierre de folio</h2>
+                <h2 class="subtitle">Close ticket</h2>
 
                 <div class="columns">
 
                     <div class="column is-1">
                         <div class="field">
-                            <label class="label">Pagado</label>
+                            <label class="label">Paid</label>
                             <div class="control has-text-centered">
                                 <label class="checkbox">
                                 <input id="payment-completed-checkbox" type="checkbox" name="payment-completed" value="payment-completed" >
@@ -512,7 +515,7 @@
                     
                     <div class="column is-2 payment-section">
                         <div class="field">
-                            <label class="label">Cobrado por</label>
+                            <label class="label">Paid to</label>
                             <div class="control">
                                 <input disabled class="input" id="user-name-payment" type="text">
                             </div>
@@ -521,9 +524,9 @@
 
                     <div class="column is-2 payment-section">
                         <div class="field">
-                            <label class="label">Cobro total</label>
+                            <label class="label">Total charge</label>
                             <div class="control has-icons-left">
-                                <input id="total-payment" class="input" type="text" placeholder="MXN">
+                                <input id="total-payment" class="input" type="text" placeholder="USD">
                                 <span class="icon is-small is-left">
                                     <i class="fas fa-dollar-sign"></i>
                                 </span>
@@ -533,14 +536,14 @@
 
                     <div class="column is-2 payment-section">
                         <div class="field">
-                            <label class="label">Medio de pago</label>
+                            <label class="label">Payment method</label>
                             <div class="control is-expanded">
                                 <div class="select is-fullwidth">
                                 <select id="payment-method">
-                                    <option selected disabled>Método de pago</option>
-                                    <option data-location="tarjeta-debito">Tarjeta Débito</option>
-                                    <option data-location="tarjeta-credito">Tarjeta Crédito</option>
-                                    <option data-location="efectivo">Efectivo</option>
+                                    <option selected disabled>Payment method</option>
+                                    <option data-location="debit-card">Debit card</option>
+                                    <option data-location="credit-card">Credit card</option>
+                                    <option data-location="cash">Cash</option>
                                 </select>
                                 </div>
                             </div>
@@ -549,7 +552,7 @@
 
                     <div class="column is-3 payment-section">
                         <div class="field">
-                            <label class="label">Fecha de pago</label>
+                            <label class="label">Payment date</label>
                             <div class="control">
                                 <input disabled id="payment-completed-date" class="input" type="text">
                             </div>
@@ -558,7 +561,7 @@
 
                     <div class="column is-1 payment-section payment-section-buttons">
                         <div class="field has-text-centered">
-                            <label class="label">Guardar</label>
+                            <label class="label">Save</label>
                             <a class="button" id="payment-completed-save-button">
                             <span class="icon has-text-success">
                                 <i class="fas fa-check fa-lg"></i>
@@ -569,7 +572,7 @@
 
                     <div class="column is-1 payment-section payment-section-buttons">
                         <div class="field has-text-centered">
-                            <label class="label">Borrar</label>
+                            <label class="label">Delete</label>
                             <a class="button" id="payment-completed-cancel-button">
                             <span class="icon has-text-danger">
                                 <i class="fas fa-times fa-lg"></i>
@@ -582,7 +585,7 @@
 
                 <div class="columns">
                     <div class="column is-12">
-                        <p id="error-text-payment" class="error-text is-invisible has-text-right has-text-danger has-text-weight-light">Error: Verifica que no dejes campos vacíos</p>
+                        <p id="error-text-payment" class="error-text is-invisible has-text-right has-text-danger has-text-weight-light">Error: Don't leave fields empty.</p>
                     </div>
                 </div>
 
@@ -592,7 +595,7 @@
 
                     <div class="column is-1">
                         <div class="field">
-                            <label class="label">Entregado</label>
+                            <label class="label">Delivered</label>
                             <div class="control has-text-centered">
                                 <label class="checkbox">
                                 <input  id="deliver-completed-checkbox" type="checkbox" name="deliver-completed" value="deliver-completed" >
@@ -603,7 +606,7 @@
 
                     <div class="column is-2 deliver-section">
                         <div class="field">
-                            <label class="label">Entregado por</label>
+                            <label class="label">Delivered by</label>
                             <div class="control">
                                 <input disabled class="input" id="user-name-deliver" type="text">
                             </div>
@@ -612,7 +615,7 @@
 
                     <div class="column is-3 deliver-section">
                         <div class="field">
-                            <label class="label">Fecha de entrega</label>
+                            <label class="label">Delivery date</label>
                             <div class="control">
                                 <input disabled id="deliver-completed-date" class="input" type="text">
                             </div>
@@ -620,12 +623,12 @@
                     </div>
 
                     <div class="column is-2 deliver-section">
-                        <p id="error-text-deliver" class="error-text is-invisible has-text-right has-text-danger has-text-weight-light">Error: Verifica que no dejes campos vacíos</p>
+                        <p id="error-text-deliver" class="error-text is-invisible has-text-right has-text-danger has-text-weight-light">Error: Don't leave fields empty.</p>
                     </div>
 
                     <div class="column is-1 deliver-section deliver-section-buttons">
                         <div class="field has-text-centered">
-                            <label class="label">Guardar</label>
+                            <label class="label">Save</label>
                             <a id="deliver-completed-save-button" class="button">
                             <span class="icon has-text-success">
                                 <i class="fas fa-check fa-lg"></i>
@@ -636,7 +639,7 @@
 
                     <div class="column is-1 deliver-section deliver-section-buttons">
                         <div class="field has-text-centered">
-                            <label class="label">Borrar</label>
+                            <label class="label">Delete</label>
                             <a id="deliver-completed-cancel-button" class="button">
                             <span class="icon has-text-danger">
                                 <i class="fas fa-times fa-lg"></i>
@@ -678,7 +681,7 @@
         <div class="modal-background"></div>
             <div class="modal-card">
                 <header class="modal-card-head">
-                    <p class="modal-card-title">Confirmar ticket</p>
+                    <p class="modal-card-title">Confirm ticket</p>
                 </header>
                 <section class="modal-card-body" id="print-view-ticket">
                     <!-- Content ... -->
@@ -705,6 +708,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
     <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
-    <script src="assets/javascript/search.js"></script>
+    <script src="./assets/javascript/search.js"></script>
 </body>
 </html>
