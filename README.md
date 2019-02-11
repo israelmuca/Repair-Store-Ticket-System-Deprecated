@@ -1,4 +1,5 @@
 # Repair Store Ticket System
+>>Currently being worked on
 
 A handy ticket system for Repair Shops.
 
@@ -7,9 +8,9 @@ A handy ticket system for Repair Shops.
 If you've worked at a repair shop you quickly realize mantaining proper communication regarding a customer's equipment can be a real problem. Both between the people who work at the shop, and between the shop and the customers.
 
 Commercial solutions, while functional, had more functionality than what I needed at the time, and also where more expensive than what I was willing to pay month after month.
-This solution has been working ok (with some limitations) since June 30, 2018 in a multi location repair shop.
+This solution has been working ok, since June 30, 2018 in a multi location repair shop.
 
-A future SAAS version with a free tier is currently on the works.
+A future SaaS version with a more functionality and a free tier is currently on the works.
 
 ## Features
 - **User authentication** via Firebase Auth Ui
