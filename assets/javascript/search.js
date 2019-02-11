@@ -1,44 +1,12 @@
 $(document).ready(function (){
-    /*
-
-        TODO:
-            - Add pwd field
-            - Add 'transferencia' to payment options
-            - Add reprint of ticket
-            - Add a closing ticket
-            - Reapertura por garantía
-            
-            - Let the user come back after 1st print of ticket (for if there's an error)
-            - Add a selling ticket that can or cannot be added to a specific customer
-            - prepare weekly report
-            - add a search option of non closed tickets
-            - add a task panel for technicians to know what they need to work on
-            - add user's job for filtering of options
-            - Add signature field for ticket
-            - Analyse a way to add smaller payments
-            - Analyse a way to create a little quotes app
-            - Export to PDF
-            - HTML to be sent for email
-            - Automailer API
-            - Notify the user when it's important to know something happened
-            - Add direct selling option (https://css-tricks.com/html-invoice/)
-            - API for equipment data
-
-    */
 // --------------------- ON LOAD EVENTS - START ---------------------
     // Initialize Firebase
-    var config = {
-        apiKey: "AIzaSyAYkl5opTyW9YF7801KmgT9YUhpV0JhYGY",
-        authDomain: "notas-xtm-fixc.firebaseapp.com",
-        databaseURL: "https://notas-xtm-fixc.firebaseio.com",
-        projectId: "notas-xtm-fixc",
-        storageBucket: "notas-xtm-fixc.appspot.com",
-        messagingSenderId: "768789228246"
-    };
+    // 'config' is being imported through the HTML's script tag (./.env/firebase.config.js)
+    // For your own development, you need to change the 'example.env' folder to '.env' and change the values inside to reflect the values you get from Firebase
     firebase.initializeApp(config);
     var database = firebase.database();
 
-    //Verify if the user has logged in
+    // Verify if the user has logged in
     checkLoginStatus();
 
     var ticketsRef = database.ref('/tickets');
@@ -46,7 +14,7 @@ $(document).ready(function (){
 
     $('.minimize-search-tickets').hide();
 
-    //Fills the recent-tickets-table
+    // Fills the recent-tickets-table
     fillRecentTickets();
 // --------------------- ON LOAD EVENTS -   END ---------------------
 //-----------------
