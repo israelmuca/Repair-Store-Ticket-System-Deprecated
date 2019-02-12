@@ -1,5 +1,5 @@
 # Repair Store Ticket System
->>Currently being worked on
+>Currently being worked on
 
 A handy ticket system for Repair Shops.
 
