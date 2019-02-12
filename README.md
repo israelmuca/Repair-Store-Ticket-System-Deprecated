@@ -26,10 +26,8 @@ A future SaaS version with a more functionality and a free tier is currently on 
 - Registers tickets as closed once the equipment is paid for and delivered
 
 ## Prerequisites
-- A Google account
-- Firebase Authentication
-- Firebase Database
-- Firebase Hosting
+- A Google account - _regular or G Suite, doesn't matter_
+- 15 minutes to set everything up
 
 ## Getting started
 This will be a blog post to keep the readme more concise
