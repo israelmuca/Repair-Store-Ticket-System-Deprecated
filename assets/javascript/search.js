@@ -19,8 +19,8 @@ $(document).ready(function (){
 // --------------------- ON LOAD EVENTS -   END ---------------------
 //-----------------
 // --------------------- GLOBAL VARIABLES - START ---------------------
-    //Global variables
-    //Hide/unhide booleans
+    // Global variables
+    // Hide/unhide booleans
     var minimizeCustData = false;
     var minimizeEquipData = false;
     var minimizeSearchTickets = true;
@@ -40,21 +40,21 @@ $(document).ready(function (){
 
     //Arrays for notes
     var radioOptions = [
-        ' Nota interna',
-        ' Diagnóstico',
-        ' Cotización',
-        ' Comunicación con cliente'
+        ' Internal Note',
+        ' Diagnostic',
+        ' Quote',
+        ' Talked with customer'
     ];
 
     var radioIDs = [
-        'nota',
-        'diagnostico',
-        'cotizacion',
-        'comunicacion'
+        'note',
+        'diagnostic',
+        'quote',
+        'communication'
     ];
 
-    //Global selectors
-    //buttons
+    // Global selectors
+    // Buttons
     var addNewNoteButton = $('#add-new-note-button');
     var saveNewNoteButton = $('#save-new-note-button');
     var searchNumberButton = $('#search-number-button');
@@ -68,14 +68,14 @@ $(document).ready(function (){
     var deliverCompletedSaveButton = $('#deliver-completed-save-button');
     var deliverCompletedCancelButton = $('#deliver-completed-cancel-button');
 
-    //containers
+    // Containers
     var selectedTicketContainer = $('#selected-ticket-container');
     selectedTicketContainer.hide();
 
     var searchTicketsContainer = $('#search-tickets-container');
     var recentTicketsContainer = $('#recent-tickets-container');
 
-    //Information fields (inputs, checks, etc...)
+    // Information fields (inputs, checks, etc...)
 
     var searchText = $('#search-text');
 
@@ -120,22 +120,22 @@ $(document).ready(function (){
 //-----------------
 // --------------------- EVENT LISTENERS - START ---------------------
 
-    //Click listeners for hiding containers as clicks are done on the respective boxes
+    // Click listeners for hiding containers as clicks are done on the respective boxes
     $('.minimize-search-tickets-click').on('click', minSearchTickets);
     $('.minimize-recent-tickets-click').on('click', minRecentTickets);
     $('.minimize-cust-data-click').on('click', minCustData);
     $('.minimize-equipment-data-click').on('click', minEquipData);
 
-    //Click listeners for the search buttons
+    // Click listeners for the search buttons
     searchNumberButton.on('click', searchNumber);
     searchTicketButton.on('click', searchTicket);
 
-    //onHover listener for the recent tickets container, to show that they're links to the actual tickets
+    // onHover listener for the recent tickets container, to show that they're links to the actual tickets
     $('#table-body').hover(function(){
         $('#table-body').css('cursor', 'pointer');
     });
 
-    //onClick listener for creating the ticket container, to view and modify the clicked ticket
+    // onClick listener for creating the ticket container, to view and modify the clicked ticket
     $('#table-body').on('click', '.ticket', function() {
         ticketDBID = this.dataset.ticketDbid;
         custDBID = this.dataset.ticketCustdbid;
@@ -144,79 +144,79 @@ $(document).ready(function (){
     });
 
 
-    //Button click listener for add new note inside made tickets
+    // Button click listener for add new note inside made tickets
     addNewNoteButton.on('click', addNewNoteInTicket);
 
-    //Click listener for save-new-note button
+    // Click listener for save-new-note button
     saveNewNoteButton.on('click', saveNewNoteInTicket);
 
-    //Click listener for payment checkbox
+    // Click listener for payment checkbox
     paymentCompletedCheckboxSelector.on('change', paymentDone);
 
-    //.change() event listener for the number in the payment field
+    // .change() event listener for the number in the payment field
     totalPaymentSelector.on('change', formatToMXN);
 
-    //Click listener for the save payment button
+    // Click listener for the save payment button
     paymentCompletedSaveButton.on('click', savePayment);
 
-    //Click listener for the cancel payment button
+    // Click listener for the cancel payment button
     paymentCompletedCancelButton.on('click', cancelPayment);
 
-    //Click listener for deliver checkbox
+    // Click listener for deliver checkbox
     deliverCompletedCheckboxSelector.on('change', deliverDone)
 
-    //Click listener for the save deliver button
+    // Click listener for the save deliver button
     deliverCompletedSaveButton.on('click', saveDeliver);
 
-    //Click listener for the cancel deliver button
+    // Click listener for the cancel deliver button
     deliverCompletedCancelButton.on('click', cancelDeliver);
 
-    //Click listener for logout button
+    // Click listener for logout button
     $('#log-out-button').on('click', function(){
         firebase.auth().signOut();
     });
 
 
     // --------------------- EVENT LISTENERS - END ---------------------
-
-
+//-----------------
     // --------------------- FUNCTIONS - START ---------------------
 
-    //Verify the user's login status
+    // Verify the user's login status
     function checkLoginStatus() {
         firebase.auth().onAuthStateChanged(function (user) {
             if (!user) {
-                //Take the user to the login page
+                // Take the user to the login page
                 window.location.href = 'login.html';
             } else {
-                //validate user is auth
+                // Validate user is auth
                 isUserAuth(user.uid);
             }
         });
     }
 
-    //Check if user is authorized to actually use the system
+    // Check if user is authorized to actually use the system
+    // Was added because anyone can signup using Google auth, but if they're not on the DB they can't do anything in the system
     function isUserAuth(pUserUid) {
-        //Query the DB
+        // Query the DB
         database.ref('users')
         .orderByChild('uid')
         .equalTo(pUserUid)
         .once('value')
         .then(function(snapshot) {
             if(snapshot.val()) {
-                //User exists, save the user name and continue
+                // User exists, save the user name and continue
                 snapshot.forEach(function(userSnapshot){
                     userName = userSnapshot.val().name;
                     $('#user-name-log-out').text(userName);
                 })
             } else {
-                //User not authorized, tell them, then take them to the login
+                // User not authorized, tell them, then take them to the login
 
-                //Modify the texts in the modal
-                $('.modal-card-title').text('¡Usuario no autorizado!');
-                $('.modal-card-body').html('<p>Asegúrate de hacer login con el usuario que te fue proporcionado</p>');
+                // Modify the texts in the modal
+                $('#modal-user-auth-title').text('The user is not authorized!');
+                $('#modal-user-auth-body').html('<p>Make sure to login using the provided user</p>');
 
-                //Activate the modal
+                // Activate the modal
                 $('.modal').addClass('is-active');
 
                 setTimeout(function(){
@@ -226,31 +226,33 @@ $(document).ready(function (){
         })
     }
 
-    ////Fills the recent-tickets-table
+    // Fills the recent-tickets-table
     function fillRecentTickets() {
-        //Show last 15 tickets from DB
-        // database.ref('/tickets')
-        // .orderByChild('descOrder')
-        // //.limitToFirst(200)
-        // .on("child_added", function(ticketsSnapshot) {
-
-        //     var oneTicketChild = ticketsSnapshot.val();
-        //     createRowWithTicket(oneTicketChild, 'append')
-
-        // })
-
-        //For use with reports
+        // For regular use
+        // Show last 50 tickets from DB
         database.ref('/tickets')
-        .orderByChild('paymentCompleted')
+        .orderByChild('descOrder')
+        .limitToFirst(50) // Modify this to show more or less tickets, no pagination yet, sorry
         .on("child_added", function(ticketsSnapshot) {
 
             var oneTicketChild = ticketsSnapshot.val();
-            createRowWithTicketReport(oneTicketChild, 'append');
+            createRowWithTicket(oneTicketChild, 'append')
 
         })
+
+        // For use with reports
+        // I used this code to show all equipments that were already paid for
+        // database.ref('/tickets')
+        // .orderByChild('paymentCompleted')
+        // .on("child_added", function(ticketsSnapshot) {
+
+        //     var oneTicketChild = ticketsSnapshot.val();
+        //     createRowWithTicketReport(oneTicketChild, 'append');
+
+        // })
     }
 
-    //Delegate the row building here, to make sure other functions do only their main purpose
+    // Build the actual rows in the table
     function createRowWithTicket(pOneTicketData, pOrder) {
 
         var tableBody = $("#table-body");
@@ -298,7 +300,7 @@ $(document).ready(function (){
         tdNotes.text(pOneTicketData.internalNotesCounter-1);
         newRow.append(tdNotes);
 
-        //Finally, append or prepend the whole row to the tablebody
+        // Finally, append or prepend the whole row to the tablebody
         if (pOrder == 'prepend') {
             tableBody.prepend(newRow);
         } else if (pOrder == 'append') {
@@ -379,21 +381,24 @@ $(document).ready(function (){
         
     }
 
-    //Search the DB for the phone number
+    // Search the DB for the phone number
     function searchNumber() {
+
+        // HTML modifications to make it look like its loading
         searchNumberButton.addClass('is-loading');
         var phoneNumberSearch = $('#search-number-input').val().trim();
         searchTicketsContainer.hide(900);
         reloadButton.show();
 
+        // Calling the DB
         database.ref('customers')
         .orderByChild('cellNum')
         .equalTo(phoneNumberSearch)
         .once('value')
         .then(function(snapshot) {
             if(snapshot.val()) {
-                //Customer exists in DB
-                //Clear table
+                // Customer exists in DB
+                // Clear table
                 $("#table-body").empty();
                 snapshot.forEach(function(snapshotChild) {
                     customerTickets = snapshotChild.val().tickets;
@@ -403,21 +408,23 @@ $(document).ready(function (){
                         .once("value")
                         .then(function(oneTicketSnapshot) {
                             var oneTicketData = oneTicketSnapshot.val();
-                            createRowWithTicket(oneTicketData, 'prepend');
-                            searchText.text('15 folios más recientes de ' +oneTicketData.custName+ ' ' +oneTicketData.custLastName);
+                            createRowWithTicket(oneTicketData, 'prepend'); // We use prepend to make them show from the most recent to the oldest
+                            searchText.text('Folios más recientes de ' +oneTicketData.custName+ ' ' +oneTicketData.custLastName);
                         })    
                     }
 
                 })
             } else {
-                //Modify the texts in the modal
-                $('.modal-card-title').text('¡Cliente no encontrado!');
-                $('.modal-card-body').html('<p>Asegúrate de confirmar el número del cliente o de intentar con algún otro número</p>');
+                // If customer was not found
+                // Modify the texts in the modal
+                $('.modal-card-title').text('Customer not found!');
+                $('.modal-card-body').html('<p>Make sure you have the correct number.</p>');
 
-                //Activate the modal
+                // Activate the modal
                 $('.modal').addClass('is-active');
 
-                setTimeout(function(){ //FIXME: Shouldn't use this!
+                // Reload the page
+                setTimeout(function(){
                     window.location.href = 'search.html';
                 }, 3000);
             }
@@ -425,34 +432,38 @@ $(document).ready(function (){
 
     }
 
-    //Search the DB for a ticket number
+    // Search the DB for a ticket number
     function searchTicket() {
+
+        // HTML modifications to make it look like its loading
         searchTicketButton.addClass('is-loading');
         var ticketNumberSearch = ($('#search-ticket-input').val().trim()).toUpperCase();
         searchTicketsContainer.hide(900);
         reloadButton.show();
 
+        // Calling the DB
         ticketsRef
         .orderByChild('searchTicketNum')
         .equalTo(ticketNumberSearch)
         .once("value")
         .then(function(snapshot) {
             if(snapshot.val()) {
-                //customer exists in DB
+                // Customer exists in DB
                 snapshot.forEach(function(snapshotChild) {
                     ticketDBID = snapshotChild.val().ticketID;
                     custDBID = snapshotChild.val().custID;
                     displayTicket(ticketDBID, custDBID);
                 })
             } else {
-                //Modify the texts in the modal
-                $('.modal-card-title').text('¡Folio no encontrado!');
-                $('.modal-card-body').html('<p>Recuerda que los números a usar para la búsqueda son la 1er letra de la sucursal seguido del número del folio, por ej: "A42".</p>');
+                // Modify the texts in the modal
+                $('.modal-card-title').text('Ticket not found!');
+                $('.modal-card-body').html('<p>Remember the numbers you should use are the 1st letter of the location followed by the ticket number, for instance "A123".</p>');
 
-                //Activate the modal
+                // Activate the modal
                 $('.modal').addClass('is-active');
 
-                setTimeout(function(){ //FIXME: Shouldn't use this!
+                // Reload the page
+                setTimeout(function(){
                     window.location.href = 'search.html';
                 }, 3000);
             }
@@ -460,32 +471,32 @@ $(document).ready(function (){
 
     }
 
-    //Display individually selected ticket
+    // Display individually selected ticket
     function displayTicket(pTicketDBID, pCustDBID) {
         
         searchTicketsContainer.hide();
 
-        //Function variables
+        // Function variables
         var selectedTicketData;
         var selectedCustID;
         var selectedCustData;
 
-        //Hide the recent-tickets-container and change the variable
+        // Hide the recent-tickets-container and change the variable
         recentTicketsContainer.hide();
         hideRecentTicketsContainer = true;
-        //Show the selected-ticket-container
+        // Show the selected-ticket-container
         selectedTicketContainer.show();
         hideSelectedTicketContainer = false;
 
-        //Hide the save-note-button until there's something to save (add-note)
+        // Hide the save-note-button until there's something to save (add-note)
         saveNewNoteButton.hide();
 
-        //Change the menu to show "results" as active and create a link in the menu back to search
+        // Change the menu to show "results" as active and create a link in the menu back to search
         $('#search-tickets-list').removeClass('is-active');
         $('#search-tickets-list>a').attr('href', 'search.html')
         $('#results-tickets-list').addClass('is-active');
 
-        //Get the customer data from firebase
+        // Get the customer data from firebase
         customersRef
         .child(pCustDBID)
         .once("value")
@@ -515,14 +526,14 @@ $(document).ready(function (){
 
         })
 
-        //Get the ticket data from firebase
+        // Get the ticket data from firebase
         ticketsRef
         .child(pTicketDBID)
         .once("value")
         .then(function(sTicketSnapshot) {
             selectedTicketData = sTicketSnapshot.val();
 
-            //Populate the selected-ticket-container with the data from the ticket
+            // Populate the selected-ticket-container with the data from the ticket
             locationSelector.val(selectedTicketData.location);
             ticketNumSelector.val(selectedTicketData.fullTicketNum);
             ticketCreatedBySelector.val(selectedTicketData.ticketCreatedBy);
@@ -536,23 +547,24 @@ $(document).ready(function (){
             accesoriesSelector.val(selectedTicketData.accesories);
             reasonToVisitSelector.val(selectedTicketData.reasonToVisit);
 
-            //handle internalNotes data
+            // Handle internalNotes data
             ticketInternalNotesCounter = selectedTicketData.internalNotesCounter;
 
-            //loop to create 
+            // Loop to create the notes
             for (var key in selectedTicketData.notes) {
                 var note = selectedTicketData.notes[key];
                 createNotesInTicket(note);
             }
 
-            //Ticket closing info
+
+            // Ticket closing info
 
             if(selectedTicketData.paymentCompleted) {
-                //show the section, hide the buttons
+                // Show the section, hide the buttons
                 paymentSectionSelector.show();
                 paymentButtons.hide();
 
-                //put the data in the fields
+                // Put the data in the fields
                 paymentCompletedCheckboxSelector.prop('checked', true);
                 $('#user-name-payment').val(selectedTicketData.paymentUserBy);
                 totalPaymentSelector.val(selectedTicketData.paymentTotal);
@@ -560,35 +572,35 @@ $(document).ready(function (){
                 paymentMethodSelector.val(selectedTicketData.paymentMethod);
                 paymentCompletedDateSelector.val(selectedTicketData.paymentDate);
 
-                //disable the fields
+                // Disable the fields
                 paymentCompletedCheckboxSelector.prop('disabled', true);
                 totalPaymentSelector.prop('disabled', true);
                 paymentMethodSelector.prop('disabled', true);
             }
 
             if(selectedTicketData.deliverCompleted) {
-                //show the section, hide the buttons
+                // Show the section, hide the buttons
                 deliverSectionSelector.show();
                 deliverButtons.hide();
 
-                //put the data in the fields
+                // Put the data in the fields
                 deliverCompletedCheckboxSelector.prop('checked', true);
                 $('#user-name-deliver').val(selectedTicketData.deliverUserBy);
 
 
                 deliverCompletedDateSelector.val(selectedTicketData.deliverDate);
 
-                //disable the field
+                // Disable the field
                 deliverCompletedCheckboxSelector.prop('disabled', true);
             }
 
         })
 
-        //add the 'disabled' prop to the ticket fields
+        // Add the 'disabled' prop to the ticket fields
         locationSelector.prop('disabled', true);
         ticketNumSelector.prop('disabled', true);
         dateSelector.prop('disabled', true);
-        //add the 'disabled' prop to customer fields
+        // Add the 'disabled' prop to customer fields
         cellNumSelector.prop('disabled', true);
         emailSelector.prop('disabled', true);
         custNameSelector.prop('disabled', true);
@@ -597,7 +609,7 @@ $(document).ready(function (){
         contactMetWhatsSelector.prop('disabled', true);
         contactMetCallSelector.prop('disabled', true);
         contactMetEmailSelector.prop('disabled', true);
-        //add the 'disabled' prop to the equpment fields
+        // Add the 'disabled' prop to the equpment fields
         eqTypeSelector.prop('disabled', true);
         eqBrandSelector.prop('disabled', true);
         eqModelSelector.prop('disabled', true);
@@ -610,7 +622,7 @@ $(document).ready(function (){
 
     function createNotesInTicket(pNote) {
 
-        //Save all the values to vars
+        // Save all the values to vars
         var noteInternalNotesCounter = pNote.internalNotesCounter;
         var noteBy = pNote.noteBy
         var noteDate = pNote.noteDate;
@@ -618,11 +630,11 @@ $(document).ready(function (){
         var noteType = pNote.noteType;
         var noteMessage = pNote.noteText;
 
-        //Create columns container for column TicketType and Date
+        // Create columns container for column TicketType and Date
         var columnsNoteTypeDate = $('<div>');
         columnsNoteTypeDate.addClass('columns');
 
-        //Create column for the Ticket Type radio buttons
+        // Create column for the Ticket Type radio buttons
         var columnNoteType = $('<div>');
         columnNoteType.addClass('column');
         columnsNoteTypeDate.append(columnNoteType);
@@ -649,9 +661,9 @@ $(document).ready(function (){
             inputRadio.attr('type', 'radio');
             inputRadio.attr('name', 'note-type-' + noteInternalNotesCounter);
             inputRadio.attr('id', radioIDs[i]+ '-' + noteInternalNotesCounter);
-            //check if it's supposed to be checked
+            // Check if it's supposed to be checked
             if (noteType == radioIDs[i]) {
-                //Create the correct ID of the radio to check
+                // Create the correct ID of the radio to check
                 toCheckId = '#' + radioIDs[i] + '-' + noteInternalNotesCounter;
             }
             inputRadio.prop('disabled', true);
@@ -663,7 +675,7 @@ $(document).ready(function (){
             controlNoteType.append(labelRadio);
         }
 
-        //Create the 'created by' field next to the radios
+        // Create the 'created by' field next to the radios
         var columnBy = $('<div>');
         columnBy.addClass('column');
         columnBy.addClass('is-2');
@@ -680,7 +692,7 @@ $(document).ready(function (){
         controlBy.addClass('control');
         fieldBy.append(controlBy);
 
-        //Create the textarea with incremental ID to save the created by to the DB
+        // Create the textarea with incremental ID to save the created by to the DB
         var inputAreaBy = $('<input>');
         inputAreaBy.addClass('input');
         inputAreaBy.attr('type', 'text');
@@ -690,7 +702,7 @@ $(document).ready(function (){
         controlBy.append(inputAreaBy)
 
 
-        //Create the date and place it on the right side
+        // Create the date and place it on the right side
         var columnDate = $('<div>');
         columnDate.addClass('column');
         columnDate.addClass('is-one-quarter');
@@ -707,7 +719,7 @@ $(document).ready(function (){
         controlDate.addClass('control');
         fieldDate.append(controlDate);
 
-        //Create the textarea with an incremental ID to save the date to the BD
+        // Create the textarea with an incremental ID to save the date to the BD
         var inputAreaDate = $('<input>');
         inputAreaDate.addClass('input');
         inputAreaDate.attr('type', 'text');
@@ -716,17 +728,17 @@ $(document).ready(function (){
         inputAreaDate.prop('disabled', true);
         controlDate.append(inputAreaDate);
 
-        //Append this columns to the container
+        // Append this columns to the container
         notesContainer.append(columnsNoteTypeDate);
 
-        //Create columns and column for the actual ticket
+        // Create columns and column for the actual ticket
         var columnsTicket = $('<div>');
         columnsTicket.addClass('columns');
         var columnTicket = $('<div>');
         columnTicket.addClass('column');
         columnsTicket.append(columnTicket);
 
-        //Create the form input
+        // Create the form input
         var fieldTicket = $('<div>');
         fieldTicket.addClass('field');
         columnTicket.append(fieldTicket);
@@ -735,7 +747,7 @@ $(document).ready(function (){
         controlTicket.addClass('control');
         fieldTicket.append(controlTicket);
 
-        //Create the textarea with an incremental ID to save them all to the DB
+        // Create the textarea with an incremental ID to save them all to the DB
         var textareaTicket = $('<textarea>');
         textareaTicket.addClass('textarea');
         textareaTicket.attr('id', 'ticket-text-' + noteInternalNotesCounter);
@@ -743,23 +755,23 @@ $(document).ready(function (){
         textareaTicket.prop('disabled', true);
         controlTicket.append(textareaTicket);
 
-        //Apend this columns to the container
+        // Append this columns to the container
         notesContainer.append(columnsTicket);
 
-        //At the end, click on the proper radio button, and disable them
+        // At the end, click on the proper radio button, and disable them
         $(toCheckId).prop('checked', true);
     }
 
     function addNewNoteInTicket() {
-        //Hide and show buttons
+        // Hide and show buttons
         addNewNoteButton.hide();
         saveNewNoteButton.show();
 
-        //Create columns container for column TicketType and Date
+        // Create columns container for column TicketType and Date
         var columnsNoteTypeDate = $('<div>');
         columnsNoteTypeDate.addClass('columns');
 
-        //Create column for the Ticket Type radio buttons
+        // Create column for the Ticket Type radio buttons
         var columnNoteType = $('<div>');
         columnNoteType.addClass('column');
         columnsNoteTypeDate.append(columnNoteType);
@@ -770,7 +782,7 @@ $(document).ready(function (){
 
         var labelNoteType = $('<label>');
         labelNoteType.addClass('label');
-        labelNoteType.text('Tipo de Nota:');
+        labelNoteType.text('Note type:');
         fieldNoteType.append(labelNoteType);
 
         var controlNoteType = $('<div>');
@@ -793,7 +805,7 @@ $(document).ready(function (){
             controlNoteType.append(labelRadio);
         }
 
-        //Create the 'created by' field next to the radios
+        // Create the 'created by' field next to the radios
         var columnBy = $('<div>');
         columnBy.addClass('column');
         columnBy.addClass('is-2');
@@ -803,14 +815,14 @@ $(document).ready(function (){
         columnBy.append(fieldBy);
         var labelBy = $('<label>');
         labelBy.addClass('label');
-        labelBy.text('Creada por');
+        labelBy.text('Created by:');
         fieldBy.append(labelBy);
 
         var controlBy = $('<div>');
         controlBy.addClass('control');
         fieldBy.append(controlBy);
 
-        //Create the textarea with incremental ID to save the created by to the DB
+        // Create the textarea with incremental ID to save the created by to the DB
         var inputAreaBy = $('<input>');
         inputAreaBy.addClass('input');
         inputAreaBy.attr('type', 'text');
@@ -819,7 +831,7 @@ $(document).ready(function (){
         inputAreaBy.prop('disabled', true);
         controlBy.append(inputAreaBy)
 
-        //Create the date and place it on the right side
+        // Create the date and place it on the right side
         var columnDate = $('<div>');
         columnDate.addClass('column');
         columnDate.addClass('is-one-quarter');
@@ -836,7 +848,7 @@ $(document).ready(function (){
         controlDate.addClass('control');
         fieldDate.append(controlDate);
 
-        //Create the textarea with an incremental ID to save the date to the BD
+        // Create the textarea with an incremental ID to save the date to the BD
         var inputAreaDate = $('<input>');
         inputAreaDate.addClass('input');
         inputAreaDate.attr('type', 'text');
@@ -845,17 +857,17 @@ $(document).ready(function (){
         inputAreaDate.prop('disabled', true);
         controlDate.append(inputAreaDate);
 
-        //Append this columns to the container
+        // Append this columns to the container
         notesContainer.append(columnsNoteTypeDate);
 
-        //Create columns and column for the actual ticket
+        // Create columns and column for the actual ticket
         var columnsTicket = $('<div>');
         columnsTicket.addClass('columns');
         var columnTicket = $('<div>');
         columnTicket.addClass('column');
         columnsTicket.append(columnTicket);
 
-        //Create the form input
+        // Create the form input
         var fieldTicket = $('<div>');
         fieldTicket.addClass('field');
         columnTicket.append(fieldTicket);
@@ -865,47 +877,47 @@ $(document).ready(function (){
         fieldTicket.append(controlTicket);
         
 
-        //Create the textarea with an incremental ID to save them all to the DB
+        // Create the textarea with an incremental ID to save them all to the DB
         var textareaTicket = $('<textarea>');
         textareaTicket.addClass('textarea');
         textareaTicket.attr('placeholder',
-            'Cualquier interacción con el equipo o cliente debe de ser registrada aquí SIN EXCEPCIÓN.\r\n' 
-            + 'Recuerda ser lo más claro y explícito posible, preferible de más, no de menos.\r\n'
-            + 'Si envias archivos a cliente, debes poner enlaces a Google Drive con los archivos enviados.');
+            'Any interaction with the equipment or the customer must be added here WITHOUT EXCEPTION.\r\n' 
+            + 'Be as clear and explicit as possible, rather have extra information than less info.\r\n'
+            + 'If you send a PDF with a quote to a customer, you must add the PDF here, as a link.');
         textareaTicket.attr('id', 'ticket-text-' + ticketInternalNotesCounter);
         controlTicket.append(textareaTicket);
 
-        //Apend this columns to the container
+        // Append this columns to the container
         notesContainer.append(columnsTicket);
 
     }
 
-    //Add individual note to tickets
+    // Add individual note to tickets
     function saveNewNoteInTicket() {
         
-        //Confirm a radio is selected
+        // Confirm a radio is selected
         if(!($('input[name="note-type-' + ticketInternalNotesCounter + '"]:checked')[0])) {
             $('#error-text-note').removeClass('is-invisible');
             return;
         }
         $('#error-text-note').addClass('is-invisible');
 
-        //Get the values
-        //Remove the '-x' before we can save it to the DB
+        // Get the values
+        // Remove the '-x' before we can save it to the DB
         var newNoteTypeWithNumber = $('input[name="note-type-' + ticketInternalNotesCounter + '"]:checked')[0].id;
         var newNoteType = newNoteTypeWithNumber.slice(0, newNoteTypeWithNumber.lastIndexOf('-'));
         var newNoteBy = userName;
         var newNoteDate = $('#new-ticket-date-' + ticketInternalNotesCounter).val();
         var newNoteText = $('#ticket-text-' + ticketInternalNotesCounter).val();
 
-        //Confirm text is written
+        // Confirm text is written
         if (!newNoteText) {
             $('#error-text-note').removeClass('is-invisible');
             return;
         }
         $('#error-text-note').addClass('is-invisible');
 
-        //Disable the fields once validation is done
+        // Disable the fields once validation is done
         $('#new-ticket-date-' + ticketInternalNotesCounter).prop('disabled', true);
         $('#ticket-text-' + ticketInternalNotesCounter).prop('disabled', true);
         for(var i=0; i < radioOptions.length; i++) { //Disable all radios
@@ -927,7 +939,7 @@ $(document).ready(function (){
         .then(function() {
             ticketInternalNotesCounter++;
 
-            //save the internalNotesCounter on the ticket
+            // Save the internalNotesCounter on the ticket
             database.ref('/tickets')
             .child(ticketDBID)
             .update({
@@ -935,12 +947,13 @@ $(document).ready(function (){
             })
         })
 
-        //Reenable the button to create a new note
+        // Reenable the button to create a new note
         addNewNoteButton.show();
         saveNewNoteButton.hide();
 
     }
 
+    // Used when a payment is registered
     function paymentDone() {
         if (hidePaymentSection) {
             paymentSectionSelector.show();
@@ -954,6 +967,7 @@ $(document).ready(function (){
         }
     }
 
+    // Used to register a payment
     function savePayment() {
 
         var paymentUserBy = userName;
@@ -962,13 +976,14 @@ $(document).ready(function (){
         var paymentDate = paymentCompletedDateSelector.val();
         var paymentTimestamp = firebase.database.ServerValue.TIMESTAMP;
 
+        // If some data is missing, show an error
         if (!paymentTotal || !paymentMethod) {
             $('#error-text-payment').removeClass('is-invisible');
             return;
         }
         $('#error-text-payment').addClass('is-invisible');
 
-
+        // Save the payment
         ticketsRef
         .child(ticketDBID)
         .update({
@@ -979,7 +994,7 @@ $(document).ready(function (){
             paymentDate: paymentDate,
             paymentTimestamp: paymentTimestamp
         })
-        .then(
+        .then( // Save the payment on the customer as well
             customersRef
             .child(custDBID + '/tickets/' + ticketDBID)
             .update({
@@ -990,7 +1005,7 @@ $(document).ready(function (){
                 paymentDate: paymentDate,
                 paymentTimestamp: paymentTimestamp
         }))
-        .then(function(){
+        .then(function(){ // Show payment as made
             paymentButtons.hide();
             paymentCompletedCheckboxSelector.prop('disabled', true);
             totalPaymentSelector.prop('disabled', true);
@@ -999,6 +1014,7 @@ $(document).ready(function (){
         
     }
 
+    // If while registering a payment, you need to go back, this function will cancel the process
     function cancelPayment() {
         paymentSectionSelector.hide();
         hidePaymentSection = true;
@@ -1006,11 +1022,13 @@ $(document).ready(function (){
         $('#error-text-payment').addClass('is-invisible');
     }
 
+    // Show the format of the currency in MXN (Mexican Pesos)
     function formatToMXN() {
         var currencyMXN = numeral(totalPaymentSelector.val()).format('0,0.00');
         totalPaymentSelector.val(currencyMXN);
     }
 
+    // Shows the delivery as made
     function deliverDone() {
         if (hideDeliverSection) {
             deliverSectionSelector.show();
@@ -1023,12 +1041,14 @@ $(document).ready(function (){
         }
     }
 
+    // Register an equipment as delivered
     function saveDeliver() {
 
         var deliverDate = deliverCompletedDateSelector.val();
         var deliverUserBy = userName;
         var deliverTimestamp = firebase.database.ServerValue.TIMESTAMP;
 
+        // Save it to the ticket
         ticketsRef
         .child(ticketDBID)
         .update({
@@ -1037,7 +1057,7 @@ $(document).ready(function (){
             deliverDate: deliverDate,
             deliverTimestamp: deliverTimestamp
         })
-        .then(
+        .then( // Save it on the customer's info
             customersRef
             .child(custDBID + '/tickets/' + ticketDBID)
             .update({
@@ -1046,25 +1066,20 @@ $(document).ready(function (){
                 deliverDate: deliverDate,
                 deliverTimestamp: deliverTimestamp
         }))
-        .then(function(){
+        .then(function(){ // Show it as delivered
             deliverButtons.hide();
             deliverCompletedCheckboxSelector.prop('disabled', true);
         })
     }
 
+    // Used when you're doing an equipment delivery, but you need to cancel it
     function cancelDeliver() {
         deliverSectionSelector.hide();
         hideDeliverSection = true;
         deliverCompletedCheckboxSelector.prop('checked', false);
     }
 
-
-    //Update individually selected ticket
-    function updateTicket() {
-        //is it really needed? maybe just add comments?
-    }
-
-    //Minimize Customer Data Container
+    // Minimize Customer Data Container
     function minCustData() {
         if (!minimizeCustData) {
             $('.minimize-cust-data').hide();
@@ -1079,7 +1094,7 @@ $(document).ready(function (){
         }
     }
 
-    //Minimize Equipment Data Container
+    // Minimize Equipment Data Container
     function minEquipData() {
         if (!minimizeEquipData) {
             $('.minimize-equipment-data').hide();
@@ -1094,7 +1109,7 @@ $(document).ready(function (){
         }
     }
 
-    //Minimize Recent Tickets Container
+    // Minimize Recent Tickets Container
     function minRecentTickets() {
         if (!minimizeRecentTickets) {
             $('.minimize-recent-tickets').hide();
@@ -1109,7 +1124,7 @@ $(document).ready(function (){
         }
     }
 
-    //Minimize Search Tickets Container
+    // Minimize Search Tickets Container
     function minSearchTickets() {
         if (!minimizeSearchTickets) {
             $('.minimize-search-tickets').hide();
