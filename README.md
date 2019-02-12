@@ -3,7 +3,9 @@
 
 A handy ticket system for Repair Shops.
 
-**Live demo:** // insert URL here
+**Live demo:** // TODO: insert URL here
+>User: testing@test.com
+>Pwd: Testing1
 
 If you've worked at a repair shop you quickly realize mantaining proper communication regarding a customer's equipment can be a real problem. Both between the people who work at the shop, and between the shop and the customers.
 
@@ -28,42 +30,22 @@ A future SaaS version with a more functionality and a free tier is currently on 
 - Firebase Hosting
 
 ## Getting started
-
-### Clone the repository
-```shell
-# Get the latest version
-git clone https://github.com/IsraelMuCa/CHANGETHIS.git myproject
-
-# cd into the directory
-cd myproject
-```
-
-### Create a Firebase project
-
-### Modify the project with the new data
-Next, you'll need to change the ```example.env``` folder to ```.env``` and change the values inside the ```firebase.config.js``` file to
-
-### Create the users and auth them in Firebase Auth
-
-### Configure Firebase Hosting
-
+This will be a blog post to keep the readme more concise
 
 ## Contribute
-(check https://opensource.guide/best-practices/)
+While the code is functional as it is, there's a lot of room for improvement.
+I added a [TODO](./TODO.md) with things I think may add value to the project, but obviously I may be missing more things.
+I'm always open to hearing what someone may need!
 
 ### Built with
-- HTML5
-- CSS | [Bulma](https://bulma.io/)
+- [Bulma](https://bulma.io/)
 - [Firebase](https://firebase.google.com/)
 - [jQuery](https://jquery.com/)
 - [Moment.js](http://momentjs.com/)
 - [Print.js](http://printjs.crabbly.com/)
 - [Font Awesome](https://fontawesome.com/)
 
-### TODOs
-
-(for this document and the rest of the code)
-- Finish search.js
+### TODO:
 - While writing "Getting started" actually follow all the steps and make sure everything is working perfectly
 - Finish the documentation
 - Post it!
