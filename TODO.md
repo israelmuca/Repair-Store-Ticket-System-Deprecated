@@ -1,7 +1,7 @@
 # TODO
-> I have no plans on doing these, as all will be covered in the SaaS
-> However, I noted these possible improvements while using the software
-> Feel free to work on any
+> I have no plans on doing these, as all will be covered in the SaaS.  
+> However, I noted these possible improvements while using the software.  
+> Feel free to work on any or submit an issue to discuss any other topic.
 
 - Add pwd field
 - Add 'transfer' to payment options
