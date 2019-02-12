@@ -3,15 +3,15 @@
 
 A handy ticket system for Repair Shops.
 
-If you've worked at a repair shop you quickly realize mantaining proper communication regarding a customer's equipment can be a real problem. Both between the people who work at the shop, and between the shop and the customers.
+If you've worked at a repair shop you quickly realize mantaining proper communication between your team regarding a customer's equipment or communication with them can be a real problem.
 
-Commercial solutions, while functional, had more functionality than what I needed at the time, and also where more expensive than what I was willing to pay month after month.  
-This solution has been working ok, since June 30, 2018 in a multi location repair shop.
+Commercial solutions were great, except they had more functionality than what I needed at the time, and also where more expensive than what I was willing to pay at the moment and four our (basic) needs.  
+This solution has been working for over 6 months in a multi location repair shop.
 
-A future SaaS version with a more functionality and a free tier is currently on the works.
+A future SaaS version with a more functionality and a free tier is currently on the works, it will be released later this year.
 
 ---
-**Live demo:** // TODO: insert URL here
+>**Live demo:** // TODO: insert URL here  
 >User: testing@test.com  
 >Pwd: Testing1
 ---
@@ -22,7 +22,7 @@ A future SaaS version with a more functionality and a free tier is currently on 
 - Customers database
 - Tickets database
 - Prints tickets using a regular thermal printer
-- Notes system inside each ticket
+- Team notes system inside each ticket
 - Registers tickets as closed once the equipment is paid for and delivered
 
 ## Prerequisites
