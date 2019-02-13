@@ -30,11 +30,12 @@ A future SaaS version with a more functionality and a free tier is currently on 
 - 15 minutes to set everything up
 
 ## Getting started
-This will be a blog post to keep the readme more concise
+Made it into another file, to keep this one more concise:
+[Getting started](./docs/GETTING_STARTED.md)
 
 ## Contribute
 While the code is functional as it is, there's a lot of room for improvement.  
-I added a [TODO](./TODO.md) with things I think may add value to the project, but obviously I may be missing more things.  
+I added a [TODO](./docs/TODO.md) with things I think may add value to the project, but obviously I'm surely missing more things.  
 I'm always open to hearing what someone may need!
 
 ## Built with
@@ -44,8 +45,3 @@ I'm always open to hearing what someone may need!
 - [Moment.js](http://momentjs.com/)
 - [Print.js](http://printjs.crabbly.com/)
 - [Font Awesome](https://fontawesome.com/)
-
-### TODO:
-- While writing "Getting started" actually follow all the steps and make sure everything is working perfectly
-- Finish the documentation
-- Post it!
