@@ -1,7 +1,6 @@
 # Repair Store Ticket System
->Currently being worked on
 
-A handy ticket system for Repair Shops.
+**A handy ticket system for Repair Shops.**
 
 If you've worked at a repair shop you quickly realize mantaining proper communication between your team regarding a customer's equipment or communication with them can be a real problem.
 
@@ -11,7 +10,7 @@ This solution has been working for over 6 months in a multi location repair shop
 A future SaaS version with a more functionality and a free tier is currently on the works, it will be released later this year.
 
 ---
->**Live demo:** // TODO: insert URL here  
+>**Live demo:** https://repair-store-ticket-system-ex.firebaseapp.com/  
 >User: testing@test.com  
 >Pwd: Testing1
 ---
@@ -45,3 +44,4 @@ I'm always open to hearing what someone may need!
 - [Moment.js](http://momentjs.com/)
 - [Print.js](http://printjs.crabbly.com/)
 - [Font Awesome](https://fontawesome.com/)
+- ❤️
