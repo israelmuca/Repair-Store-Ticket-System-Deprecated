@@ -150,7 +150,6 @@ $(document).ready(function (){
     // Verify the user's login status
     function checkLoginStatus() {
         firebase.auth().onAuthStateChanged(function (user) {
-            console.log(user)
             if (!user) {
                 // Take the user to the login page
                 window.location.href = 'login.html';
