@@ -114,10 +114,14 @@ Notice that all 3 locations have a child node with `latestTicketNum` set to 0.
 This is because when you're creating a ticket, and you select a location to own it, it will query the database to get the latest ticket that has been set on that specific location, add 1, and use it for this new ticket.  
 You may set another value if you need to.
 
-You need to update these values in the HTML as well. Go to [index.html](https://github.com/israelmuca/Repair-Store-Ticket-System/blob/master/public/index.html) and change lines 237 - 239 to reflect your locations added in Firebase Database.
+You need to update these values in the HTML and JS as well.  
+First go to [index.html](https://github.com/israelmuca/Repair-Store-Ticket-System/blob/master/public/index.html) and change lines 237 - 239 to reflect your locations added in Firebase Database.
+Then go to [index.js](https://github.com/israelmuca/Repair-Store-Ticket-System/blob/master/public/assets/javascript/index.js) and change lines 525 - 537 to reflect your locations added in Firebase Database.
 
 ## Further customize the code
 Since this project was created with only one instance of it in mind, I didn't plan on making it easy to change the variables for each instance. If you wish to customize it, you'll have to go directly to the HTML.  
+
+Remember to do `firebase deploy` with any changes that you do to your code!
 
 ## Issues
 If you have any problems implementing this, please open an issue in the repo!  

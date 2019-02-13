@@ -525,15 +525,15 @@ $(document).ready(function (){
             // Get the date and print the ticket number to screen
             var dateForTicket = moment().format("YYMM-");
             shortTicketNum = mostRecentTicketNum+1;
-            if (location == 'Test') {
-                ticketNumSelector.val(dateForTicket + 'T' + shortTicketNum);
-                searchTicketNum = "T" + shortTicketNum;
-            } else if (location == 'Fake') {
-                ticketNumSelector.val(dateForTicket + 'F' + shortTicketNum);
-                searchTicketNum = "F" + shortTicketNum;
-            } else if (location == 'Another') {
-                ticketNumSelector.val(dateForTicket + 'A' + shortTicketNum);
-                searchTicketNum = "A" + shortTicketNum;
+            if (location == 'Midtown') {
+                ticketNumSelector.val(dateForTicket + 'M' + shortTicketNum);
+                searchTicketNum = "M" + shortTicketNum;
+            } else if (location == 'Uptown') {
+                ticketNumSelector.val(dateForTicket + 'U' + shortTicketNum);
+                searchTicketNum = "U" + shortTicketNum;
+            } else if (location == 'Downtown') {
+                ticketNumSelector.val(dateForTicket + 'D' + shortTicketNum);
+                searchTicketNum = "D" + shortTicketNum;
             }
             })
     }
