@@ -41,7 +41,7 @@ This solution has been working for over 6 months in a multi location repair shop
 While the code is functional as it is, there's a lot of room for improvement.  
 I added a [TODO](./docs/TODO.md) with things I think may add value to the project, but obviously I'm surely missing more things.  
 I'm always open to hearing what someone may need.  
-Important to note that a future SaaS version with a more functionality and a free tier is currently on the works, it will be released later this year.  
+Important to note that a future SaaS version with more functionality and a free tier is currently on the works, it will be released later this year.  
 It's being done with a proper backend (90% done) in Node.js + Express and a Vue.js frontend (30% done).
 
 ## Built with
