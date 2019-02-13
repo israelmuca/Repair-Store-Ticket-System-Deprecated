@@ -121,5 +121,5 @@ Since this project was created with only one instance of it in mind, I didn't pl
 
 ## Issues
 If you have any problems implementing this, please open an issue in the repo!  
-If there's any questions, I'll create a FAQ.
+If there's any questions, I'll create a FAQ.  
 Cheers!
