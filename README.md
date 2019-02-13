@@ -7,10 +7,11 @@ If you've worked at a repair shop you quickly realize mantaining proper communic
 Commercial solutions were great, except they had more functionality than what I needed at the time, and also where more expensive than what I was willing to pay at the moment and four our (basic) needs.  
 This solution has been working for over 6 months in a multi location repair shop.
 
-A future SaaS version with a more functionality and a free tier is currently on the works, it will be released later this year.
-
 ---
->**Live demo:** https://repair-store-ticket-system-ex.firebaseapp.com/  
+>**Live demo:**  
+>
+>https://repair-store-ticket-system-ex.firebaseapp.com/  
+>
 >User: testing@test.com  
 >Pwd: Testing1
 ---
@@ -29,13 +30,19 @@ A future SaaS version with a more functionality and a free tier is currently on 
 - 15 minutes to set everything up
 
 ## Getting started
-Made it into another file, to keep this one more concise:
 [Getting started](./docs/GETTING_STARTED.md)
+
+## Using the system
+>Not yet ready
+
+[Using the system](./docs/USING_THE_SYSTEM.md)
 
 ## Contribute
 While the code is functional as it is, there's a lot of room for improvement.  
 I added a [TODO](./docs/TODO.md) with things I think may add value to the project, but obviously I'm surely missing more things.  
-I'm always open to hearing what someone may need!
+I'm always open to hearing what someone may need.  
+Important to note that a future SaaS version with a more functionality and a free tier is currently on the works, it will be released later this year.  
+It's being done with a proper backend (90% done) in Node.js + Express and a Vue.js frontend (30% done).
 
 ## Built with
 - [Bulma](https://bulma.io/)
