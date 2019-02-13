@@ -81,6 +81,7 @@ Go back to the [Firebase console](https://console.firebase.google.com), go to _A
 Go back to the database, and hover over the main node in the db, and click on the _plus_ sign on the right side.  
 In _Name_ write: **users**, and then click on the plus sign at the right side again to add another node. In the new _Name_ node, paste the UID you copied before, and click on the plus sign, _again_.  
 On the new _Name_ node, write `uid` and in value, paste the actual UID. On the parent node, click _again_ on the plus sign, to create another child node, which will be a sibling for the uid key-value pair. This one will be called: `name` and the value will be the user’s name.  
+
 The final result should look like the picture:  
 ![users node](https://github.com/israelmuca/repair-store-ticket-system/raw/master/docs/assets/users-node.png "Users node")  
 
