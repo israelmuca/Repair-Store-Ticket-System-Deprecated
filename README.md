@@ -33,8 +33,6 @@ This solution has been working for over 6 months in a multi location repair shop
 [Getting started](./docs/GETTING_STARTED.md)
 
 ## Using the system
->Not yet ready
-
 [Using the system](./docs/USING_THE_SYSTEM.md)
 
 ## Contribute
