@@ -12,7 +12,7 @@ This solution has been working for over 6 months in a multi location repair shop
 >
 >https://repair-store-ticket-system-ex.firebaseapp.com/  
 >
->User: testing@test.com  
+>User: testuser@test.com  
 >Pwd: Testing1
 ---
 
