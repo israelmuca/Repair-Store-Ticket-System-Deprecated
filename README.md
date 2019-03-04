@@ -50,3 +50,6 @@ It's being done with a proper backend (90% done) in Node.js + Express and a Vue.
 - [Print.js](http://printjs.crabbly.com/)
 - [Font Awesome](https://fontawesome.com/)
 - ❤️
+
+## Hosted in
+- [Firebase](https://firebase.google.com/docs/hosting/quickstart)
