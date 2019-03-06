@@ -1,6 +1,6 @@
 # Repair Store Ticket System
 
-**A handy ticket system for Repair Shops.**
+**A ticketing system for Repair Shops.**
 
 If you've worked at a repair shop you quickly realize mantaining proper communication between your team regarding a customer's equipment or communication with them can be a real problem.
 
