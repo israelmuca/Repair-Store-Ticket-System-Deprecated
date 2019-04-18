@@ -4,8 +4,8 @@
 
 If you've worked at a repair shop you quickly realize mantaining proper communication between your team regarding a customer's equipment or communication with them can be a real problem.
 
-Commercial solutions were great, except they had more functionality than what I needed at the time, and also where more expensive than what I was willing to pay at the moment and four our (basic) needs.  
-This solution has been working for over 6 months in a multi location repair shop.
+Commercial solutions were great, except they had more functionality than what I needed at the time, and also where more expensive than what I was willing to pay at the moment for our (basic) needs.  
+This solution has been working for almost a year in a multi location repair shop.
 
 ---
 >**Live demo:**  
