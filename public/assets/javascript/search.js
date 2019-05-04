@@ -228,6 +228,19 @@ $(document).ready(function (){
 
     // Fills the recent-tickets-table
     function fillRecentTickets() {
+        
+//----------------- <REPORTS>
+        // I used this code to show all equipments that were already paid for
+        // database.ref('/tickets')
+        // .orderByChild('paymentCompleted')
+        // .on("child_added", function(ticketsSnapshot) {
+
+        //     var oneTicketChild = ticketsSnapshot.val();
+        //     createRowWithTicketReport(oneTicketChild, 'append');
+
+        // })
+//----------------- </REPORTS>
+        
         // For regular use
         // Show last 50 tickets from DB
         database.ref('/tickets')
@@ -239,17 +252,6 @@ $(document).ready(function (){
             createRowWithTicket(oneTicketChild, 'append')
 
         })
-
-        // For use with reports
-        // I used this code to show all equipments that were already paid for
-        // database.ref('/tickets')
-        // .orderByChild('paymentCompleted')
-        // .on("child_added", function(ticketsSnapshot) {
-
-        //     var oneTicketChild = ticketsSnapshot.val();
-        //     createRowWithTicketReport(oneTicketChild, 'append');
-
-        // })
     }
 
     // Build the actual rows in the table
@@ -312,20 +314,24 @@ $(document).ready(function (){
     //Delegate the row building here, to make sure other functions do only their main purpose
     function createRowWithTicketReport(pOneTicketData, pOrder) {
 
+//----------------- <REPORTS>
+//------- USE ONLY ONE FOR A SPECIFIC 'REPORT'
+//------- OR NONE FOR REGULAR USAGE
         //Activate for when I only want to see laptops
-        if(pOneTicketData.eqType != "Laptop") {
-            return;
-        }
+        //if(pOneTicketData.eqType != "Laptop") {
+        //    return;
+        //}
 
         //Activate for when I only want to see equipments that have been paid for
-        if(!pOneTicketData.paymentCompleted) {
-            return;
-        }
+        //if(!pOneTicketData.paymentCompleted) {
+        //    return;
+        //}
 
         //Activate for when I only want to see equipments paid for with Card (debit or credit)
         // if(pOneTicketData.paymentMethod.indexOf("Tarjeta") == -1) {
         //     return;
         // }
+//----------------- </REPORTS>
 
         var tableBody = $("#table-body");
         var mainRow = $("#table-body-main-row");
